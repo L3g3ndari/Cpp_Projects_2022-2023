@@ -5,6 +5,7 @@ C++ Programming
 Period 5
 Mr. Galbraith
 Project Completed: 9/29/22
+Update 10/5/22: Added a prompt that asks if the players want to play again after a game is done.
 Outside Resources Utilized: TicTacToe, by Nathan Wu, from Java Programming 2021
  */
 
@@ -29,7 +30,7 @@ int main() {
   int turn = X_TURN;
   int XWins = 0;
   int OWins = 0;
-  bool stillPlaying;
+  //bool stillPlaying;
   cout << "Welcome to TicTacToe!" << endl;
   cout << "X will start." << endl;
   cout << "Please input a move using the coordinate system." << endl;
@@ -42,10 +43,10 @@ int main() {
       }
     }
   
-    stillPlaying = true;
+    //stillPlaying = true;
     printBoard(board);
   
-    while (stillPlaying == true) {
+    //while (stillPlaying == true) {
       while (checkWin(X_MOVE, board) == false && checkWin(O_MOVE, board) == false && checkTie(board) == false) {//checking if the game should end
 	//cout << "The turn is: " << turn << endl;
 	cin.get(input, 3);//get input
@@ -80,7 +81,7 @@ int main() {
 	}
       }
       //a win condition has been met, or if there is a tie
-      stillPlaying = false;
+      //stillPlaying = false;
       printBoard(board);
       if (checkWin(X_MOVE, board) == true) {//if X is the winner, add 1 to X's score
 	XWins++;
@@ -95,9 +96,25 @@ int main() {
       }
       cout << "X has won " << XWins << " times. O has won " << OWins << " times." << endl;
       cout << endl;
-      cout << "---------------- NEW GAME ----------------" << endl;
-      cout << endl;
-    }
+      while(true) {
+	cout << "Play again? (y/n)" << endl;
+	char ans[3];
+	cin >> ans;
+	cin.ignore(10, '\n');
+	if (ans[0] == 'y') {
+	  cout << endl;
+	  cout << "---------------- NEW GAME ----------------" << endl;
+	  cout << endl;
+	  break;
+	}
+	else if (ans[0] == 'n') {
+	  exit(0);
+	}
+	else {
+	  cout << "Not a valid answer. Please try again." << endl;
+	}
+      }
+      //}
   }
 }//returns to the top and starts another game
 
