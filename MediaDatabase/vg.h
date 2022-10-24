@@ -2,7 +2,7 @@
 #include "media.h"
 using namespace std;
 
-class VG : public media {
+class VG : public Media {
  public:
   VG(char* Publisher, int Rating);
   char* getPublisher();
@@ -10,4 +10,4 @@ class VG : public media {
 protected:
   char* publisher;
   int rating;
-}
+};

@@ -11,4 +11,4 @@ class Media {
   int type;
   char title[80];
   int year;
-}
+};

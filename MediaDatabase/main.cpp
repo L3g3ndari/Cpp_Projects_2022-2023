@@ -13,12 +13,13 @@ void deleteFunction();
 
 int main() {
   vector <Media> Media;
+  vector <Media> *MediaPtr = &Media;
   cout << "Welcome to your Media Database." << endl;
   cout << "Available commands: ADD, SEARCH, DELETE, QUIT." << endl;
     
   while (true) {
     char input[10];
-    cout << "Awaiting new command "
+    cout << "Awaiting new command: ";
     cin >> input;
 
     if (input[0] == 'A' &&
@@ -51,16 +52,17 @@ int main() {
   }
 }
 
-void addFunction() {
+void addFunction(vector <Media> *MediaPtr) {
   char title[80];
-  char year[5];
+  int year;
   char typeInput[3];
   cout << "Title: ";
   cin >> title;
   cout << "Year Published: ";
   cin >> year;
-  cout << "What is the type of your media entry? \n Type \"1\" for movies, \"2\" for music, and \"3\" for video games."
-    cin >> typeInput;
+  cout << "What is the type of your media entry? \n Type \"1\" for movies, \"2\" for music, and \"3\" for video games." << endl;
+  cout << "Type: ";
+  cin >> typeInput;
   if (typeInput[0] == '1') {//movie
 
   }
@@ -68,6 +70,14 @@ void addFunction() {
 
   }
   if (typeInput[0] == '3') {//video games
-
+    char publisher[64];
+    int rating;
+    cout << "Publisher: ";
+    cin >> publisher;
+    cout << "Rating (positive integer out of 10): ";
+    cin >> rating;
+    MediaPtr -> push_back(new VG(typeInput, title, year, rating, publisher));
+    cout << endl;
+    cout << title << " has been added to your database." << endl;
   }
 }
