@@ -12,8 +12,8 @@ void searchFunction();
 void deleteFunction();
 
 int main() {
-  vector <Media> Media;
-  vector <Media> *MediaPtr = &Media;
+  vector <Media> Database;
+  vector <Media> *DatabasePtr = &Database;
   cout << "Welcome to your Media Database." << endl;
   cout << "Available commands: ADD, SEARCH, DELETE, QUIT." << endl;
     
@@ -52,10 +52,10 @@ int main() {
   }
 }
 
-void addFunction(vector <Media> *MediaPtr) {
+void addFunction(vector <Media> *DatabasePtr) {
   char title[80];
   int year;
-  char typeInput[3];
+  int typeInput;
   cout << "Title: ";
   cin >> title;
   cout << "Year Published: ";
@@ -63,21 +63,22 @@ void addFunction(vector <Media> *MediaPtr) {
   cout << "What is the type of your media entry? \n Type \"1\" for movies, \"2\" for music, and \"3\" for video games." << endl;
   cout << "Type: ";
   cin >> typeInput;
-  if (typeInput[0] == '1') {//movie
+  if (typeInput == 1) {//movie
 
   }
-  if (typeInput[0] == '2') {//music
+  if (typeInput == 2) {//music
 
   }
-  if (typeInput[0] == '3') {//video games
-    char publisher[64];
+  if (typeInput == 3) {//video games
+    char publisher[80];
     int rating;
     cout << "Publisher: ";
     cin >> publisher;
     cout << "Rating (positive integer out of 10): ";
     cin >> rating;
-    MediaPtr -> push_back(new VG(typeInput, title, year, rating, publisher));
+    DatabasePtr -> push_back(new VG(typeInput, title, year, rating, publisher));//can't add VG to a vector of Media, so need to create a vector of pointers to Media
     cout << endl;
     cout << title << " has been added to your database." << endl;
   }
+
 }

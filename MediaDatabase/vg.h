@@ -4,7 +4,7 @@ using namespace std;
 
 class VG : public Media {
  public:
-  VG(char* Publisher, int Rating);
+  VG(int Type, char Title[80], int year, int Rating, char Publisher[80]);
   char* getPublisher();
   int getRating();
 protected:
