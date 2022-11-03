@@ -5,13 +5,14 @@ using namespace std;
 
 VG::VG(int Type, char Title[80], int Year, int Rating, char Publisher[80]):Media(Type, Title, Year) {
   rating = Rating;
-  publisher = Publisher;
+  strcpy(publisher, Publisher);
 };
 int VG::getRating() {
   return rating;
 }
 char* VG::getPublisher() {
-  char Publisher[80];
-  strcpy(Publisher, publisher);
-  return Publisher;
+  return publisher;
+}
+void VG::printInfo() {
+  cout << "Video Game: " << title << ", " << publisher << ", " << year << ", " << rating << "/10" << endl;
 }

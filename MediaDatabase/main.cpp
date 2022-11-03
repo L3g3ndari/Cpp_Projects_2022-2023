@@ -7,13 +7,14 @@
 
 using namespace std;
 
-void addFunction();
+void addFunction(vector <Media*> &DatabasePtr);
 void searchFunction();
 void deleteFunction();
+void printFunction(vector <Media*> Database);
 
 int main() {
-  vector <Media> Database;
-  vector <Media> *DatabasePtr = &Database;
+  vector <Media*> Database;
+  //vector <Media> *DatabasePtr = &Database;
   cout << "Welcome to your Media Database." << endl;
   cout << "Available commands: ADD, SEARCH, DELETE, QUIT." << endl;
     
@@ -25,8 +26,12 @@ int main() {
     if (input[0] == 'A' &&
 	input[1] == 'D' &&
 	input[2] == 'D') {
-      //addFunction();
-      cout << "1" << endl;
+      addFunction(Database);
+      //cout << "1" << endl;
+    }
+
+    if(input[0] == 'P'){
+      printFunction(Database);
     }
 
     if (input[0] == 'S' &&
@@ -52,7 +57,7 @@ int main() {
   }
 }
 
-void addFunction(vector <Media> *DatabasePtr) {
+void addFunction(vector <Media*> &DatabasePtr) {
   char title[80];
   int year;
   int typeInput;
@@ -76,9 +81,16 @@ void addFunction(vector <Media> *DatabasePtr) {
     cin >> publisher;
     cout << "Rating (positive integer out of 10): ";
     cin >> rating;
-    DatabasePtr -> push_back(new VG(typeInput, title, year, rating, publisher));//can't add VG to a vector of Media, so need to create a vector of pointers to Media
+    DatabasePtr.push_back(new VG(typeInput, title, year, rating, publisher));//can't add VG to a vector of Media, so need to create a vector of pointers to Media
     cout << endl;
     cout << title << " has been added to your database." << endl;
   }
+  
+}
 
+void printFunction(vector <Media*> Database) {
+  vector<Media*>::iterator i;
+  for (i = Database.begin(); i < Database.end(); i++) {
+    (*i) -> printInfo();
+  }
 }

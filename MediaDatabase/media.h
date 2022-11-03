@@ -7,6 +7,7 @@ class Media {
   int getType();
   char* getTitle();
   int getYear();
+  virtual void printInfo();
  protected:
   int type;
   char title[80];
