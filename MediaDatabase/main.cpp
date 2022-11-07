@@ -8,7 +8,7 @@
 using namespace std;
 
 void addFunction(vector <Media*> &DatabasePtr);
-void searchFunction();
+void searchFunction(vector <Media*> Database);
 void deleteFunction();
 void printFunction(vector <Media*> Database);
 
@@ -40,8 +40,7 @@ int main() {
 	input[3] == 'R' &&
 	input[4] == 'C' &&
 	input[5] == 'H') {
-      //searchFunction();
-      cout << "2" << endl;
+      searchFunction(Database);
     }
 
     if (input[0] == 'D' &&
@@ -62,7 +61,9 @@ void addFunction(vector <Media*> &DatabasePtr) {
   int year;
   int typeInput;
   cout << "Title: ";
-  cin >> title;
+  cin.clear();
+  cin.ignore(80, '\n');
+  cin.get(title, 80);
   cout << "Year Published: ";
   cin >> year;
   cout << "What is the type of your media entry? \n Type \"1\" for movies, \"2\" for music, and \"3\" for video games." << endl;
@@ -93,4 +94,34 @@ void printFunction(vector <Media*> Database) {
   for (i = Database.begin(); i < Database.end(); i++) {
     (*i) -> printInfo();
   }
+}
+
+void searchFunction(vector <Media*> Database) {
+  char searchTerm[80] = "";
+  char input[6] = "";
+  cout << "Would you like to search by title or year?" << endl;
+  cin >> input;
+  cin.ignore(80, '\n');
+  if (strcmp(input, "title") == 0) {
+    cout << "Please type your search term (title): ";
+    cin >> searchTerm;
+    cout << "Here are all the results that match your search." << endl;
+    vector<Media*>::iterator itr;
+    for (itr = Database.begin(); itr != Database.end(); itr++) {
+      char * pch;
+      pch = strstr((*itr) -> getTitle(), searchTerm);
+      if (pch != NULL) {
+	(*itr) -> printInfo();
+      }
+    }
+    cout << endl;
+  }
+  else if (strcmp(input, "year") == 0) {
+    cout << "Please type your search term (year): ";
+  }
+  else {
+    cout << "That input does not compute." << endl;
+    return;
+  }
+  
 }

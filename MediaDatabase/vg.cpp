@@ -14,5 +14,5 @@ char* VG::getPublisher() {
   return publisher;
 }
 void VG::printInfo() {
-  cout << "Video Game: " << title << ", " << publisher << ", " << year << ", " << rating << "/10" << endl;
+  cout << "- Video Game: " << title << ", " << publisher << ", " << year << ", " << rating << "/10" << endl;
 }
