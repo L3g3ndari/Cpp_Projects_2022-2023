@@ -1,3 +1,5 @@
+//https://cplusplus.com/reference/cstring/strstr/
+
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -7,9 +9,9 @@
 
 using namespace std;
 
-void addFunction(vector <Media*> &DatabasePtr);
+void addFunction(vector <Media*> &Database);
 void searchFunction(vector <Media*> Database);
-void deleteFunction();
+void deleteFunction(vector <Media*> &Database);
 void printFunction(vector <Media*> Database);
 
 int main() {
@@ -49,14 +51,25 @@ int main() {
 	input[3] == 'E' &&
 	input[4] == 'T' &&
 	input[5] == 'E') {
-      //deleteFunction();
-      cout << "3" << endl;
+      deleteFunction(Database);
     }
-    
+
+    if (strcmp(input, "QUIT") == 0) {
+      cout << "Confirmation to quit the program. All your data will be lost. Do you want to quit?  (y/n)" << endl;
+      char yesno[80] = "";
+      cin >> yesno;
+      if (yesno[0] == 'y') {
+	cout << "Thank you for using the media database. Have a good day." << endl;
+	exit(0);
+      }
+      else {
+	cout << endl;
+      }
+    }
   }
 }
 
-void addFunction(vector <Media*> &DatabasePtr) {
+void addFunction(vector <Media*> &Database) {
   char title[80];
   int year;
   int typeInput;
@@ -79,10 +92,12 @@ void addFunction(vector <Media*> &DatabasePtr) {
     char publisher[80];
     int rating;
     cout << "Publisher: ";
-    cin >> publisher;
+    cin.clear();
+    cin.ignore(80, '\n');
+    cin.get(publisher, 80);
     cout << "Rating (positive integer out of 10): ";
     cin >> rating;
-    DatabasePtr.push_back(new VG(typeInput, title, year, rating, publisher));//can't add VG to a vector of Media, so need to create a vector of pointers to Media
+    Database.push_back(new VG(typeInput, title, year, rating, publisher));//can't add VG to a vector of Media, so need to create a vector of pointers to Media
     cout << endl;
     cout << title << " has been added to your database." << endl;
   }
@@ -97,12 +112,12 @@ void printFunction(vector <Media*> Database) {
 }
 
 void searchFunction(vector <Media*> Database) {
-  char searchTerm[80] = "";
   char input[6] = "";
   cout << "Would you like to search by title or year?" << endl;
   cin >> input;
   cin.ignore(80, '\n');
   if (strcmp(input, "title") == 0) {
+    char searchTerm[80] = "";
     cout << "Please type your search term (title): ";
     cin >> searchTerm;
     cout << "Here are all the results that match your search." << endl;
@@ -117,11 +132,71 @@ void searchFunction(vector <Media*> Database) {
     cout << endl;
   }
   else if (strcmp(input, "year") == 0) {
+    int searchTerm = 0;
     cout << "Please type your search term (year): ";
+    cin >> searchTerm;
+    cout << "Here are all the results that match your search." << endl;
+    vector<Media*>::iterator itr;
+    for (itr = Database.begin(); itr != Database.end(); itr++) {
+      if (searchTerm == (*itr) -> getYear()) {
+	(*itr) -> printInfo();
+      }
+    }
+    cout << endl;
+  }
+  else {
+    cout << "That input does not compute." << endl;
+    return;
+  }  
+}
+
+void deleteFunction(vector <Media*> &Database) {
+  char input[6] = "";
+  cout << "Please search for the entries you want to delete. Would you like to search by title or year?" << endl;
+  cin >> input;
+  cin.ignore(80, '\n');
+  if (strcmp(input, "title") == 0) {
+    char searchTerm[80] = "";
+    cout << "Please type your search term (title): ";
+    cin >> searchTerm;
+    cout << "Here are all the results that match your search." << endl;
+    vector<Media*>::iterator itr;
+    for (itr = Database.begin(); itr != Database.end(); itr++) {
+      char * pch;
+      pch = strstr((*itr) -> getTitle(), searchTerm);
+      if (pch != NULL) {
+	cout << endl;
+	cout << "Here is one of the results of your search:" << endl << endl;
+	(*itr) -> printInfo();
+	cout << endl;
+	cout << "Would you like to delete this file from your media database? This action cannot be undone. (y/n)" << endl;
+	char yesno[80] = "";
+	cin >> yesno;
+	if (yesno[0] == 'y') {
+	  delete *itr;
+	  Database.erase(itr);
+	  cout << "Entry deleted." << endl;
+	  break;
+	}
+      }
+    }
+    cout << endl;
+  }
+  else if (strcmp(input, "year") == 0) {
+    int searchTerm = 0;
+    cout << "Please type your search term (year): ";
+    cin >> searchTerm;
+    cout << "Here are all the results that match your search." << endl;
+    vector<Media*>::iterator itr;
+    for (itr = Database.begin(); itr != Database.end(); itr++) {
+      if (searchTerm == (*itr) -> getYear()) {
+        (*itr) -> printInfo();
+      }
+    }
+    cout << endl;
   }
   else {
     cout << "That input does not compute." << endl;
     return;
   }
-  
 }
