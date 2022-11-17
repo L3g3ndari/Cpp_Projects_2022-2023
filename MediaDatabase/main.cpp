@@ -151,6 +151,7 @@ void searchFunction(vector <Media*> Database) {
 }
 
 void deleteFunction(vector <Media*> &Database) {
+  vector <char*> toBeDeleted;
   char input[6] = "";
   cout << "Please search for the entries you want to delete. Would you like to search by title or year?" << endl;
   cin >> input;
@@ -159,10 +160,10 @@ void deleteFunction(vector <Media*> &Database) {
     char searchTerm[80] = "";
     cout << "Please type your search term (title): ";
     cin >> searchTerm;
-    cout << "Here are all the results that match your search." << endl;
     vector<Media*>::iterator itr;
     for (itr = Database.begin(); itr != Database.end(); itr++) {
       char * pch;
+      cout << (*itr) -> getTitle() << endl;
       pch = strstr((*itr) -> getTitle(), searchTerm);
       if (pch != NULL) {
 	cout << endl;
@@ -170,16 +171,28 @@ void deleteFunction(vector <Media*> &Database) {
 	(*itr) -> printInfo();
 	cout << endl;
 	cout << "Would you like to delete this file from your media database? This action cannot be undone. (y/n)" << endl;
-	char yesno[80] = "";
+	char yesno[80];
 	cin >> yesno;
+	cout << "-" << endl;//somehow, this print line is crucial to the functionality of the program, even though it does nothing
 	if (yesno[0] == 'y') {
-	  delete *itr;
-	  Database.erase(itr);
-	  cout << "Entry deleted." << endl;
-	  break;
-	}
+	  //cout << (*itr) -> getTitle() << endl;
+	  toBeDeleted.push_back((*itr) -> getTitle());
+     	}
+	cout << "-" << endl;//somehow, this print line is crucial to the functionality of the program
       }
     }
+    while (toBeDeleted.size() > 0) {
+      vector<Media*>::iterator itr2;
+      for (itr2 = Database.begin(); itr2 < Database.end(); itr2++) {
+	if (strcmp(*toBeDeleted.begin(), (*itr2) -> getTitle()) == 0) {
+	  delete *itr2;//deletes the class using a destructor
+	  Database.erase(itr2);//erase the pointer to the class from Database
+	  cout << *toBeDeleted.begin() << endl;
+	  toBeDeleted.erase(toBeDeleted.begin());////erase the title from toBeDeleted
+	  break;
+	}  
+      }
+    } 
     cout << endl;
   }
   else if (strcmp(input, "year") == 0) {
