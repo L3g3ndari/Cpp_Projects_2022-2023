@@ -13,6 +13,7 @@ void addFunction(vector <Media*> &Database);
 void searchFunction(vector <Media*> Database);
 void deleteFunction(vector <Media*> &Database);
 void printFunction(vector <Media*> Database);
+bool cmpStr(char* str1, char* str2);
 
 int main() {
   vector <Media*> Database;
@@ -175,8 +176,9 @@ void deleteFunction(vector <Media*> &Database) {
 	cin >> yesno;
 	cout << "-" << endl;//somehow, this print line is crucial to the functionality of the program, even though it does nothing
 	if (yesno[0] == 'y') {
-	  //cout << (*itr) -> getTitle() << endl;
+	  cout << (*itr) -> getTitle() << endl;
 	  toBeDeleted.push_back((*itr) -> getTitle());
+	  cout << "toBeDeleted1: " << *toBeDeleted.begin() << endl;
      	}
 	cout << "-" << endl;//somehow, this print line is crucial to the functionality of the program
       }
@@ -184,7 +186,8 @@ void deleteFunction(vector <Media*> &Database) {
     while (toBeDeleted.size() > 0) {
       vector<Media*>::iterator itr2;
       for (itr2 = Database.begin(); itr2 < Database.end(); itr2++) {
-	if (strcmp(*toBeDeleted.begin(), (*itr2) -> getTitle()) == 0) {
+	cout << "toBeDeleted2: " << *toBeDeleted.begin() << endl;
+        if (cmpStr(*toBeDeleted.begin(), (*itr2) -> getTitle()) == true) {
 	  delete *itr2;//deletes the class using a destructor
 	  Database.erase(itr2);//erase the pointer to the class from Database
 	  cout << *toBeDeleted.begin() << endl;
@@ -212,4 +215,18 @@ void deleteFunction(vector <Media*> &Database) {
     cout << "That input does not compute." << endl;
     return;
   }
+}
+
+bool cmpStr(char* str1, char* str2) {
+  for (int i = 0; i < strlen(str1); i++) {
+    if(str1[i] != '\0') {
+      if(str1[i] != str2[i]) {//checking for matching characters
+	return false;
+      }
+    }
+    else if(str1[i] != str2[i]) {//checking for null character matching
+      return false;
+    }
+  }
+  return true;
 }
