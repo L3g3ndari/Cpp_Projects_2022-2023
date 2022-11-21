@@ -12,9 +12,9 @@ int Media::getType() {
   return type;
 }
 char* Media::getTitle() {
-  char* Title;
-  strcpy(Title, title);
-  return Title;
+  //char* Title;
+  //strcpy(Title, title);
+  return title;
 }
 int Media::getYear() {
   return year;

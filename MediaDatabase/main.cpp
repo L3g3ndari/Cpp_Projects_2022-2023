@@ -174,23 +174,23 @@ void deleteFunction(vector <Media*> &Database) {
 	cout << "Would you like to delete this file from your media database? This action cannot be undone. (y/n)" << endl;
 	char yesno[80];
 	cin >> yesno;
-	cout << "-" << endl;//somehow, this print line is crucial to the functionality of the program, even though it does nothing
+	//cout << "-" << endl;//somehow, this print line was crucial to the functionality of the program, even though it does nothing
 	if (yesno[0] == 'y') {
-	  cout << (*itr) -> getTitle() << endl;
+	  //cout << (*itr) -> getTitle() << endl;
 	  toBeDeleted.push_back((*itr) -> getTitle());
-	  cout << "toBeDeleted1: " << *toBeDeleted.begin() << endl;
+	  //cout << "toBeDeleted1: " << *toBeDeleted.begin() << endl;
      	}
-	cout << "-" << endl;//somehow, this print line is crucial to the functionality of the program
+	//cout << "-" << endl;//somehow, this print line was crucial to the functionality of the program
       }
     }
     while (toBeDeleted.size() > 0) {
       vector<Media*>::iterator itr2;
       for (itr2 = Database.begin(); itr2 < Database.end(); itr2++) {
-	cout << "toBeDeleted2: " << *toBeDeleted.begin() << endl;
+	//cout << "toBeDeleted2: " << *toBeDeleted.begin() << endl;
         if (cmpStr(*toBeDeleted.begin(), (*itr2) -> getTitle()) == true) {
 	  delete *itr2;//deletes the class using a destructor
 	  Database.erase(itr2);//erase the pointer to the class from Database
-	  cout << *toBeDeleted.begin() << endl;
+	  //cout << *toBeDeleted.begin() << endl;
 	  toBeDeleted.erase(toBeDeleted.begin());////erase the title from toBeDeleted
 	  break;
 	}  
