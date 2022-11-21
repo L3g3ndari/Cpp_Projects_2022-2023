@@ -205,8 +205,18 @@ void deleteFunction(vector <Media*> &Database) {
     cout << "Here are all the results that match your search." << endl;
     vector<Media*>::iterator itr;
     for (itr = Database.begin(); itr != Database.end(); itr++) {
-      if (searchTerm == (*itr) -> getYear()) {
+      cout << (*itr) -> getYear() << endl;
+      if ((*itr) -> getYear() == searchTerm) {
+        cout << endl;
+        cout << "Here is one of the results of your search:" << endl << endl;
         (*itr) -> printInfo();
+        cout << endl;
+        cout << "Would you like to delete this file from your media database? This action cannot be undone. (y/n)" << endl;
+        char yesno[80];
+        cin >> yesno;
+        if (yesno[0] == 'y') {
+          toBeDeleted.push_back((*itr) -> getTitle());
+	}
       }
     }
     cout << endl;
@@ -215,9 +225,20 @@ void deleteFunction(vector <Media*> &Database) {
     cout << "That input does not compute." << endl;
     return;
   }
+  while (toBeDeleted.size() > 0) {
+      vector<Media*>::iterator itr2;
+      for (itr2 = Database.begin(); itr2 < Database.end(); itr2++) {
+        if (cmpStr(*toBeDeleted.begin(), (*itr2) -> getTitle()) == true) {
+          delete *itr2;//deletes the class using a destructor
+          Database.erase(itr2);//erase the pointer to the class from Database
+          toBeDeleted.erase(toBeDeleted.begin());////erase the title from toBeDeleted
+          break;
+        }
+      }
+    }
 }
 
-bool cmpStr(char* str1, char* str2) {
+bool cmpStr(char* str1, char* str2) {//is used in deleteFunction but is probably entirely obselete because deleteFunction was fixed on 11/21/22
   for (int i = 0; i < strlen(str1); i++) {
     if(str1[i] != '\0') {
       if(str1[i] != str2[i]) {//checking for matching characters
