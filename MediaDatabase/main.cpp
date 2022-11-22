@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstring>
 #include "vg.h"
-//#include "movie.h"
+#include "movie.h"
 //#include "music.h"
 
 using namespace std;
@@ -30,7 +30,6 @@ int main() {
 	input[1] == 'D' &&
 	input[2] == 'D') {
       addFunction(Database);
-      //cout << "1" << endl;
     }
 
     if(input[0] == 'P'){
@@ -84,7 +83,22 @@ void addFunction(vector <Media*> &Database) {
   cout << "Type: ";
   cin >> typeInput;
   if (typeInput == 1) {//movie
-
+    char director[80];
+    int rating;
+    int duration;
+    cout << "Director: ";
+    cin.clear();
+    cin.ignore(80, '\n');
+    cin.get(director, 80);
+    cout << "Rating (positive integer out of 10): ";
+    cin >> rating;
+    cout << "Run time (in minutes): ";
+    cin >> duration;
+    Database.push_back(new Movie(typeInput, title, year, rating, director, duration));
+    cout << endl;
+    cin.clear();
+    cin.ignore(80, '\n');
+    cout << title << " has been added to your database." << endl;
   }
   if (typeInput == 2) {//music
 

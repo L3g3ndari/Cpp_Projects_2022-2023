@@ -5,14 +5,18 @@ using namespace std;
 
 Movie::Movie(int Type, char Title[80], int Year, int Rating, char Director[80], int Duration):Media(Type, Title, Year) {
   rating = Rating;
-  strcpy(publisher, Publisher);
+  strcpy(director, Director);
+  duration = Duration;
 };
 int Movie::getRating() {
   return rating;
 }
-char* Movie::getPublisher() {
-  return publisher;
+char* Movie::getDirector() {
+  return director;
+}
+int Movie::getDuration() {
+  return duration;
 }
 void Movie::printInfo() {
-  cout << "- Video Game: " << title << ", " << publisher << ", " << year << ", " << rating << "/10" << endl;
+  cout << "- Movie: " << title << ", " << director << ", " << year << ", " << rating << "/10, " << duration << " min" << endl;
 }

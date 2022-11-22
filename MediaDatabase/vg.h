@@ -1,5 +1,8 @@
 #include <iostream>
+#ifndef MEDIA
+#define MEDIA
 #include "media.h"
+#endif
 using namespace std;
 
 class VG : public Media {
