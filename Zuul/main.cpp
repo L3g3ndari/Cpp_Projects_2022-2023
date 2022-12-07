@@ -2,6 +2,7 @@
 #include <cstring>
 #include <vector>
 #include "Parser.h"
+#include "Room.h"
 
 using namespace std;
 
@@ -26,6 +27,14 @@ int main() {
   
   cout << "Welcome to Zuul!" << endl;
   cout << endl;
+  char* testD1 = "Description 1";
+  char* testD2 = "Description 2";
+  char* testDir1 = "east";
+  Room testRoom1 = Room(testD1);
+  Room testRoom2 = Room(testD2);
+  testRoom1.setExit(testDir1, &testRoom2);
+  cout << testRoom1.getDescription() << endl;
+  cout << testRoom1.getExitString() << endl;
   
   while (gameOver == false) {
     cin.get(input, 80);
@@ -54,5 +63,12 @@ void exeDrop(char* word2){}
 void exeQuit(char* word2){}
 void exeInventory(char* word2){}
 void exeUse(char* word2){}
-void exeHelp(char* word2){}
-void exeDescription(char* word2){}
+
+
+void exeHelp(char* word2){
+  //print out help message
+}
+
+void exeDescription(char* word2){
+  //print the description of the current room
+}

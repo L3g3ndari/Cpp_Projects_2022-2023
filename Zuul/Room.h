@@ -1,14 +1,18 @@
 #include <iostream>
+#include <cstring>
+#include <map>
 using namespace std;
 
 class Room {
  public:
-  Room(char Description[1000], map exits);
+  Room(char* Description);
   char* getDescription();
-  void setExit();
-  Room getExit(char* direction);
+  void setExit(char* direction, Room* room);
+  Room* getExit(char* direction);
+  char* getExitString();
   bool hasExit(char* direction);
  protected:
   char* description;
-  //continue working here
+  //Inventory inventory;
+  map<char*, Room*> exits;
 };
