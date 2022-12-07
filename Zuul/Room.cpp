@@ -4,9 +4,15 @@
 #include "Room.h"
 using namespace std;
 
-Room::Room(char* Description) {
+Room::Room(char* Name, char* Description) {
+  name = new char[strlen(Name) +1];
+  strcpy(name, Name);
+  description = new char[strlen(Description)+1];
   strcpy(description, Description);
 };
+char* Room::getName() {
+  return name;
+}
 char* Room::getDescription() {
   return description;
 }
@@ -22,5 +28,5 @@ char* Room::getExitString() {
   return returnString;
 }
 bool Room::hasExit(char* direction) {
-
+  return true;
 }

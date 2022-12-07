@@ -6,7 +6,7 @@
 
 using namespace std;
 
-//void createRooms();
+void createRooms(vector <Room*> &rooms);
 typedef void (*ExecuteCommand)(char* word2);//creates a new type called ExecuteCommand that takes a char[]
 void exeGo(char* word2);
 void exeGet(char* word2);
@@ -23,18 +23,26 @@ int main() {
   bool gameOver = false;
   Parser myParser = Parser();
 
+  vector <Room*> rooms;
+
   char validCommands[8][12] = {"go", "get", "drop", "quit", "inventory", "use", "help", "description"};
   
   cout << "Welcome to Zuul!" << endl;
   cout << endl;
-  char* testD1 = "Description 1";
-  char* testD2 = "Description 2";
-  char* testDir1 = "east";
+  /*char testD1[] = "Description 1";
+  char testD2[] = "Description 2";
+  char testDir1[] = "east";
+  cout << "break -1" << endl;
   Room testRoom1 = Room(testD1);
   Room testRoom2 = Room(testD2);
+  cout << "break 0" << endl;
   testRoom1.setExit(testDir1, &testRoom2);
+  cout << "break 1" << endl;
   cout << testRoom1.getDescription() << endl;
+  cout << "break 2" << endl;
   cout << testRoom1.getExitString() << endl;
+  cout << "break 3" << endl;
+  */
   
   while (gameOver == false) {
     cin.get(input, 80);
@@ -57,6 +65,7 @@ int main() {
 void exeGo(char* word2) {
   cout << "Executed successfully." << endl;
   cout << "Second Word: " << word2 << endl;
+  
  }
 void exeGet(char* word2){}
 void exeDrop(char* word2){}
@@ -71,4 +80,8 @@ void exeHelp(char* word2){
 
 void exeDescription(char* word2){
   //print the description of the current room
+}
+
+void createRooms(vector <Room*> &rooms) {
+  rooms.push_back(new Room("name goes here", "description goes here"));
 }
