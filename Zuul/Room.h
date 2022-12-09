@@ -12,7 +12,6 @@ class Room {
   Room* getExit(char* direction);
   char* getExitString();
   bool hasExit(char* direction);
- protected:
   char* name;
   char* description;
   //Inventory inventory;
