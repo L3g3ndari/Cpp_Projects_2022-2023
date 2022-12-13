@@ -90,6 +90,7 @@ void exeGo(char* word2, Inventory& myInventory, Room*& currentRoom) {
   //cout << "Executed successfully." << endl;
   //cout << "Second Word: " << word2 << endl;
   currentRoom = currentRoom -> getExit(word2);
+  
  }
 void exeGet(char* word2, Inventory& myInventory, Room*& currentRoom){}
 void exeDrop(char* word2, Inventory& myInventory, Room*& currentRoom){}
