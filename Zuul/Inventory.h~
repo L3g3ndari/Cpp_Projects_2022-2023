@@ -1,0 +1,16 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+using namespace std;
+
+class Inventory {
+ public:
+  Inventory();
+  void addItem();
+  void removeItem();
+  char* printInventory();
+  bool hasItem();
+ private:
+  vector<char*> items;
+  
+};

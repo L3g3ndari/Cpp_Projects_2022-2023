@@ -2,20 +2,21 @@
 #include <cstring>
 #include <vector>
 #include "Parser.h"
+#include "Inventory.h"
 #include "Room.h"
 
 using namespace std;
 
 void createRooms(vector <Room*> &rooms);
-typedef void (*ExecuteCommand)(char* word2);//creates a new type called ExecuteCommand that takes a char[]
-void exeGo(char* word2);
-void exeGet(char* word2);
-void exeDrop(char* word2);
-void exeQuit(char* word2);
-void exeInventory(char* word2);
-void exeUse(char* word2);
-void exeHelp(char* word2);
-void exeDescription(char* word2);
+typedef void (*ExecuteCommand)(char* word2, Inventory&);//creates a new type called ExecuteCommand that takes a char[]
+void exeGo(char* word2, Inventory&);
+void exeGet(char* word2, Inventory&);
+void exeDrop(char* word2, Inventory&);
+void exeQuit(char* word2, Inventory&);
+void exeInventory(char* word2, Inventory&);
+void exeUse(char* word2, Inventory&);
+void exeHelp(char* word2, Inventory&);
+void exeDescription(char* word2, Inventory&);
 void displayIntro();
 
 int main() {
@@ -28,6 +29,10 @@ int main() {
   /*for (vector<Room*>::iterator itr = rooms.begin(); itr != rooms.end(); itr++) {
     cout << (*itr) -> name << ", " << (*itr) -> description << endl;
     }*/
+  Inventory myInventory;
+  char testItem1[] = "testItem1";
+  myInventory.addItem(testItem1);
+  myInventory.printInventory();
   Room* currentRoom;
   for (vector<Room*>::iterator itr = rooms.begin(); itr!= rooms.end(); itr++) {
     if(strcmp((*itr) -> name, "Cafeteria") == 0) {
@@ -64,39 +69,47 @@ int main() {
     cout << myParser.getWord2() << endl;
     //parser now contains 2 command words, which can be pulled by main if neccessary using getWord1() and getWord2().
     //check if word1 is a valid command (set up command word bank)
+    bool validCom = false;
     for(int i = 0; i < 8; i++) {//loops through validCommands
-      if (strcmp(myParser.getWord1(), validCommands[i]) == 0) {//if word1 = one of the valid commands
+        if (strcmp(myParser.getWord1(), validCommands[i]) == 0) {//if word1 = one of the valid commands
 	//work on executing it, but also check for word2 (which can be done in the executing step)
-	execute[i](myParser.getWord2());//executes the function that is commanded
-	cout << "bout to break" << endl;
+	execute[i](myParser.getWord2(), myInventory);//executes the function that is commanded
+	validCom = true;
+      }
+      if (validCom == true) {
 	break;
       }
-      else {
-	cout << "That is not a valid command. The valid commands are: go, inventory, get, drop, use, description, quit, help." << endl;
-      }
     }
+    if (validCom == false) {
+      cout << "That is not a valid command. The valid commands are: go, inventory, get, drop, use, description, quit, help." << endl;
+    }    
   }
 }
 
-void exeGo(char* word2) {
+void exeGo(char* word2, Inventory& myInventory) {
   cout << "Executed successfully." << endl;
   cout << "Second Word: " << word2 << endl;
   
  }
-void exeGet(char* word2){}
-void exeDrop(char* word2){}
-void exeQuit(char* word2){}
-void exeInventory(char* word2){}
-void exeUse(char* word2){}
+void exeGet(char* word2, Inventory& myInventory){}
+void exeDrop(char* word2, Inventory& myInventory){}
+void exeQuit(char* word2, Inventory& myInventory){
+  cout << "Good bye." << endl;
+  exit(0);
+}
+void exeInventory(char* word2, Inventory& myInventory){
+  myInventory.printInventory();
+}
+void exeUse(char* word2, Inventory& myInventory){}
 
-void exeHelp(char* word2){
+void exeHelp(char* word2, Inventory& myInventory){
   //print out help message
   cout << endl;
   cout << "You are lost. You are alone." << endl << "Valid Commands: go, inventory, get, drop, use, description, quit, help" << endl << "Navigate the ship, fix it, and get back home." << endl;
   cout << endl;
 }
 
-void exeDescription(char* word2){//doesn't have an arguement. If problems arise, maybe put it back in?
+void exeDescription(char* word2, Inventory& myInventory){//doesn't have an arguement. If problems arise, maybe put it back in?
   //print the description of the current room
   cout << "description" << endl;
 }

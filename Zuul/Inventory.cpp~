@@ -1,0 +1,19 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include "Inventory.h"
+using namespace std;
+
+Inventory::Inventory() {};
+void Inventory::addItem(char* item) {
+  items.push_back(new item);
+}
+void Inventory::removeItem(char* item) {
+  for(vector<char*>::iterator itr = items.begin(); itr != 
+}
+char* Inventory::printInventory() {
+
+}
+bool Inventory::hasItem(){
+
+}
