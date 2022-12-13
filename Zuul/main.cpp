@@ -68,6 +68,11 @@ int main() {
       if (strcmp(myParser.getWord1(), validCommands[i]) == 0) {//if word1 = one of the valid commands
 	//work on executing it, but also check for word2 (which can be done in the executing step)
 	execute[i](myParser.getWord2());//executes the function that is commanded
+	cout << "bout to break" << endl;
+	break;
+      }
+      else {
+	cout << "That is not a valid command. The valid commands are: go, inventory, get, drop, use, description, quit, help." << endl;
       }
     }
   }
@@ -84,13 +89,16 @@ void exeQuit(char* word2){}
 void exeInventory(char* word2){}
 void exeUse(char* word2){}
 
-
 void exeHelp(char* word2){
   //print out help message
+  cout << endl;
+  cout << "You are lost. You are alone." << endl << "Valid Commands: go, inventory, get, drop, use, description, quit, help" << endl << "Navigate the ship, fix it, and get back home." << endl;
+  cout << endl;
 }
 
-void exeDescription(char* word2){
+void exeDescription(char* word2){//doesn't have an arguement. If problems arise, maybe put it back in?
   //print the description of the current room
+  cout << "description" << endl;
 }
 
 
@@ -120,18 +128,49 @@ void createRooms(vector <Room*> &rooms) {
   name = new char[50]; description = new char[500]; strcpy(name, "Corridor 2"); strcpy(description, "You are in a corridor. The lights are dimmer here, and some of the pipes along the walls and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
 
-  name = new char[50]; description = new char[500]; strcpy(name, ""); strcpy(description, "");
+  name = new char[50]; description = new char[500]; strcpy(name, "Reactor"); strcpy(description, "You are in the reactor room. The reactor has been shut down. You might be able to restart it using your engineering skills.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
 
-  name = new char[50]; description = new char[500]; strcpy(name, ""); strcpy(description, "");
+  name = new char[50]; description = new char[500]; strcpy(name, "Security"); strcpy(description, "You are in the security room. The large array of computer screens all display feeds from the security cameras around the ship. You feel a strange sense of loneliness.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
 
-  name = new char[50]; description = new char[500]; strcpy(name, ""); strcpy(description, "");
+  name = new char[50]; description = new char[500]; strcpy(name, "Lower Engine"); strcpy(description, "You are in the upper engine room. The engine’s fuel gauge is getting low. You will need to refill it for the journey home.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
 
-  name = new char[50]; description = new char[500]; strcpy(name, ""); strcpy(description, "");
+  name = new char[50]; description = new char[500]; strcpy(name, "Corridor 3"); strcpy(description, "You are in a corridor. The lights are dimmer here, and some of the pipes along the walls and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
 
-  name = new char[50]; description = new char[500]; strcpy(name, ""); strcpy(description, "");
+  name = new char[50]; description = new char[500]; strcpy(name, "Electrical"); strcpy(description, "You are in the electrical room. Lights blink everywhere, and exposed wires look like coils of colorful snakes. The distributor is not functioning properly. You will need your engineering skills to calibrate it to its optimal settings.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Storage"); strcpy(description, "You are in the storage room. Storage containers are stacked everywhere. It’s hard to move around in some places.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Corridor 5"); strcpy(description, "You are in a corridor. The lights are dimmer here, and some of the pipes along the walls and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Admin"); strcpy(description, "You are in the admin room. The workstations are abandoned. The hologram console glows dimly, casting ominous shadows around the room.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "[Corridor 6"); strcpy(description, "You are in a corridor. The lights are dimmer here, and some of the pipes along the walls and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Communications"); strcpy(description, "You are in the communications room. There are ghastly gouge marks on the walls and desks. But you really, really, want a decent wifi signal for your trip home, so you’ll need to reboot using one of the handheld computers.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Shields"); strcpy(description, "You are in the shield control room. The lights are bright, and there’s the body of one of your dead crewmates lying on the floor. You seem to recall his name was Dallin. There’s a control panel on the wall, but the shields are already primed, so you ignore it.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Corridor 4"); strcpy(description, "You are in a corridor. The lights are dimmer here, and some of the pipes along the walls \
+and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Navigation"); strcpy(description, "You are in the navigation center of the ship. There are a lot of buttons on the dashboard. The deep darkness of space stretches before you in the cockpit’s window. You’ll need to chart the course home, but you can’t do that until you’ve completed all of your other tasks.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "O2"); strcpy(description, "You are in the O2 management room. This room supplies all the oxygen aboard the ship by recycling CO2 and using plants to regenerate O2. There’s still plenty of oxygen in the tanks, and the monitors are outputting stable readings. All air filters look clean enough to operate efficiently; you shouldn’t have to worry about cleaning them again for another 6 months.");
+  rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
+
+  name = new char[50]; description = new char[500]; strcpy(name, "Weapons"); strcpy(description, "You are in the weapons room. Machines whir and beep. One of your crewmates, Jonathan, lies slumped over the controls of the laser cannons.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
 }
