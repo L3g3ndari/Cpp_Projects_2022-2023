@@ -10,7 +10,7 @@ void Parser::parse(char* input) {
 
   int i = 0;
   for(i = 0; i < strlen(input); i++) {
-    if(input[i] != ' ') {
+    if(input[i] != ' ' || input[i] != '\0') {
       word1[i] = input[i];
     }
     else {

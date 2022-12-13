@@ -8,20 +8,19 @@
 using namespace std;
 
 void createRooms(vector <Room*> &rooms);
-typedef void (*ExecuteCommand)(char* word2, Inventory&);//creates a new type called ExecuteCommand that takes a char[]
-void exeGo(char* word2, Inventory&);
-void exeGet(char* word2, Inventory&);
-void exeDrop(char* word2, Inventory&);
-void exeQuit(char* word2, Inventory&);
-void exeInventory(char* word2, Inventory&);
-void exeUse(char* word2, Inventory&);
-void exeHelp(char* word2, Inventory&);
-void exeDescription(char* word2, Inventory&);
+typedef void (*ExecuteCommand)(char* word2, Inventory&, Room*&);//creates a new type called ExecuteCommand that takes a char[]
+void exeGo(char* word2, Inventory&, Room*&);
+void exeGet(char* word2, Inventory&, Room*&);
+void exeDrop(char* word2, Inventory&, Room*&);
+void exeQuit(char* word2, Inventory&, Room*&);
+void exeInventory(char* word2, Inventory&, Room*&);
+void exeUse(char* word2, Inventory&, Room*&);
+void exeHelp(char* word2, Inventory&, Room*&);
+void exeDescription(char* word2, Inventory&, Room*&);
 void displayIntro();
 
 int main() {
   ExecuteCommand execute[8] = {exeGo, exeGet, exeDrop, exeQuit, exeInventory, exeUse, exeHelp, exeDescription};//creates an array of functions that take a char[], under the typing of ExecuteCommand
-  char input[80];
   bool gameOver = false;
   Parser myParser = Parser();
   vector <Room*> rooms;
@@ -35,7 +34,7 @@ int main() {
   myInventory.printInventory();
   Room* currentRoom;
   for (vector<Room*>::iterator itr = rooms.begin(); itr!= rooms.end(); itr++) {
-    if(strcmp((*itr) -> name, "Cafeteria") == 0) {
+    if(strcmp((*itr) -> getName(), "Cafeteria") == 0) {
       currentRoom = *itr;
     }
   }
@@ -61,6 +60,7 @@ int main() {
   */
   
   while (gameOver == false) {
+    char input[80];
     cin.get(input, 80);
     cin.clear();
     cin.ignore(80, '\n');
@@ -73,7 +73,7 @@ int main() {
     for(int i = 0; i < 8; i++) {//loops through validCommands
         if (strcmp(myParser.getWord1(), validCommands[i]) == 0) {//if word1 = one of the valid commands
 	//work on executing it, but also check for word2 (which can be done in the executing step)
-	execute[i](myParser.getWord2(), myInventory);//executes the function that is commanded
+	execute[i](myParser.getWord2(), myInventory, currentRoom);//executes the function that is commanded
 	validCom = true;
       }
       if (validCom == true) {
@@ -86,32 +86,32 @@ int main() {
   }
 }
 
-void exeGo(char* word2, Inventory& myInventory) {
-  cout << "Executed successfully." << endl;
-  cout << "Second Word: " << word2 << endl;
-  
+void exeGo(char* word2, Inventory& myInventory, Room*& currentRoom) {
+  //cout << "Executed successfully." << endl;
+  //cout << "Second Word: " << word2 << endl;
+  currentRoom = currentRoom -> getExit(word2);
  }
-void exeGet(char* word2, Inventory& myInventory){}
-void exeDrop(char* word2, Inventory& myInventory){}
-void exeQuit(char* word2, Inventory& myInventory){
+void exeGet(char* word2, Inventory& myInventory, Room*& currentRoom){}
+void exeDrop(char* word2, Inventory& myInventory, Room*& currentRoom){}
+void exeQuit(char* word2, Inventory& myInventory, Room*& currentRoom){
   cout << "Good bye." << endl;
   exit(0);
 }
-void exeInventory(char* word2, Inventory& myInventory){
+void exeInventory(char* word2, Inventory& myInventory, Room*& currentRoom){
   myInventory.printInventory();
 }
-void exeUse(char* word2, Inventory& myInventory){}
+void exeUse(char* word2, Inventory& myInventory, Room*& currentRoom){}
 
-void exeHelp(char* word2, Inventory& myInventory){
+void exeHelp(char* word2, Inventory& myInventory, Room*& currentRoom){
   //print out help message
   cout << endl;
   cout << "You are lost. You are alone." << endl << "Valid Commands: go, inventory, get, drop, use, description, quit, help" << endl << "Navigate the ship, fix it, and get back home." << endl;
   cout << endl;
 }
 
-void exeDescription(char* word2, Inventory& myInventory){//doesn't have an arguement. If problems arise, maybe put it back in?
+void exeDescription(char* word2, Inventory& myInventory, Room*& currentRoom){//doesn't have an arguement. If problems arise, maybe put it back in?
   //print the description of the current room
-  cout << "description" << endl;
+  cout << currentRoom -> getDescription() << endl;
 }
 
 
