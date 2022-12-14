@@ -9,16 +9,17 @@ void Parser::parse(char* input) {
   word2 = new char[20];
 
   int i = 0;
+  cout << "Input:" << input << endl;
   for(i = 0; i < strlen(input); i++) {
-    if(input[i] != ' ' || input[i] != '\0') {
+    if(input[i] != ' ' && input[i] != '\0') {
       word1[i] = input[i];
     }
     else {
-      word1[i] = '\0';
       i++;
       break;
     }
   }
+  word1[i] = '\0';
   int j = 0;
   for(j=0; j < strlen(input)-i; j++) {
     word2[j] = input[j+i];

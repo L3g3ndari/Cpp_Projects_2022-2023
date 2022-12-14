@@ -22,8 +22,9 @@ void Inventory::removeItem(char* item) {
 void Inventory::printInventory() {
   cout << "Inventory: ";
   for(vector<char*>::iterator itr = items.begin(); itr != items.end(); itr++) {
-    cout << *itr << ", " << endl;
+    cout << *itr << ", ";
   }
+  cout << endl;
 }
 bool Inventory::hasItem(char* item){
   for(vector<char*>::iterator itr = items.begin(); itr != items.end(); itr++) {

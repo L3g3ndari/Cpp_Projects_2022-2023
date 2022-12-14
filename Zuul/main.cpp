@@ -29,8 +29,12 @@ int main() {
     cout << (*itr) -> name << ", " << (*itr) -> description << endl;
     }*/
   Inventory myInventory;
-  char testItem1[] = "testItem1";
-  myInventory.addItem(testItem1);
+  //char testItem1[] = "testItem1";
+  char engineeringSkills[] = "Engineering Skills";
+  char idCard[] = "ID Card";
+  //myInventory.addItem(testItem1);
+  myInventory.addItem(engineeringSkills);
+  myInventory.addItem(idCard);
   myInventory.printInventory();
   Room* currentRoom;
   for (vector<Room*>::iterator itr = rooms.begin(); itr!= rooms.end(); itr++) {
@@ -112,7 +116,7 @@ void exeHelp(char* word2, Inventory& myInventory, Room*& currentRoom){
 
 void exeDescription(char* word2, Inventory& myInventory, Room*& currentRoom){//doesn't have an arguement. If problems arise, maybe put it back in?
   //print the description of the current room
-  cout << currentRoom -> getDescription() << endl;
+  cout << currentRoom -> getDescription() << endl; //<< endl << currentRoom -> getExitString() << endl;
 }
 
 

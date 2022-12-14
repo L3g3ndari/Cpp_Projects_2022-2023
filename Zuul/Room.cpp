@@ -25,7 +25,8 @@ Room* Room::getExit(char* direction) {
 }
 char* Room::getExitString() {
   char* returnString= new char[80];
-  strcpy(returnString, "Exit: ");
+  strcpy(returnString, "Exits: ");
+  strcpy(returnString, "testing");
   return returnString;
 }
 bool Room::hasExit(char* direction) {
