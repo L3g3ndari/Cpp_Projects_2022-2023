@@ -15,11 +15,12 @@ void Parser::parse(char* input) {
       word1[i] = input[i];
     }
     else {
-      i++;
+      //i++;
       break;
     }
   }
   word1[i] = '\0';
+  i++;
   int j = 0;
   for(j=0; j < strlen(input)-i; j++) {
     word2[j] = input[j+i];

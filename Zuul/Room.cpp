@@ -18,7 +18,9 @@ char* Room::getDescription() {
   return description;
 }
 void Room::setExit(char* direction, Room* room) {
-  exits.insert(pair<char*, Room*>(direction, room));
+  char* directionStr = new char[10];
+  strcpy (directionStr, direction);
+  exits.insert(pair<char*, Room*>(directionStr, room));
 }
 Room* Room::getExit(char* direction) {
   return exits[direction];
@@ -30,5 +32,8 @@ char* Room::getExitString() {
   return returnString;
 }
 bool Room::hasExit(char* direction) {
-  return true;
+  if(exits[direction] != NULL) {
+    return true;
+  }
+  return false;
 }
