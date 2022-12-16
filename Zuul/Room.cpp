@@ -2,7 +2,6 @@
 #include <cstring>
 #include <map>
 #include "Room.h"
-//#include "Inventory.h"
 using namespace std;
 
 Room::Room(char* Name, char* Description) {
@@ -17,12 +16,12 @@ char* Room::getName() {
 char* Room::getDescription() {
   return description;
 }
-void Room::setExit(char* direction, Room* room) {
-  char* directionStr = new char[10];
-  strcpy (directionStr, direction);
-  exits.insert(pair<char*, Room*>(directionStr, room));
+void Room::setExit(char direction, Room* room) {
+  //char* directionStr = new char[10];
+  //strcpy (directionStr, direction);
+  exits.insert(pair<char, Room*>(direction, room));
 }
-Room* Room::getExit(char* direction) {
+Room* Room::getExit(char direction) {
   return exits[direction];
 }
 char* Room::getExitString() {
@@ -31,7 +30,7 @@ char* Room::getExitString() {
   strcpy(returnString, "testing");
   return returnString;
 }
-bool Room::hasExit(char* direction) {
+bool Room::hasExit(char direction) {
   if(exits[direction] != NULL) {
     return true;
   }

@@ -7,7 +7,8 @@ Parser::Parser() {};
 void Parser::parse(char* input) {
   word1 = new char[20];
   word2 = new char[20];
-
+  //strcpy (word2, "1");
+  
   int i = 0;
   cout << "Input:" << input << endl;
   for(i = 0; i < strlen(input); i++) {
@@ -20,12 +21,17 @@ void Parser::parse(char* input) {
     }
   }
   word1[i] = '\0';
-  i++;
+  if (input[i] == '\0') {
+    strcpy (word2, "1");
+  }
+  else {
+i++;
   int j = 0;
   for(j=0; j < strlen(input)-i; j++) {
     word2[j] = input[j+i];
   }
   word2[j] = '\0';
+  }
 }
 char* Parser::getWord1() {
   return word1;

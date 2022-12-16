@@ -1,7 +1,10 @@
 #include <iostream>
 #include <cstring>
 #include <map>
-//#include "Inventory.h"
+#ifndef n
+#define n
+#include "Inventory.h"
+#endif
 using namespace std;
 
 class Room {
@@ -9,13 +12,14 @@ class Room {
   Room(char* Name, char* Description);
   char* getName();
   char* getDescription();
-  void setExit(char* direction, Room* room);
-  Room* getExit(char* direction);
+  void setExit(char direction, Room* room);
+  Room* getExit(char direction);
   char* getExitString();
-  bool hasExit(char* direction);
+  bool hasExit(char direction);
+  Inventory roomInventory;
 private:
   char* name;
   char* description;
   //Inventory inventory;
-  map<char*, Room*> exits;
+  map<char, Room*> exits;
 };

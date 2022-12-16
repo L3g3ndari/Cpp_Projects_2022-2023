@@ -2,7 +2,10 @@
 #include <cstring>
 #include <vector>
 #include "Parser.h"
+#ifndef n
+#define n
 #include "Inventory.h"
+#endif
 #include "Room.h"
 
 using namespace std;
@@ -24,10 +27,10 @@ int main() {
   bool gameOver = false;
   Parser myParser = Parser();
   vector <Room*> rooms;
-  map<char*, Room*> roomMap;
+  //map<char*, Room*> roomMap;
   //createRooms(rooms);
   for(int i = 0; i < rooms.size(); i++) {
-    roomMap.insert(pair<char*, Room*>(rooms[i] -> getName(), rooms[i]));
+    //    roomMap.insert(pair<char*, Room*>(rooms[i] -> getName(), rooms[i]));
   }
 
   //CREATES ROOMS
@@ -42,7 +45,7 @@ int main() {
 
   name = new char[50]; description = new char[500]; strcpy(name, "Corridor_1"); strcpy(description, "You are in a corridor. The lights are dimmer here, and some of the pipes along the walls and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
   Room* Corridor1 = (new Room(name, description)); delete[] name; delete[] description;
-
+  /*
   name = new char[50]; description = new char[500]; strcpy(name, "Upper_Engine"); strcpy(description, "You are in the upper engine room. The engine is slightly damaged. You will need some tools to repair it.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
 
@@ -97,29 +100,31 @@ and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
 
   name = new char[50]; description = new char[500]; strcpy(name, "Weapons"); strcpy(description, "You are in the weapons room. Machines whir and beep. One of your crewmates, Jonathan, lies slumped over the controls of the laser cannons.");
   rooms.push_back(new Room(name, description)); delete[] name; delete[] description;
-
+*/
   //Set all my exits in main cuz I'm like Sam
-  char* West = new char[10];
-  strcpy(West, "west");
-  Cafeteria -> setExit(West, Corridor1);
+  
+  Cafeteria -> setExit('w', Corridor1);
   
   /*for (vector<Room*>::iterator itr = rooms.begin(); itr != rooms.end(); itr++) {
     cout << (*itr) -> name << ", " << (*itr) -> description << endl;
     }*/
   Inventory myInventory;
-  //char testItem1[] = "testItem1";
+  char testItem1[] = "testItem1";
   char engineeringSkills[] = "Engineering Skills";
   char idCard[] = "ID Card";
   //myInventory.addItem(testItem1);
   myInventory.addItem(engineeringSkills);
   myInventory.addItem(idCard);
   myInventory.printInventory();
+  Cafeteria -> roomInventory.addItem(testItem1);
+  Cafeteria -> roomInventory.printInventory();
   Room* currentRoom;
-  for (vector<Room*>::iterator itr = rooms.begin(); itr!= rooms.end(); itr++) {
+  currentRoom = Cafeteria;
+  /*for (vector<Room*>::iterator itr = rooms.begin(); itr!= rooms.end(); itr++) {
     if(strcmp((*itr) -> getName(), "Cafeteria") == 0) {
       currentRoom = *itr;
     }
-  }
+    }*/
 
   char validCommands[8][12] = {"go", "get", "drop", "quit", "inventory", "use", "help", "description"};
   
@@ -142,6 +147,8 @@ and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
   */
   
   while (gameOver == false) {
+    cout << endl;
+    cout << currentRoom -> getDescription() << endl;
     char input[80];
     cin.get(input, 80);
     cin.clear();
@@ -155,7 +162,7 @@ and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
     for(int i = 0; i < 8; i++) {//loops through validCommands
         if (strcmp(myParser.getWord1(), validCommands[i]) == 0) {//if word1 = one of the valid commands
 	//work on executing it, but also check for word2 (which can be done in the executing step)
-	execute[i](myParser.getWord2(), myInventory, currentRoom);//executes the function that is commanded
+	  execute[i](myParser.getWord2(), myInventory, currentRoom);//executes the function that is commanded
 	validCom = true;
       }
       if (validCom == true) {
@@ -169,10 +176,12 @@ and ceiling gurgle or hiss. Lights blink eerily on nearby control panels.");
 }
 
 void exeGo(char* word2, Inventory& myInventory, Room*& currentRoom) {
-  //cout << "Executed successfully." << endl;
-  //cout << "Second Word: " << word2 << endl;
-  if (currentRoom -> hasExit(word2)) {
-    currentRoom = currentRoom -> getExit(word2);
+  cout << "Executed successfully." << endl;
+  cout << "Second Word: " << word2 << endl;
+  char directionMod = word2[0];
+  if (currentRoom -> hasExit(directionMod)) {
+    currentRoom = currentRoom -> getExit(directionMod);
+    //cout << currentRoom -> getDescription() << endl;
   }
   else {
     cout << "There is no exit in that direction." << endl;
@@ -185,6 +194,7 @@ void exeQuit(char* word2, Inventory& myInventory, Room*& currentRoom){
   exit(0);
 }
 void exeInventory(char* word2, Inventory& myInventory, Room*& currentRoom){
+  cout << "yo" << endl;
   myInventory.printInventory();
 }
 void exeUse(char* word2, Inventory& myInventory, Room*& currentRoom){}

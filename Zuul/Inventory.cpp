@@ -20,7 +20,7 @@ void Inventory::removeItem(char* item) {
   }
 }
 void Inventory::printInventory() {
-  cout << "Inventory: ";
+  cout << "Items: ";
   for(vector<char*>::iterator itr = items.begin(); itr != items.end(); itr++) {
     cout << *itr << ", ";
   }
