@@ -10,7 +10,7 @@ void Parser::parse(char* input) {
   //strcpy (word2, "1");
   
   int i = 0;
-  cout << "Input:" << input << endl;
+  //cout << "Input:" << input << endl;
   for(i = 0; i < strlen(input); i++) {
     if(input[i] != ' ' && input[i] != '\0') {
       word1[i] = input[i];
@@ -39,4 +39,3 @@ char* Parser::getWord1() {
 char* Parser::getWord2() {
   return word2;
 }
-
