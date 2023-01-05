@@ -1,16 +1,23 @@
 #include <iostream>
 #include "Node.h"
+#ifndef STUDENT
+#define STUDENT
 #include "Student.h"
+#endif
 
 using namespace std;
 
-Node::Node(Student pupil) {
+Node::Node(Student* pupil) {
   student = pupil;
   next = NULL;
 }
 
-Student Node::getStudent() {
-  return student;
+Node::~Node() {
+  delete student;
+}
+
+Student Node::getStudent() {//returns the "value" which is the student class
+  return (*student);
 }
 
 Node* Node::getNext() {

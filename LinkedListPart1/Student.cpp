@@ -14,11 +14,16 @@ Student::Student(const char *firstName, const char *LastName, int idNum, float g
   GPA = gpa;
 }
 
+Student::~Student() {
+  delete[] name;
+  delete[] lastName;
+}
+
 void Student::printInfo() {
   cout << "Student Info: " << endl;
   cout << "Name: " << name << " " << lastName << endl;
   cout << "ID Number: " << id << endl;
-  cout << "GPA: " << floor((GPA*100)/100) << endl;
+  cout << "GPA: " << floor((GPA*100))/100 << endl;
 }
 
 float Student::getGPA() {
