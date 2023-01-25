@@ -159,7 +159,10 @@ void deleteFunction(Node* &head) {
 	return;
       }
       //put normy code here
-      
+      getCurrent(head, targetID-1) -> setNext(targetNode -> getNext());
+      delete targetNode;
+      cout << endl << "Deletion successful." << endl;
+      return;
     }
     else {
       return;
