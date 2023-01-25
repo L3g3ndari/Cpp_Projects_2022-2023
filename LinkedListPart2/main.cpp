@@ -137,9 +137,17 @@ void addFunction(Node*& head) {
 void deleteFunction(Node* head) {
   if (head != NULL) {
     cout << "ID: ";
-    int target;
-    cin >> target;
-    //find if target matches any nodes in linked list and delete
+    int targetID;
+    cin >> targetID;
+    Node* targetNode = getPrevious(head, targetID);
+    //cout << "Address of targetNode: " << targetNode << endl;
+    //cout << "targetNode: " << targetNode -> getStudent() -> getID() << endl;
+    if (targetNode == NULL || targetNode == NULL || targetNode -> getStudent() -> getID() != targetID) {//if it is not the node we want or if the node doesn't exist...
+      cout << "Student not found." << endl;
+      return;
+    }
+    cout << "This is the student we found: " << endl;
+    targetNode -> getStudent() -> printInfo();
   }
 }
 
