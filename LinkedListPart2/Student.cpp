@@ -29,3 +29,16 @@ void Student::printInfo() {
 float Student::getGPA() {
   return GPA;
 }
+
+char* Student::getName() {
+  char* fullName = new char[strlen(name) + strlen(lastName) + 2];
+  strcpy(fullName, name);
+  strcpy(fullName + strlen(name), " ");
+  strcpy(fullName +strlen(name) + 1, lastName);
+  return fullName;
+  //don't forget to delete the char* when using this function
+}
+
+int Student::getID() {
+  return id;
+}
