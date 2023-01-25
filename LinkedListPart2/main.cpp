@@ -20,9 +20,9 @@ using namespace std;
 
 void printFunction(Node*);
 void addFunction(Node*&);
-void deleteFunction(Node*);
+void deleteFunction(Node*&);
 void averageFunction(Node*);
-Node* getPrevious(Node*, int);
+Node* getCurrent(Node*, int);
 
 int main() {
   cout << "Welcome to the Student List Program" << endl;
@@ -102,7 +102,7 @@ void addFunction(Node*& head) {
   Node* secondNode = new Node(new Student(firstName, lastName, idNum, gpa));
   cout << "secondNode: " << secondNode << endl;
   //Recurse through all the nodes
-  Node* firstNode = getPrevious(head, idNum);
+  Node* firstNode = getCurrent(head, idNum);
   cout << "firstNode: " << firstNode << endl;
   Node* thirdNode = NULL;
   if (head == NULL) {//adding first Node
@@ -134,12 +134,12 @@ void addFunction(Node*& head) {
   cout << firstName << " " << lastName << " added." << endl;
 }
 
-void deleteFunction(Node* head) {
+void deleteFunction(Node* &head) {
   if (head != NULL) {
     cout << "ID: ";
     int targetID;
     cin >> targetID;
-    Node* targetNode = getPrevious(head, targetID);
+    Node* targetNode = getCurrent(head, targetID);
     //cout << "Address of targetNode: " << targetNode << endl;
     //cout << "targetNode: " << targetNode -> getStudent() -> getID() << endl;
     if (targetNode == NULL || targetNode == NULL || targetNode -> getStudent() -> getID() != targetID) {//if it is not the node we want or if the node doesn't exist...
@@ -148,6 +148,22 @@ void deleteFunction(Node* head) {
     }
     cout << "This is the student we found: " << endl;
     targetNode -> getStudent() -> printInfo();
+    cout << endl << "Would you like to delete this student? (y/n)" << endl;
+    char input[2];
+    cin >> input;
+    if (input[0] == 'y') {//delete student
+      if (targetNode == head) {//if we want to delete head (exception case)
+     	head = targetNode -> getNext();
+	delete targetNode;
+	cout << endl << "Deletion successful." << endl;
+	return;
+      }
+      //put normy code here
+      
+    }
+    else {
+      return;
+    }
   }
 }
 
@@ -156,14 +172,14 @@ void averageFunction(Node* head) {
   
 }
 
-Node* getPrevious(Node* targetNode, int id) {//targetNode stores the nodes we are recursing through. id stores the id of the node we want to compare.
+Node* getCurrent(Node* targetNode, int id) {//targetNode stores the nodes we are recursing through. id stores the id of the node we want to compare.
   if(targetNode == NULL) {
     return NULL;
   }
   else if (targetNode -> getStudent() -> getID() > id) {
     return NULL;//signaling that this is the one we want
   }
-  Node* next = getPrevious(targetNode -> getNext(), id);//goes to the next node
+  Node* next = getCurrent(targetNode -> getNext(), id);//goes to the next node
   if (next == NULL) {
     return targetNode;
   }
