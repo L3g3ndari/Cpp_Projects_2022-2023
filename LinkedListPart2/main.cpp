@@ -83,7 +83,7 @@ void printFunction(Node* head) {
   printFunction(head -> getNext());
 }
 
-void addFunction(Node*& head) {
+void addFunction(Node*& head) {//where is the recursion in this method?
   char firstName[64];
   char lastName[64];
   int idNum;
@@ -111,7 +111,7 @@ void addFunction(Node*& head) {
     firstNode -> setNext(secondNode);
     secondNode -> setNext(thirdNode);
   }
-  else if(firstNode == NULL) {//NEXT TIME, WORK THROUGH THIS EDGE CASE
+  else if(firstNode == NULL) {//NEXT TIME, WORK THROUGH THIS EDGE CASE, getting seg fault for some reason
     //store head
     //set head to second
     //set head's next to old head
@@ -132,11 +132,17 @@ void addFunction(Node*& head) {
 }
 
 void deleteFunction(Node* head) {
-
+  if (head != NULL) {
+    cout << "ID: ";
+    int target;
+    cin >> target;
+    //find if target matches any nodes in linked list and delete
+  }
 }
 
 void averageFunction(Node* head) {
-
+  int average;
+  
 }
 
 Node* getPrevious(Node* targetNode, int id) {//targetNode stores the nodes we are recursing through. id stores the id of the node we want to compare.
