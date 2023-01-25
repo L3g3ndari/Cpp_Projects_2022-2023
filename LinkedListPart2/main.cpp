@@ -83,7 +83,7 @@ void printFunction(Node* head) {
   printFunction(head -> getNext());
 }
 
-void addFunction(Node*& head) {//where is the recursion in this method?
+void addFunction(Node*& head) {
   char firstName[64];
   char lastName[64];
   int idNum;
@@ -105,23 +105,26 @@ void addFunction(Node*& head) {//where is the recursion in this method?
   Node* firstNode = getPrevious(head, idNum);
   cout << "firstNode: " << firstNode << endl;
   Node* thirdNode = NULL;
-  if(head != NULL) {
-    thirdNode = firstNode -> getNext();
-    cout << "thirdNode: " << thirdNode << endl;
-    firstNode -> setNext(secondNode);
-    secondNode -> setNext(thirdNode);
-  }
-  else if(firstNode == NULL) {//NEXT TIME, WORK THROUGH THIS EDGE CASE, getting seg fault for some reason
-    //store head
-    //set head to second
-    //set head's next to old head
-    thirdNode = firstNode -> getNext();
-    cout << "thirdNode: " << thirdNode << endl;
-    firstNode -> setNext(secondNode);
-    secondNode -> setNext(thirdNode);
-  }
-  else {
+  if (head == NULL) {//adding first Node
+    cout << "if statement!" << endl;
     head = secondNode;
+  }
+  else if (firstNode == NULL) {//adding node before head
+    cout << "hit the first else if statement" << endl;
+    Node* oldHead = head;//store head
+    head = secondNode;//set head to second
+    head -> setNext(oldHead);//set head's next to old head
+    //thirdNode = firstNode -> getNext();
+    cout << "thirdNode: " << thirdNode << endl;
+    //firstNode -> setNext(secondNode);
+    //secondNode -> setNext(thirdNode);
+  }
+  else if(head != NULL) {//adding node after head
+    cout << "hit the second else if statement" << endl;
+    thirdNode = firstNode -> getNext();
+    cout << "thirdNode: " << thirdNode << endl;
+    firstNode -> setNext(secondNode);
+    secondNode -> setNext(thirdNode);
   }
   //Check for IDs that are less than the one we want to add (1st, 2nd, 3rd; 2nd is the one we want to add)
   //Store the address of the 3rd node
