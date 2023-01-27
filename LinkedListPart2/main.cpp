@@ -4,8 +4,8 @@ Nathan Wu
 C++ Programming
 Mr. Galbraith
 Period 5
-Date Completed: 01/05/2023
-Outside Sources Used:
+Date Completed: 01/27/2023
+Outside Sources Used: https://java2blog.com/round-to-2-decimal-places-cpp/#:~:text=We%20can%20use%20the%20printf,2f%20format%20specifier. : code for averageFunction.
  */
 
 #include <iostream>
@@ -22,6 +22,7 @@ void printFunction(Node*);
 void addFunction(Node*&);
 void deleteFunction(Node*&);
 void averageFunction(Node*);
+void averageFunction(Node*, double, int);
 Node* getCurrent(Node*, int);
 
 int main() {
@@ -75,12 +76,12 @@ int main() {
 }
 
 void printFunction(Node* head) {
-  if(head == NULL) {
+  if(head == NULL) {//checks if the linked list is empty
     return;
   }
   head -> getStudent() -> printInfo();
   cout << endl;
-  printFunction(head -> getNext());
+  printFunction(head -> getNext());//calls itself on the next node if it is not NULL
 }
 
 void addFunction(Node*& head) {
@@ -100,29 +101,29 @@ void addFunction(Node*& head) {
   cin >> gpa;
   //Add a new node with this information
   Node* secondNode = new Node(new Student(firstName, lastName, idNum, gpa));
-  cout << "secondNode: " << secondNode << endl;
+  //cout << "secondNode: " << secondNode << endl;
   //Recurse through all the nodes
   Node* firstNode = getCurrent(head, idNum);
-  cout << "firstNode: " << firstNode << endl;
+  //cout << "firstNode: " << firstNode << endl;
   Node* thirdNode = NULL;
   if (head == NULL) {//adding first Node
-    cout << "if statement!" << endl;
+    //cout << "if statement!" << endl;
     head = secondNode;
   }
   else if (firstNode == NULL) {//adding node before head
-    cout << "hit the first else if statement" << endl;
+    //cout << "hit the first else if statement" << endl;
     Node* oldHead = head;//store head
     head = secondNode;//set head to second
     head -> setNext(oldHead);//set head's next to old head
     //thirdNode = firstNode -> getNext();
-    cout << "thirdNode: " << thirdNode << endl;
+    //cout << "thirdNode: " << thirdNode << endl;
     //firstNode -> setNext(secondNode);
     //secondNode -> setNext(thirdNode);
   }
   else if(head != NULL) {//adding node after head
-    cout << "hit the second else if statement" << endl;
+    //cout << "hit the second else if statement" << endl;
     thirdNode = firstNode -> getNext();
-    cout << "thirdNode: " << thirdNode << endl;
+    //cout << "thirdNode: " << thirdNode << endl;
     firstNode -> setNext(secondNode);
     secondNode -> setNext(thirdNode);
   }
@@ -158,7 +159,7 @@ void deleteFunction(Node* &head) {
 	cout << endl << "Deletion successful." << endl;
 	return;
       }
-      //put normy code here
+      //normal scenario
       getCurrent(head, targetID-1) -> setNext(targetNode -> getNext());
       delete targetNode;
       cout << endl << "Deletion successful." << endl;
@@ -171,8 +172,22 @@ void deleteFunction(Node* &head) {
 }
 
 void averageFunction(Node* head) {
-  int average;
-  
+  if (head == NULL) {
+    cout << "No students in database." << endl;
+    return;
+  }
+  averageFunction(head -> getNext(), head -> getStudent() -> getGPA(), 1);    
+}
+
+void averageFunction(Node* head, double sum, int count) {
+  if (head == NULL) {
+    //cout << "Sum: " << sum << endl;
+    //cout << "Count: " << count << endl;
+    cout << "Average GPA: ";
+    printf("%.2f\n", sum/count);
+    return;
+  }
+  averageFunction(head -> getNext(), head -> getStudent() -> getGPA() + sum, count+1);
 }
 
 Node* getCurrent(Node* targetNode, int id) {//targetNode stores the nodes we are recursing through. id stores the id of the node we want to compare.
