@@ -1,3 +1,7 @@
+/*
+Outside Sources Used: Used https://www.geeksforgeeks.org/c-program-hashing-chaining/ to help understand hash tables
+*/
+
 #include <iostream>
 #include <cstring>
 //#ifndef STUDENT
