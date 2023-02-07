@@ -11,6 +11,7 @@ Outside Sources Used: Used https://www.geeksforgeeks.org/c-program-hashing-chain
 
 using namespace std;
 
+void generateRandomStudent(int)//figure out what this function will return
 void printFunction(Node*);
 void addFunction(Node*&);
 void deleteFunction(Node*&);
@@ -21,6 +22,9 @@ int main() {
   cout << "Available Commands: \"PRINT,\" \"ADD,\" \"DELETE,\" or \"QUIT\"" << endl;
 
   int tableSize = 100;
+  int ranStudentQuantity = 100;
+  generateRandomStudent(ranStudentQuantity);
+  cout << (rand() % 4) << endl;
   
    while(true) {//will continually ask for new command inputs
     char input[10];
@@ -28,7 +32,7 @@ int main() {
     cin.clear();
     cin.ignore(10, '\n');
 
-    if (input[0] == 'P' &&//I know that I could have used strcmp, but don't hate me, I just used my StudentList code from the beginning of the year.
+    if (input[0] == 'P' &&//I know that I could/should have used strcmp, but don't hate me, I just used my StudentList code from the beginning of the year.
         input[1] == 'R' &&
         input[2] == 'I' &&
         input[3] == 'N' &&
@@ -88,4 +92,13 @@ void addFunction(Node*& head) {
 
 void deleteFunction(Node* &head) {
 
+}
+
+void generateRandomStudent(int studentQuantity) {
+  char* randomFirstName;
+  char* randomLastName;
+  int incrementedID;
+  float randomGPA;
+  srand(time(0));
+  randomGPA = (rand() % 4);
 }

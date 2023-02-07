@@ -13,10 +13,9 @@ class HashTable {
   void print();
  private:
   int tableSize;
-  list<int> *table;
+  //create array of Node*
   struct tableEntry {
     int key;
     Node* node;
-  };
-  
-}
+  };  
+};
