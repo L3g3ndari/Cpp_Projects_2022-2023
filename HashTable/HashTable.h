@@ -1,21 +1,24 @@
+#ifndef HASH
+#define HASH
 #include <iostream>
-#ifdef NODE
-#define NODE
 #include "Node.h"
-#endif
 
 using namespace std;
 
 class HashTable {
  public:
-  void insert(Node* student, int key);
-  void remove(int key);
+  HashTable();
+  int hashFunction(int ID);
+  void rehash();
+  void insert(Node* student);
+  void remove(int ID);
   void print();
  private:
   int tableSize;
-  //create array of Node*
   struct tableEntry {
     int key;
-    Node* node;
-  };  
+    Node* head;
+  };
+  tableEntry* slots;
 };
+#endif

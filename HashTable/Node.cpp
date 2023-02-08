@@ -1,9 +1,6 @@
 #include <iostream>
 #include "Node.h"
-#ifndef STUDENT
-#define STUDENT
 #include "Student.h"
-#endif
 
 using namespace std;
 
@@ -27,3 +24,4 @@ Node* Node::getNext() {
 void Node::setNext(Node* newnext) {
   next = newnext;
 }
+

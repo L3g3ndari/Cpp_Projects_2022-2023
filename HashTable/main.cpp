@@ -1,32 +1,36 @@
 /*
+Nathan Wu
+Hash Table Student List
+C++ Programming
+Mr. Galbraith
+Project Completed: 
 Outside Sources Used: Used https://www.geeksforgeeks.org/c-program-hashing-chaining/ to help understand hash tables
 */
 
 #include <iostream>
+#include <cmath>
 #include <cstring>
 //#ifndef STUDENT
 //#define STUDENT
 #include "Student.h"
+#include "Node.h"
 //#endif
 
 using namespace std;
 
-void generateRandomStudent(int)//figure out what this function will return
-void printFunction(Node*);
-void addFunction(Node*&);
-void deleteFunction(Node*&);
-Node* getCurrent(Node*, int);
+void addRandomStudent(int randomStudentID);
+void printFunction();
+void addFunction();
+void deleteFunction();
 
 int main() {
   cout << "Welcome to the Student Database, brought to you by hash tables" << endl;
-  cout << "Available Commands: \"PRINT,\" \"ADD,\" \"DELETE,\" or \"QUIT\"" << endl;
+  cout << "Available Commands: \"PRINT,\" \"ADD,\" \"DELETE,\" \"RANDOM,\" or \"QUIT\"" << endl;
 
-  int tableSize = 100;
-  int ranStudentQuantity = 100;
-  generateRandomStudent(ranStudentQuantity);
-  cout << (rand() % 4) << endl;
+  int randomStudentID = 1;
+  addRandomStudent(randomStudentID);
   
-   while(true) {//will continually ask for new command inputs
+    while(true) {//will continually ask for new command inputs
     char input[10];
     cin >> input;
     cin.clear();
@@ -37,13 +41,13 @@ int main() {
         input[2] == 'I' &&
         input[3] == 'N' &&
         input[4] == 'T') {//if the user types in "PRINT," the printFunction method will be run
-      printFunction(head);
+      //printFunction();
     }
 
     if (input[0] == 'A' &&
         input[1] == 'D' &&
         input[2] == 'D') {//if the user types in "ADD," the addFunction method will be run
-      addFunction(head);
+      //addFunction();
     }
 
     if (input[0] == 'D' &&
@@ -52,7 +56,18 @@ int main() {
         input[3] == 'E' &&
         input[4] == 'T' &&
         input[5] == 'E') {//if the user types in "DELETE," the deleteFunction method will be run
-      deleteFunction(head);
+      //deleteFunction();
+    }
+
+    if (strcmp(input, "RANDOM") == 0) {//adds a random student to the hash table
+      cout << "How many students do you want to generate?" << endl;
+      int num;
+      cin >> num;
+      cin.clear();
+      cin.ignore(10, '\n');
+      for (int i = 0; i != num + 1; i++) {
+	addRandomStudent(randomStudentID);
+      }
     }
 
     if (input[0] == 'Q' &&
@@ -66,11 +81,11 @@ int main() {
   }
 }
 
-void printFunction(Node* head) {
+void printFunction() {
 
 }
 
-void addFunction(Node*& head) {
+void addFunction() {
   char firstName[64];
   char lastName[64];
   int idNum;
@@ -88,17 +103,26 @@ void addFunction(Node*& head) {
   //Add a new node with this information to the hash table
   cout << endl;
   cout << firstName << " " << lastName << " added." << endl;
+  
 }
 
-void deleteFunction(Node* &head) {
-
+void deleteFunction() {
+  cout << "ID: ";
+  int targetID;
+  cin >> targetID;
+  //traverse hash table and check each ID. Compare with targetID.
+  //If there is a match, call hashTable's delete function on that student.
 }
 
-void generateRandomStudent(int studentQuantity) {
+void addRandomStudent(int randomID) {
   char* randomFirstName;
   char* randomLastName;
   int incrementedID;
   float randomGPA;
   srand(time(0));
-  randomGPA = (rand() % 4);
+  int randomInt = (rand() % 4);
+  float randomFloat = ceil(100 * ((float)(rand()) / (float)(RAND_MAX)))/100;
+  randomGPA = randomInt + randomFloat;
+  cout << randomGPA << endl;
+  cout << randomID;
 }
