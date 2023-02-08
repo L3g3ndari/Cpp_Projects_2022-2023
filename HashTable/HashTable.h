@@ -15,6 +15,7 @@ class HashTable {
   void print();
  private:
   int tableSize;
+  int slotsUsed;
   struct tableEntry {
     int key;
     Node* head;

@@ -20,13 +20,14 @@ using namespace std;
 
 void addRandomStudent(int randomStudentID);
 void printFunction();
-void addFunction();
+void addFunction(HashTable& HT);
 void deleteFunction();
 
 int main() {
   cout << "Welcome to the Student Database, brought to you by hash tables" << endl;
   cout << "Available Commands: \"PRINT,\" \"ADD,\" \"DELETE,\" \"RANDOM,\" or \"QUIT\"" << endl;
 
+  HashTable HT = HashTable;
   int randomStudentID = 1;
   addRandomStudent(randomStudentID);
   
@@ -101,6 +102,7 @@ void addFunction() {
   cout << "Please enter the student's grade point average." << endl;
   cin >> gpa;
   //Add a new node with this information to the hash table
+
   cout << endl;
   cout << firstName << " " << lastName << " added." << endl;
   
