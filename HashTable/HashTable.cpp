@@ -13,6 +13,14 @@ int HashTable::hashFunction(int ID) {
 }
 
 void HashTable::insert(Node* student) {
+  for (int i = 0; i < tableSize; i++) {//search the hash table for IDs
+    for (auto j = slots[i].head; j != NULL; j++) {
+      if (j -> getStudent() -> getID() == student -> getStudent() -> getID()) {
+	cout << "Student with this ID already exists." << endl;
+	return;
+      }
+    }
+  }
   int index = hashFunction(student -> getStudent().getID());//hashFunction returns the index
   auto i = slots[index].head;
   if (i == NULL) {
@@ -47,5 +55,9 @@ void HashTable::rehash() {
 }
 
 void HashTable::print() {
-
+  for (int i = 0; i < tableSize; i++) {//traverse the hash table
+    for (auto j = slots[i].head; j != NULL; j++) {
+      j -> getStudent() -> printInfo();
+    }
+  }
 }
