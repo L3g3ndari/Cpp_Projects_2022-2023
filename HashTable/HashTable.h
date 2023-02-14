@@ -18,8 +18,8 @@ class HashTable {
   int slotsUsed;
   struct tableEntry {
     int key;
-    Node* head;
+    Node* head = NULL;
   };
-  tableEntry* slots;
+  tableEntry** slots;
 };
 #endif

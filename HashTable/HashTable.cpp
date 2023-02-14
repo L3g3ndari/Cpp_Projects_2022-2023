@@ -4,7 +4,10 @@
 using namespace std;
 
 HashTable::HashTable() {
-  slots = new tableEntry[100];
+  slots = new tableEntry*[100];
+  for (int i = 0; i < 100; i++) {
+    slots[i] = new tableEntry();
+  }
   tableSize = 100;
 }
 
@@ -14,20 +17,34 @@ int HashTable::hashFunction(int ID) {
 
 void HashTable::insert(Node* student) {
   for (int i = 0; i < tableSize; i++) {//search the hash table for IDs
-    for (auto j = slots[i].head; j != NULL; j++) {
+    Node* j = slots[i] -> head;
+    while (j != NULL) {
+      if (j -> getStudent() -> getID() == student -> getStudent() -> getID()) {
+        cout << "Student with this ID already exists." << endl;
+        return;
+      }
+      j = j -> getNext();
+    }
+
+      /*for (auto j = slots[i] -> head; j != NULL; j++) {
+      cout << " 100" << endl;
       if (j -> getStudent() -> getID() == student -> getStudent() -> getID()) {
 	cout << "Student with this ID already exists." << endl;
 	return;
       }
-    }
+      }*/
   }
-  int index = hashFunction(student -> getStudent().getID());//hashFunction returns the index
-  auto i = slots[index].head;
+  cout << " 101" << endl;
+  int index = hashFunction(student -> getStudent() -> getID());//hashFunction returns the index
+  Node* i = slots[index] -> head;
   if (i == NULL) {
     //set head to student
-    slots[index].head = student;
+    slots[index] -> head = student;
+    cout << "student has been added to the linked list ." << endl;
     slotsUsed++;
+    cout << "Slots Used: " << slotsUsed << endl;
     if (slotsUsed >= tableSize/2) {
+      cout << "REHASHING" << endl;
       rehash();
     }
     return;
@@ -36,12 +53,15 @@ void HashTable::insert(Node* student) {
   while (i -> getNext() != NULL) {//go through all the slots until the end (tail)
     i = i -> getNext();
     counter++;
+    cout << "Counter: " << counter << endl;
   }
   //Use index to determine which slot to add to
   i -> setNext(student);//Add to that slot's linked list, MIGHT NEED TO ADD SOME MORE POINTER ARRANGING?
+  cout << "student has been added to the linked list" << endl;
 
   //check if this bucket has 3 or more student nodes
   if (counter >= 3) {
+    cout << "REHASHING" << endl;
     rehash();
   }
 }
@@ -59,8 +79,21 @@ void HashTable::rehash() {
 
 void HashTable::print() {
   for (int i = 0; i < tableSize; i++) {//traverse the hash table
-    for (auto j = slots[i].head; j != NULL; j++) {
+    Node* j = slots[i] -> head;
+    while (j != NULL) {
       j -> getStudent() -> printInfo();
+      j = j -> getNext();
     }
+
+    /*for (auto j = slots[i] -> head; j != NULL; j++) {
+      cout << "about to print a student." << endl;
+      if (j != NULL) {
+	cout << "really about to print a student." << endl;
+	j -> getStudent() -> printInfo();
+	cout << "printed a student." << endl;
+      }
+      else {
+	cout << "j was NULL" << endl;
+	}*/
   }
 }

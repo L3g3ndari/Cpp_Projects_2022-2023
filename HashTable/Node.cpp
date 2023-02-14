@@ -13,8 +13,8 @@ Node::~Node() {
   delete student;
 }
 
-Student Node::getStudent() {//returns the "value" which is the student class
-  return (*student);
+Student* Node::getStudent() {//returns the "value" which is the student class
+  return (student);
 }
 
 Node* Node::getNext() {

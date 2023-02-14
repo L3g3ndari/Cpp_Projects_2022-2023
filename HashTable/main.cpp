@@ -32,21 +32,30 @@ int main() {
 
   vector<char*> firstNames;
   vector<char*> lastNames;
-
+  srand(time(0));
+  
   char line[20];
   ifstream fnFile ("firstName.txt");
   if (fnFile.is_open()) {
     while (fnFile >> line) {
-      cout << line << endl;
+      //cout << line << endl;
       firstNames.push_back(line);
     }
   }
   else cout << "Unable to open first name file" << endl;
+
+  for (int i = 0; i < strlen(firstNames.back())+2; i++) {
+    //cout << i << "==" << firstNames.back()[i] << "==" << endl;
+  }
   
+  //firstNames.back()[strlen(firstNames.back())-1] = '\0';
+  //cout << firstNames.back() << endl;//This is the last element, which in theory is the last s \
+tudent and EOF
+  //return 0;
   
   HashTable HT = HashTable();
   int randomStudentID = 1;
-  addRandomStudent(HT, &randomStudentID, firstNames, lastNames);
+  //addRandomStudent(HT, &randomStudentID, firstNames, lastNames);
   
     while(true) {//will continually ask for new command inputs
     char input[10];
@@ -59,7 +68,7 @@ int main() {
     }
 
     if (strcmp(input, "ADD") == 0) {//if the user types in "ADD," the addFunction method will be run
-      //addFunction(HT);
+      addFunction(HT);
     }
 
     if (strcmp(input, "DELETE") == 0) {//if the user types in "DELETE," the deleteFunction method will be run
@@ -72,8 +81,9 @@ int main() {
       cin >> num;
       cin.clear();
       cin.ignore(10, '\n');
-      for (int i = 0; i != num + 1; i++) {
-	addRandomStudent(HT, randomStudentID, firstNames, lastNames);
+      for (int i = 0; i <= num; i++) {
+	addRandomStudent(HT, &randomStudentID, firstNames, lastNames);
+	randomStudentID++;
       }
     }
 
@@ -96,6 +106,7 @@ void addFunction(HashTable& HT) {
   float gpa;
   cout << "What is the student's first name?" << endl;
   cin.getline(firstName, 64);
+  cout << firstName << endl;
   //cin.clear();
   //cin.ignore(64, '\n');
   cout << "What is the student's last name?" << endl;
@@ -120,16 +131,22 @@ void deleteFunction(HashTable& HT) {
 }
 
 void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstnames, vector<char*> lastnames) {
+  //cout << "1" << endl;
   char* randomFirstName = firstnames[rand() % firstnames.size()];
-  char* randomLastName = lastnames[rand() % lastnames.size()];
+  char* randomLastName;//lastnames[rand() % lastnames.size()];
+  //cout << "2" << endl;
   int incrementedID;
   float randomGPA;
-  srand(time(0));
-  int randomInt = (rand() % 4);
-  float randomFloat = ceil(100 * ((float)(rand()) / (float)(RAND_MAX)))/100;
-  randomGPA = randomInt + randomFloat;
+  //DON'T USE srand(time(0));
+  //cout << "3" << endl;
+  float randomInt = ((float)rand()/(float)(RAND_MAX)) * 4;
+  //cout << "4" << endl;
+  //float randomFloat = ceil(100 * ((float)(rand()) / (float)(RAND_MAX)))/100;
+  randomGPA = randomInt;
   cout << randomGPA << endl;
-  cout << randomID;
-  HT.insert(new Node(new Student(randomFirstName, randomLastName, *randomID, randomGPA)));
+  cout << "ID will be: " << *randomID << endl;
+  HT.insert(new Node(new Student(randomFirstName, randomFirstName, *randomID, randomGPA)));
   *randomID++;
+  cout << "randomID after adding: " << *randomID << endl;
+  //cout << "5" << endl;
 }
