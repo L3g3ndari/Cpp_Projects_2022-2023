@@ -16,11 +16,12 @@ Outside Sources Used: Used https://www.geeksforgeeks.org/c-program-hashing-chain
 //#define STUDENT
 #include "Student.h"
 #include "Node.h"
+#include "HashTable.h"
 //#endif
 
 using namespace std;
 
-void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstnames, vector<char*> lastnames);
+void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstNames, vector<char*> lastNames);
 void printFunction(HashTable HT);
 void addFunction(HashTable& HT);
 void deleteFunction(HashTable& HT);
@@ -32,10 +33,10 @@ int main() {
   vector<char*> firstNames;
   vector<char*> lastNames;
 
-  char[20] line;
+  char line[20];
   ifstream fnFile ("firstName.txt");
   if (fnFile.is_open()) {
-    while (getline(fnFile, line, ' ')) {
+    while (fnFile >> line) {
       cout << line << endl;
       firstNames.push_back(line);
     }
@@ -43,7 +44,7 @@ int main() {
   else cout << "Unable to open first name file" << endl;
   
   
-  HashTable HT = HashTable;
+  HashTable HT = HashTable();
   int randomStudentID = 1;
   addRandomStudent(HT, &randomStudentID, firstNames, lastNames);
   
@@ -53,26 +54,15 @@ int main() {
     cin.clear();
     cin.ignore(10, '\n');
 
-    if (input[0] == 'P' &&//I know that I could/should have used strcmp, but don't hate me, I just used my StudentList code from the beginning of the year.
-        input[1] == 'R' &&
-        input[2] == 'I' &&
-        input[3] == 'N' &&
-        input[4] == 'T') {//if the user types in "PRINT," the printFunction method will be run
+    if (strcmp(input, "PRINT") == 0) {//if the user types in "PRINT," the printFunction method will be run
       printFunction(HT);
     }
 
-    if (input[0] == 'A' &&
-        input[1] == 'D' &&
-        input[2] == 'D') {//if the user types in "ADD," the addFunction method will be run
+    if (strcmp(input, "ADD") == 0) {//if the user types in "ADD," the addFunction method will be run
       //addFunction(HT);
     }
 
-    if (input[0] == 'D' &&
-        input[1] == 'E' &&
-        input[2] == 'L' &&
-        input[3] == 'E' &&
-        input[4] == 'T' &&
-        input[5] == 'E') {//if the user types in "DELETE," the deleteFunction method will be run
+    if (strcmp(input, "DELETE") == 0) {//if the user types in "DELETE," the deleteFunction method will be run
       //deleteFunction(HT);
     }
 
@@ -87,10 +77,7 @@ int main() {
       }
     }
 
-    if (input[0] == 'Q' &&
-        input[1] == 'U' &&
-        input[2] == 'I' &&
-        input[3] == 'T') {//if the user types in "QUIT," the program will stop running
+    if (strcmp(input, "QUIT") == 0) {//if the user types in "QUIT," the program will stop running
       exit(0);
     }
     cout << endl;
@@ -99,7 +86,7 @@ int main() {
 }
 
 void printFunction(HashTable HT) {
-
+  HT.print();
 }
 
 void addFunction(HashTable& HT) {

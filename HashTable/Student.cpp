@@ -15,7 +15,7 @@ Student::Student(const char *firstName, const char *LastName, int idNum, float g
 }
 
 Student::~Student() {
-  delete[] name;>
+  delete[] name;
   delete[] lastName;
 }
 

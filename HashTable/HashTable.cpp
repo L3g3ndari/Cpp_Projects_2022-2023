@@ -38,7 +38,7 @@ void HashTable::insert(Node* student) {
     counter++;
   }
   //Use index to determine which slot to add to
-  i -> setNext(student);//Add to that slot's linked list
+  i -> setNext(student);//Add to that slot's linked list, MIGHT NEED TO ADD SOME MORE POINTER ARRANGING?
 
   //check if this bucket has 3 or more student nodes
   if (counter >= 3) {
@@ -46,8 +46,11 @@ void HashTable::insert(Node* student) {
   }
 }
 
-void HashTable::remove(int ID) {
-  
+void HashTable::remove(int targetID) {
+  cout << "This is the ID I'm looking for: " << targetID << endl;
+  //traverse hash table
+  //Don't need to check for matching targetID because main already checked
+  //Use LinkedList2 as reference for changing pointers
 }
 
 void HashTable::rehash() {
