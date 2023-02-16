@@ -34,16 +34,32 @@ int main() {
   vector<char*> lastNames;
   srand(time(0));
   
-  char line[20];
+  char* line = new char[20];
+  char array[20];
   ifstream fnFile ("firstName.txt");
   if (fnFile.is_open()) {
-    while (fnFile >> line) {
+    while (fnFile >> array) {
+      line = new char[20];
+      strcpy(line, array);
       //cout << line << endl;
       firstNames.push_back(line);
     }
   }
   else cout << "Unable to open first name file" << endl;
 
+  char* line2 = new char[20];
+  char array2[20];
+  ifstream lsFile ("lastName.txt");
+  if (fnFile.is_open()) {
+    while (fnFile >> array2) {
+      line2 = new char[20];
+      strcpy(line2, array2);
+      //cout << line << endl;
+      lastNames.push_back(line2);
+    }
+  }
+  else cout << "Unable to open first name file" << endl;
+  
   for (int i = 0; i < strlen(firstNames.back())+2; i++) {
     //cout << i << "==" << firstNames.back()[i] << "==" << endl;
   }
@@ -135,22 +151,27 @@ int deleteFunction(HashTable& HT) {
 }
 
 void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstnames, vector<char*> lastnames) {
-  //cout << "1" << endl;
-  char* randomFirstName = firstnames[rand() % firstnames.size()];
-  char* randomLastName;//lastnames[rand() % lastnames.size()];
-  //cout << "2" << endl;
+  cout << "1" << endl;
+  //char* randomFirstName = firstnames[rand() % firstnames.size()];
+  //char* randomLastName = lastnames[rand() % lastnames.size()];
+  char* randomFirstName = new char[20];
+  randomFirstName = firstnames[rand() % firstnames.size()];
+  char FNarray[20];
+  strcpy(randomFirstName, FNarray);
+
+  cout << "2" << endl;
   int incrementedID;
   float randomGPA;
   //DON'T USE srand(time(0)) or else the seed will reset every time
-  //cout << "3" << endl;
+  cout << "3" << endl;
   float randomInt = ((float)rand()/(float)(RAND_MAX)) * 4;
-  //cout << "4" << endl;
+  cout << "4" << endl;
   //float randomFloat = ceil(100 * ((float)(rand()) / (float)(RAND_MAX)))/100;
   randomGPA = randomInt;
   cout << randomGPA << endl;
   cout << "ID will be: " << *randomID << endl;
   HT.insert(new Node(new Student(randomFirstName, randomFirstName, *randomID, randomGPA)));
-  *randomID++;
+  (*randomID)++;
   cout << "randomID after adding: " << *randomID << endl;
-  //cout << "5" << endl;
+  cout << "5" << endl;
 }

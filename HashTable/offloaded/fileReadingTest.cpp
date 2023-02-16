@@ -9,14 +9,17 @@ int main() {
   vector<char*> firstNames;
   vector<char*> lastNames;
   
-  char line[20];
+  char* line = new char[20];
+  char array[20];
   ifstream fnFile ("firstNameEC.txt");
   if (fnFile.is_open()) {
-    while (fnFile >> line) {
+    while (fnFile >> array) {
+      line = new char[20];
+      strcpy(line, array);
       cout << line << endl;
       firstNames.push_back(line);
     }
-    cout << firstNames[6] << endl;//ask Mr. Galbraith why this doesn't work
+    cout << firstNames[6] << endl;
   }
   else cout << "Unable to open first name file" << endl;
 

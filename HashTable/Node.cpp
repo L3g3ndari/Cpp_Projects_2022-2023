@@ -11,6 +11,7 @@ Node::Node(Student* pupil) {
 
 Node::~Node() {
   delete student;
+  next = NULL;
 }
 
 Student* Node::getStudent() {//returns the "value" which is the student class
