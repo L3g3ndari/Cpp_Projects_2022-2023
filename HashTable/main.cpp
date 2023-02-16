@@ -72,7 +72,7 @@ tudent and EOF
     }
 
     if (strcmp(input, "DELETE") == 0) {//if the user types in "DELETE," the deleteFunction method will be run
-      //deleteFunction(HT);
+      deleteFunction(HT);
     }
 
     if (strcmp(input, "RANDOM") == 0) {//adds a random student to the hash table
@@ -81,7 +81,7 @@ tudent and EOF
       cin >> num;
       cin.clear();
       cin.ignore(10, '\n');
-      for (int i = 0; i <= num; i++) {
+      for (int i = 0; i < num; i++) {
 	addRandomStudent(HT, &randomStudentID, firstNames, lastNames);
 	randomStudentID++;
       }
@@ -127,7 +127,8 @@ void deleteFunction(HashTable& HT) {
   int targetID;
   cin >> targetID;
   //traverse hash table and check each ID. Compare with targetID.
-  //If there is a match, call hashTable's delete function on that student.
+  //If there is a match, call hashTable's delete function on that student
+  HT.remove(targetID);
 }
 
 void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstnames, vector<char*> lastnames) {

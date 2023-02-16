@@ -44,7 +44,7 @@ void HashTable::insert(Node* student) {
     slotsUsed++;
     cout << "Slots Used: " << slotsUsed << endl;
     if (slotsUsed >= tableSize/2) {
-      cout << "REHASHING" << endl;
+      cout << "REHASHING because more than half the table was used." << endl;
       rehash();
     }
     return;
@@ -61,13 +61,24 @@ void HashTable::insert(Node* student) {
 
   //check if this bucket has 3 or more student nodes
   if (counter >= 3) {
-    cout << "REHASHING" << endl;
+    cout << "REHASHING because more than 3 collisions occured." << endl;
     rehash();
   }
 }
 
 void HashTable::remove(int targetID) {
   cout << "This is the ID I'm looking for: " << targetID << endl;
+  for (int i = 0; i < tableSize; i++) {//traverse the hash table
+    Node* j = slots[i] -> head;
+    while (j != NULL) {
+      if (j -> getStudent() -> getID() == targetID) {
+	cout << "Found a match!" << endl;
+	//delete that node and do the switcheroos
+	return;
+      }
+      j = j -> getNext();
+    }
+  }
   //traverse hash table
   //Don't need to check for matching targetID because main already checked
   //Use LinkedList2 as reference for changing pointers
