@@ -6,17 +6,17 @@
 using namespace std;
 
 int main() {
- vector<char*> firstNames;
- vector<char*> lastNames;
-
+  vector<char*> firstNames;
+  vector<char*> lastNames;
+  
   char line[20];
-  ifstream fnFile ("firstName.txt");
+  ifstream fnFile ("firstNameEC.txt");
   if (fnFile.is_open()) {
-    while ((fnFile >> line)) {
+    while (fnFile >> line) {
       cout << line << endl;
       firstNames.push_back(line);
     }
-    cout << firstNames[2] << endl;
+    cout << firstNames[6] << endl;//ask Mr. Galbraith why this doesn't work
   }
   else cout << "Unable to open first name file" << endl;
 
