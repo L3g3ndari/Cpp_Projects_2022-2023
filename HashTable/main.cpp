@@ -126,8 +126,6 @@ void deleteFunction(HashTable& HT) {
   cout << "ID: ";
   int targetID;
   cin >> targetID;
-  //traverse hash table and check each ID. Compare with targetID.
-  //If there is a match, call hashTable's delete function on that student
   HT.remove(targetID);
 }
 
@@ -138,7 +136,7 @@ void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstnames, ve
   //cout << "2" << endl;
   int incrementedID;
   float randomGPA;
-  //DON'T USE srand(time(0));
+  //DON'T USE srand(time(0)) or else the seed will reset every time
   //cout << "3" << endl;
   float randomInt = ((float)rand()/(float)(RAND_MAX)) * 4;
   //cout << "4" << endl;

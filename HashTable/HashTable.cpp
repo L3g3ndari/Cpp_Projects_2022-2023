@@ -79,13 +79,10 @@ void HashTable::remove(int targetID) {
       j = j -> getNext();
     }
   }
-  //traverse hash table
-  //Don't need to check for matching targetID because main already checked
-  //Use LinkedList2 as reference for changing pointers
 }
 
 void HashTable::rehash() {
-
+  
 }
 
 void HashTable::print() {
