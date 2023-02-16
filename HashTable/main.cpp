@@ -24,7 +24,7 @@ using namespace std;
 void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstNames, vector<char*> lastNames);
 void printFunction(HashTable HT);
 void addFunction(HashTable& HT);
-void deleteFunction(HashTable& HT);
+int deleteFunction(HashTable& HT);
 
 int main() {
   cout << "Welcome to the Student Database, brought to you by hash tables" << endl;
@@ -72,7 +72,12 @@ tudent and EOF
     }
 
     if (strcmp(input, "DELETE") == 0) {//if the user types in "DELETE," the deleteFunction method will be run
-      deleteFunction(HT);
+      if (deleteFunction(HT) == 0) {
+	cout << "Student was not found." << endl;
+      }
+      else {
+	cout << "Student was deleted." << endl;
+      }
     }
 
     if (strcmp(input, "RANDOM") == 0) {//adds a random student to the hash table
@@ -122,11 +127,11 @@ void addFunction(HashTable& HT) {
   
 }
 
-void deleteFunction(HashTable& HT) {
+int deleteFunction(HashTable& HT) {
   cout << "ID: ";
   int targetID;
   cin >> targetID;
-  HT.remove(targetID);
+  return HT.remove(targetID);
 }
 
 void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstnames, vector<char*> lastnames) {

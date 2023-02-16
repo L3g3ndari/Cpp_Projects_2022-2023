@@ -11,7 +11,7 @@ class HashTable {
   int hashFunction(int ID);
   void rehash();
   void insert(Node* student);
-  void remove(int ID);
+  int remove(int ID);
   void print();
  private:
   int tableSize;

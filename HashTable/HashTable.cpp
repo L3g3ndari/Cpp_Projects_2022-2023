@@ -16,8 +16,8 @@ int HashTable::hashFunction(int ID) {
 }
 
 void HashTable::insert(Node* student) {
-  for (int i = 0; i < tableSize; i++) {//search the hash table for IDs
-    Node* j = slots[i] -> head;
+  int index = hashFunction(student -> getStudent() -> getID());
+    Node* j = slots[index] -> head;
     while (j != NULL) {
       if (j -> getStudent() -> getID() == student -> getStudent() -> getID()) {
         cout << "Student with this ID already exists." << endl;
@@ -25,17 +25,7 @@ void HashTable::insert(Node* student) {
       }
       j = j -> getNext();
     }
-
-      /*for (auto j = slots[i] -> head; j != NULL; j++) {
-      cout << " 100" << endl;
-      if (j -> getStudent() -> getID() == student -> getStudent() -> getID()) {
-	cout << "Student with this ID already exists." << endl;
-	return;
-      }
-      }*/
-  }
   cout << " 101" << endl;
-  int index = hashFunction(student -> getStudent() -> getID());//hashFunction returns the index
   Node* i = slots[index] -> head;
   if (i == NULL) {
     //set head to student
@@ -66,23 +56,83 @@ void HashTable::insert(Node* student) {
   }
 }
 
-void HashTable::remove(int targetID) {
+int HashTable::remove(int targetID) {
   cout << "This is the ID I'm looking for: " << targetID << endl;
-  for (int i = 0; i < tableSize; i++) {//traverse the hash table
-    Node* j = slots[i] -> head;
-    while (j != NULL) {
-      if (j -> getStudent() -> getID() == targetID) {
-	cout << "Found a match!" << endl;
-	//delete that node and do the switcheroos
-	return;
-      }
-      j = j -> getNext();
-    }
+  int i = hashFunction(targetID);
+  Node*& head = slots[i] -> head;
+  if (head == NULL) {
+    return 0;
   }
+  if (head -> getStudent() -> getID() == targetID) {
+    Node* oldHead = head;
+    head = head -> getNext();
+    delete oldHead;
+    slotsUsed--;
+    return 1;
+  }
+  //Node* j = slots[i] -> head;
+  Node* j = head -> getNext();
+  Node* previous = head;
+  while (j != NULL) {
+    if (j -> getStudent() -> getID() == targetID) {
+      cout << "Found a match!" << endl;
+      //delete that node and do the switcheroos
+      previous -> setNext(j -> getNext());
+      delete j;
+      slotsUsed--;
+      return 1;
+    }
+    previous = j;
+    j = j -> getNext();
+  }
+  return 0;
 }
 
 void HashTable::rehash() {
-  
+  //create a new expanded hash table
+  tableSize = tableSize*2;
+  tableEntry** newTable = new tableEntry*[tableSize];
+  for (int i = 0; i < 100; i++) {
+    newTable[i] = new tableEntry();
+  }
+  for(int i = 0; i < tableSize/2; i++) {
+    Node* j = slots[i] -> head;
+    while (j != NULL) {
+      int index = hashFunction(j -> getStudent() -> getID());
+      Node* x = newTable[index] -> head;
+      if (x == NULL) {
+	//set head to student
+	newTable[index] -> head = j;
+	//cout << "student has been added to the linked list ." << endl;
+	//slotsUsed++;
+	//cout << "Slots Used: " << slotsUsed << endl;
+	if (slotsUsed >= tableSize/2) {
+	  //cout << "REHASHING because more than half the table was used." << endl;
+	  //rehash();
+	}
+	return;
+      }
+      int counter = 0;
+      while (x -> getNext() != NULL) {//go through all the slots until the end (tail)
+	x = x -> getNext();
+	counter++;
+	//cout << "Counter: " << counter << endl;
+      }
+      //Use index to determine which slot to add to
+      x -> setNext(j);//Add to that slot's linked list, MIGHT NEED TO ADD SOME MO\
+			    RE POINTER ARRANGING?
+      //cout << "student has been added to the linked list" << endl;
+
+      //check if this bucket has 3 or more student nodes
+      if (counter >= 3) {
+	//cout << "REHASHING because more than 3 collisions occured." << endl;
+	//rehash();
+      }
+      j = j-> getNext();
+    }
+  }
+  delete[] slots;
+  slots = newTable;
 }
 
 void HashTable::print() {
