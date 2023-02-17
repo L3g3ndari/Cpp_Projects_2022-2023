@@ -57,7 +57,7 @@ void HashTable::insert(Node* student) {
 }
 
 int HashTable::remove(int targetID) {
-  cout << "This is the ID I'm looking for: " << targetID << endl;
+  //cout << "This is the ID I'm looking for: " << targetID << endl;
   int i = hashFunction(targetID);
   Node*& head = slots[i] -> head;
   if (head == NULL) {
