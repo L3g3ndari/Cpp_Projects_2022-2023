@@ -25,12 +25,12 @@ void HashTable::insert(Node* student) {
       }
       j = j -> getNext();
     }
-  cout << " 101" << endl;
+    //cout << " 101" << endl;
   Node* i = slots[index] -> head;
   if (i == NULL) {
     //set head to student
     slots[index] -> head = student;
-    cout << "student has been added to the linked list ." << endl;
+    cout << "Student has been added to the linked list ." << endl;
     slotsUsed++;
     cout << "Slots Used: " << slotsUsed << endl;
     if (slotsUsed >= tableSize/2) {

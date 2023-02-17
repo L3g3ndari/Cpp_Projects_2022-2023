@@ -5,6 +5,8 @@ C++ Programming
 Mr. Galbraith
 Project Completed: 
 Outside Sources Used: Used https://www.geeksforgeeks.org/c-program-hashing-chaining/ to help understand hash tables, https://www.digitalocean.com/community/tutorials/getline-in-c-plus-plus and https://cplusplus.com/doc/tutorial/files/ for reading from files
+
+This program operates like student list, but stores the students in a hash table instead of linear linked list. This project made me want to cry.
 */
 
 #include <iostream>
@@ -45,16 +47,18 @@ int main() {
       firstNames.push_back(line);
     }
   }
-  else cout << "Unable to open first name file" << endl;
-
+  else {
+    cout << "Unable to open first name file" << endl;
+  }
+  
   char* line2 = new char[20];
   char array2[20];
   ifstream lsFile ("lastName.txt");
-  if (fnFile.is_open()) {
-    while (fnFile >> array2) {
+  if (lsFile.is_open()) {
+    while (lsFile >> array2) {
       line2 = new char[20];
       strcpy(line2, array2);
-      //cout << line << endl;
+      //cout << line2 << endl;
       lastNames.push_back(line2);
     }
   }
@@ -104,7 +108,7 @@ tudent and EOF
       cin.ignore(10, '\n');
       for (int i = 0; i < num; i++) {
 	addRandomStudent(HT, &randomStudentID, firstNames, lastNames);
-	randomStudentID++;
+	//randomStudentID++;
       }
     }
 
@@ -127,7 +131,7 @@ void addFunction(HashTable& HT) {
   float gpa;
   cout << "What is the student's first name?" << endl;
   cin.getline(firstName, 64);
-  cout << firstName << endl;
+  //cout << firstName << endl;
   //cin.clear();
   //cin.ignore(64, '\n');
   cout << "What is the student's last name?" << endl;
@@ -151,27 +155,31 @@ int deleteFunction(HashTable& HT) {
 }
 
 void addRandomStudent(HashTable& HT, int* randomID, vector<char*> firstnames, vector<char*> lastnames) {
-  cout << "1" << endl;
-  //char* randomFirstName = firstnames[rand() % firstnames.size()];
-  //char* randomLastName = lastnames[rand() % lastnames.size()];
-  char* randomFirstName = new char[20];
-  randomFirstName = firstnames[rand() % firstnames.size()];
-  char FNarray[20];
-  strcpy(randomFirstName, FNarray);
-
-  cout << "2" << endl;
+  //cout << "1" << endl;
+  char* randomFirstName = firstnames[rand() % firstnames.size()];
+  //cout << "1.5" << endl;
+  char* randomLastName = lastnames[rand() % lastnames.size()];
+  //char* randomFirstName = new char[20];                        Didn't end up needing this code because I had just made a different error
+  //randomFirstName = firstnames[rand() % firstnames.size()];
+  //char FNarray[20];
+  //strcpy(randomFirstName, FNarray);
+  //cout << "2" << endl;
   int incrementedID;
   float randomGPA;
   //DON'T USE srand(time(0)) or else the seed will reset every time
-  cout << "3" << endl;
+  //cout << "3" << endl;
   float randomInt = ((float)rand()/(float)(RAND_MAX)) * 4;
-  cout << "4" << endl;
+  //cout << "4" << endl;
   //float randomFloat = ceil(100 * ((float)(rand()) / (float)(RAND_MAX)))/100;
   randomGPA = randomInt;
-  cout << randomGPA << endl;
-  cout << "ID will be: " << *randomID << endl;
-  HT.insert(new Node(new Student(randomFirstName, randomFirstName, *randomID, randomGPA)));
+  if (randomGPA < 1.5) {//don't want all my students to be failing lol
+    randomGPA += 1;
+  }
+  //cout << randomGPA << endl;
+  //cout << "ID will be: " << *randomID << endl;
+  //cout << "4.5" << endl;
+  HT.insert(new Node(new Student(randomFirstName, randomLastName, *randomID, randomGPA)));
   (*randomID)++;
-  cout << "randomID after adding: " << *randomID << endl;
-  cout << "5" << endl;
+  //cout << "randomID after adding: " << *randomID << endl;
+  //cout << "5" << endl;
 }

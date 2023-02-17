@@ -9,8 +9,8 @@ Student::Student(const char *firstName, const char *LastName, int idNum, float g
   name = new char[strlen(firstName) + 1];
   lastName = new char[strlen(LastName) + 1];
   strcpy(name, firstName);
-  cout << name << endl;
-  cout << firstName << endl;
+  //cout << name << endl;
+  //cout << firstName << endl;
   strcpy(lastName, LastName);
   id = idNum;
   GPA = gpa;
@@ -27,7 +27,7 @@ void Student::printInfo() {//ID: Name, Last Name, GPA
   //cout << "ID Number: " << id << endl;
   //cout << "GPA: " << floor((GPA*100))/100 << endl;
   //cout << (int*)(name) << endl;
-  cout << id << ": " << name << " " << lastName << ", " << GPA << endl;
+  cout << id << ": " << name << " " << lastName << ", " << floor((GPA*100))/100 << endl;
 }
 
 float Student::getGPA() {
