@@ -27,16 +27,16 @@ void HashTable::insert(Node* student) {
     }
     //cout << " 101" << endl;
   Node* i = slots[index] -> head;
-  if (i == NULL) {
+  if (i == NULL) {//if that bucket is empty
     //set head to student
     slots[index] -> head = student;
     cout << "Student has been added to the linked list ." << endl;
     slotsUsed++;
     cout << "Slots Used: " << slotsUsed << endl;
-    if (slotsUsed >= tableSize/2) {
+    /*if (slotsUsed >= tableSize/2) {
       cout << "REHASHING because more than half the table was used." << endl;
       rehash();
-    }
+      }*/
     return;
   }
   int counter = 0;
@@ -44,16 +44,15 @@ void HashTable::insert(Node* student) {
     i = i -> getNext();
     counter++;
     cout << "Counter: " << counter << endl;
-  }
-  //Use index to determine which slot to add to
-  i -> setNext(student);//Add to that slot's linked list, MIGHT NEED TO ADD SOME MORE POINTER ARRANGING?
-  cout << "student has been added to the linked list" << endl;
-
-  //check if this bucket has 3 or more student nodes
-  if (counter >= 3) {
+    //check if this bucket has 3 or more student nodes
+  if (counter > 3) {
     cout << "REHASHING because more than 3 collisions occured." << endl;
     rehash();
   }
+  }
+  //Use index to determine which slot to add to
+  i -> setNext(student);//Add to that slot's linked list
+  cout << "Student has been added to the linked list" << endl;
 }
 
 int HashTable::remove(int targetID) {
@@ -92,7 +91,7 @@ void HashTable::rehash() {
   //create a new expanded hash table
   tableSize = tableSize*2;
   tableEntry** newTable = new tableEntry*[tableSize];
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < tableSize; i++) {
     newTable[i] = new tableEntry();
   }
   for(int i = 0; i < tableSize/2; i++) {
@@ -110,14 +109,18 @@ void HashTable::rehash() {
 	  //cout << "REHASHING because more than half the table was used." << endl;
 	  //rehash();
 	}
-	return;
+	cout << "This is where the nasty return used to be." << endl;
+	//return;
       }
+      cout << "1111111" << endl;
       int counter = 0;
       while (x -> getNext() != NULL) {//go through all the slots until the end (tail)
+	cout << "222222" << endl;
 	x = x -> getNext();
 	counter++;
 	//cout << "Counter: " << counter << endl;
       }
+      cout << "333333" << endl;
       //Use index to determine which slot to add to
       x -> setNext(j);//Add to that slot's linked list, MIGHT NEED TO ADD SOME MO\
 			    RE POINTER ARRANGING?
@@ -133,6 +136,7 @@ void HashTable::rehash() {
   }
   delete[] slots;
   slots = newTable;
+  cout << "Rehash successful." << endl;
 }
 
 void HashTable::print() {
