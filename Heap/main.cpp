@@ -61,12 +61,28 @@ void printFunction() {
 void addFunction(int* &heap[101]) {
   int inputType = 0;
   int input;
-  cout << "What number would you like to add?" << endl;
-  cin.getline(input, 64);
-  //add to the array in the first available slot
-  //The children of slot x are 2x and 2x+1
-  //The parent of x is x/2
-  //Check the slot's parent and check if it is larger or smaller, adjust by swapping if smaller
+  cout << "What is the type of input? Type \"1\" for console input or \"2\" for file input." << endl;
+  cin >> inputType;
+  if (inputType == 1) {//add as console input
+    cout << "What number would you like to add?" << endl;
+    cin.getline(input, 64);
+    if (input > 0 && input <= 1000) {
+      for (int i = 1; i < 101; i++) {//add to the array in the first available slot
+	if (head[i] == NULL) {
+	  //THIS IS WHERE YOU LEFT OFF ******************
+	}
+      }
+      //The children of slot x are 2x and 2x+1
+      //The parent of x is x/2
+      //Check the slot's parent and check if it is larger or smaller, adjust by swapping if smaller
+    }
+  }
+  else if (inputType == 2) {//add from file
+
+  }
+  else {//not one of the options
+    cout << "That is not a valid input option. Please type either 1 or 2." << endl;
+  }
 }
 
 void deleteFunction() {
