@@ -114,18 +114,23 @@ void HashTable::rehash() {
       }
       cout << "1111111" << endl;
       int counter = 0;
-      while (x -> getNext() != NULL) {//go through all the slots until the end (tail)
-	cout << "222222" << endl;
-	x = x -> getNext();
-	counter++;
-	//cout << "Counter: " << counter << endl;
+      if (x == NULL) {
+	newTable[index] -> head = j;
+	j -> setNext(NULL);
       }
-      cout << "333333" << endl;
-      //Use index to determine which slot to add to
-      x -> setNext(j);//Add to that slot's linked list, MIGHT NEED TO ADD SOME MO\
-			    RE POINTER ARRANGING?
-      //cout << "student has been added to the linked list" << endl;
-
+      else {
+	while (x -> getNext() != NULL) {//go through all the slots until the end (tail)
+	  cout << "222222" << endl;
+	  x = x -> getNext();
+	  counter++;
+	  //cout << "Counter: " << counter << endl;
+	}
+	cout << "333333" << endl;
+	//Use index to determine which slot to add to
+	x -> setNext(j);//Add to that slot's linked list, MIGHT NEED TO ADD SOME MO\
+			RE POINTER ARRANGING?
+	//cout << "student has been added to the linked list" << endl;
+      }
       //check if this bucket has 3 or more student nodes
       if (counter >= 3) {
 	//cout << "REHASHING because more than 3 collisions occured." << endl;
