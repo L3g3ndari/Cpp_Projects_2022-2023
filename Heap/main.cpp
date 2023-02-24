@@ -18,6 +18,7 @@ using namespace std;
 
 void printFunction(int heap[101]);
 int addFunction(int heap[101], int heapSize);
+void addByFile(int heap[101], char fileInputName[20]);
 void deleteFunction(int heap[101]);
 void sortHeap(int heap[101]);
 
@@ -100,13 +101,53 @@ int addFunction(int heap[101], int heapSize) {
     else cout << "You cannot add that element. Each element must be a number between 1 and 1000." << endl;
   }
   else if (inputType == 2) {//add from file
-
+    char fileNameInput[20];
+    cout << "What file do you want to access?" << endl;
+    cin.getline(fileNameInput, 20);
+    cout << fileNameInput << endl;
+    cin.clear();
+    cin.ignore(20, '\n');
+    cout << fileNameInput << endl;
+    if (fileNameInput == "numFile1.txt" || fileNameInput == "numFile2.txt"
+	|| fileNameInput == "numFile3.txt" || fileNameInput == "numFile4.txt") {
+      cout << "Hellooo" << endl;
+      addByFile(heap, fileNameInput);
+    }
+    else {
+      cout << "That file does not exist." << endl;
+      return 102;
+    }
   }
   else {//not one of the options
     cout << "That is not a valid input option. Please type either 1 or 2." << endl;
     return 100;
   }
   return 101;
+}
+
+void addByFile(int heap[101], char fileNameInput[20]) {
+  cout << "Reading from \"" << fileNameInput << "\"" << endl;
+  int temp[100];
+  int num;
+  ifstream File (fileNameInput);
+  if (File.is_open()) {
+    while (File >> num) {
+      cout << num << " ";
+    }
+  }
+  else {
+    cout << "Unable to open first name file" << endl;
+  }
+
+  for (int i = 1; i < 101; i++) {//add to the array in the first available slot
+    if (heap[i] == 0) {
+      //heap[i] = input;
+      //cout << "Input has been added." << endl;
+      //cout << "Slot added to: " << i << endl;
+      //cout << "heap[i] = " << heap[i] << endl;
+      //return 1;
+    }
+  }
 }
 
 void deleteFunction() {
