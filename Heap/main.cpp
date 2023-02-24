@@ -51,7 +51,7 @@ int main() {
     }
 
     if (strcmp(input, "DELETE") == 0) {//if the user types in "DELETE," the deleteFunction method will be run
-      
+      deleteFunction(heap);//what is the output?
     }
 
     if (strcmp(input, "QUIT") == 0) {//if the user types in "QUIT," the program will stop running
@@ -150,7 +150,7 @@ void addByFile(int heap[101], char fileNameInput[20]) {
   }
 }
 
-void deleteFunction() {
+void deleteFunction(int heap[101]) {
 
 }
 
