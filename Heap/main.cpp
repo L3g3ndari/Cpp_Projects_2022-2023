@@ -118,20 +118,19 @@ void sortHeap(int heap[101]) {
   //The parent of x is x/2
   //Check the slot's parent and check if it is larger or smaller, adjust by swapping if smaller
   for (int i = 1; i < 50; i++) {
-    if (heap[i] < heap[i*2]) {//check if parent is less than left child
+    while (heap[i] < heap[i*2]) {//check if parent is less than left child
       int temp = heap[i];
       heap[i] = heap[i*2];
       heap[i*2] = temp;
       cout << "Performed swap with left child!" << endl;
+      sortHeap(heap);
     }
-    else if (heap[i] < heap[i*2+1]) {//check if parent is less than right child
+    while (heap[i] < heap[i*2+1]) {//check if parent is less than right child
       int temp = heap[i];
       heap[i] = heap[i*2+1];
       heap[i*2+1] = temp;
       cout << "Performed swap with right child!" << endl;
-    }
-    else {
-      //cout << "No swaps to be made." << endl;
+      sortHeap(heap);
     }
   }
 }
