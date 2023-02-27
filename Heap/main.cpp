@@ -106,10 +106,12 @@ int addFunction(int heap[101], int heapSize) {
     cin.getline(fileNameInput, 20);
     cout << fileNameInput << endl;
     cin.clear();
-    cin.ignore(20, '\n');
+    //cin.ignore(20, '\n');
     cout << fileNameInput << endl;
-    if (fileNameInput == "numFile1.txt" || fileNameInput == "numFile2.txt"
-	|| fileNameInput == "numFile3.txt" || fileNameInput == "numFile4.txt") {
+    if (strcmp(fileNameInput, "numFile1.txt") == 0 ||
+	strcmp(fileNameInput, "numFile2.txt") == 0 ||
+	strcmp(fileNameInput, "numFile3.txt") == 0 ||
+	strcmp(fileNameInput, "numFile4.txt") == 0) {
       cout << "Hellooo" << endl;
       addByFile(heap, fileNameInput);
     }
