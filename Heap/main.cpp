@@ -19,7 +19,7 @@ using namespace std;
 void printFunction(int heap[101]);
 int addFunction(int heap[101], int &heapSize);
 void addByFile(int heap[101], char fileInputName[20], int &heapSize);
-void deleteFunction(int heap[101]);
+void deleteFunction(int heap[101], int &heapSize);
 void sortHeap(int heap[101]);
 
 int main() {
@@ -59,7 +59,7 @@ int main() {
     }
 
     if (strcmp(input, "DELETE") == 0) {//if the user types in "DELETE," the deleteFunction method will be run
-      deleteFunction(heap);//what is the output?
+      deleteFunction(heap, heapSize);//what is the output?
     }
 
     if (strcmp(input, "QUIT") == 0) {//if the user types in "QUIT," the program will stop running
@@ -185,37 +185,24 @@ void addByFile(int heap[101], char fileNameInput[20], int &heapSize) {
   cout << "Sorting complete." << endl;
 }
 
-void deleteFunction(int heap[101]) {
+void deleteFunction(int heap[101], int &heapSize) {
   cout << "Would you like to delete the root (\"r\"), or all of the heap (\"a\")?" << endl;
   char ans[2];
   cin >> ans;
   int switchTargetIndex;
   if (strcmp(ans, "r") == 0) {//delete root
-    for (int i = 2; i < 100; i++) {//find last element
-      if (heap[i] == 0) {
-	cout << "i = " << i << endl;
-	switchTargetIndex == i-1;//store the index of the one before the first 0;
-	break;
-      }
-    }
-    int temp = heap[switchTargetIndex];
-    heap[switchTargetIndex] = heap[1];//switch the root with the last slot
+    int temp = heap[heapSize];
+    heap[heapSize] = heap[1];//switch the root with the last slot
     heap[1] = temp;//switch complete
-    cout << "Out: " << heap[switchTargetIndex] << endl;
-    heap[switchTargetIndex] = 0;//erase the original root
+    cout << "Out: " << heap[heapSize] << endl;
+    heap[heapSize] = 0;//erase the original root
+    heapSize--;
     sortHeap(heap);
   }
   else if (strcmp(ans, "a") == 0) {//delete whole heap
     cout << "Out: ";
-    for (int i = 1; i < 100; i++) {//traversing the heap
-      if (heap[i] != 0) {
-	cout << heap[i] << " ";
-	heap[i] = 999;
-      }
-      else {
-	return;
-      }
-    }
+    //look at root
+    //stuff
     cout << endl << "Deleted whole heap." << endl;
   }
   else {
@@ -228,19 +215,21 @@ void sortHeap(int heap[101]) {
   //The parent of x is x/2
   //Check the slot's parent and check if it is larger or smaller, adjust by swapping if smaller
   for (int i = 1; i < 50; i++) {
-    while (heap[i] < heap[i*2]) {//check if parent is less than left child
-      int temp = heap[i];
-      heap[i] = heap[i*2];
-      heap[i*2] = temp;
-      cout << "Performed swap with left child!" << endl;
-      sortHeap(heap);//call itself to loop it until completely sorted
-    }
-    while (heap[i] < heap[i*2+1]) {//check if parent is less than right child
-      int temp = heap[i];
-      heap[i] = heap[i*2+1];
-      heap[i*2+1] = temp;
-      cout << "Performed swap with right child!" << endl;
-      sortHeap(heap);//call itself to loop it until completely sorted
+    if (heap[i] != 0) {
+      while (heap[i] < heap[i*2] && heap[i*2] != 0) {//check if parent is less than left child
+	int temp = heap[i];
+	heap[i] = heap[i*2];
+	heap[i*2] = temp;
+	cout << "Performed swap with left child!" << endl;
+	sortHeap(heap);//call itself to loop it until completely sorted
+      }
+      while (heap[i] < heap[i*2+1] && heap[i*2+1] != 0) {//check if parent is less than right child
+	int temp = heap[i];
+	heap[i] = heap[i*2+1];
+	heap[i*2+1] = temp;
+	cout << "Performed swap with right child!" << endl;
+	sortHeap(heap);//call itself to loop it until completely sorted
+      }
     }
   }
 }
