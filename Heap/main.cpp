@@ -16,7 +16,7 @@ Description: This program creates a max heap of integers between 1 and 1000.
 
 using namespace std;
 
-void printFunction(int heap[101]);
+void printFunction(int heap[101], int current, int depth);
 int addFunction(int heap[101], int &heapSize);
 void addByFile(int heap[101], char fileInputName[20], int &heapSize);
 void deleteFunction(int heap[101], int &heapSize);
@@ -39,7 +39,7 @@ int main() {
     cin.ignore(10, '\n');
 
     if (strcmp(input, "PRINT") == 0 || strcmp(input, "DISPLAY") == 0) {//if the user types in "PRINT" or "DISPLAY the printFunction method will be run
-      printFunction(heap);
+      printFunction(heap, 1, 0);
     }
     /*
     if (input > 0 && input <= 1000 && heapSize < 100) {//check if the input is valid and if there is heap room
@@ -70,13 +70,26 @@ int main() {
   }
 }
 
-void printFunction(int heap[101]) {
-  for (int i = 0; i < 101; i++) {
+void printFunction(int heap[101], int current, int depth) {
+  for (int i = 0; i < 101; i++) {//string printing, not tree
     cout << heap[i] << " ";
   }
   cout << endl;
+
+  /*
+  //TREE PRINTING
   //start at slot index 1 and find its children, then move to number 2 and find its children, etc.
-  
+  if (heap[current*2+1] != 0) {//if current's right child has something
+    printFunction(heap, current*2+1, depth+1);
+  }
+  for (int i = 0; i < depth; i++) {
+    cout << '\t';
+  }
+  cout << heap[current] << endl;
+  if (heap[current*2] != 0) {//if left child has something
+    printFunction(heap, current*2, depth+1);
+  }
+  */
 }
 
 int addFunction(int heap[101], int &heapSize) {
@@ -109,7 +122,7 @@ int addFunction(int heap[101], int &heapSize) {
     else if (heapSize > 100) {
       cout << "You have filled the heap and cannot add any more elements." << endl;
     }
-    else cout << "You cannot add that element. Each element must be a number between 1 and 1000." << endl;
+    else cout << "You cannot add that element. Each element must be a number between 1 and 1000. Also, there are only 100 available slots in the heap." << endl;
   }
   else if (inputType == 2) {//add from file
     char fileNameInput[20];
@@ -244,6 +257,3 @@ void sortHeap(int heap[101]) {
     }
   }
 }
-
-//STILL NEED TO FIX
-//Print as a tree
