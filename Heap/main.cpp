@@ -17,8 +17,8 @@ Description:
 using namespace std;
 
 void printFunction(int heap[101]);
-int addFunction(int heap[101], int heapSize);
-void addByFile(int heap[101], char fileInputName[20], int heapSize);
+int addFunction(int heap[101], int &heapSize);
+void addByFile(int heap[101], char fileInputName[20], int &heapSize);
 void deleteFunction(int heap[101]);
 void sortHeap(int heap[101]);
 
@@ -41,10 +41,18 @@ int main() {
     if (strcmp(input, "PRINT") == 0 || strcmp(input, "DISPLAY") == 0) {//if the user types in "PRINT" or "DISPLAY the printFunction method will be run
       printFunction(heap);
     }
-
+    /*
+    if (input > 0 && input <= 1000 && heapSize < 100) {//check if the input is valid and if there is heap room
+      for (int i = 1; i < 101; i++) {//add to the array in the first available slot
+        if (heap[i] == 0) {
+          heap[i] = input;
+	}
+      }
+    }
+    */
     if (strcmp(input, "ADD") == 0) {//if the user types in "ADD," the addFunction method will be run
       if (addFunction(heap, heapSize) == 1) {//successfully added one element
-	heapSize++;
+	//heapSize++;
 	cout << "Heap Size: " << heapSize << endl;
 	sortHeap(heap);
       }
@@ -69,7 +77,7 @@ void printFunction(int heap[101]) {
   //start at slot index 1 and find its children, then move to number 2 and find its children, etc.
 }
 
-int addFunction(int heap[101], int heapSize) {
+int addFunction(int heap[101], int &heapSize) {
   int inputType = 0;
   int input;
   cout << "What is the type of input? Type \"1\" for console input or \"2\" for file input." << endl;
@@ -88,6 +96,7 @@ int addFunction(int heap[101], int heapSize) {
 	  //cout << "Input has been added." << endl;
 	  //cout << "Slot added to: " << i << endl;
 	  //cout << "heap[i] = " << heap[i] << endl;
+	  heapSize++;
 	  return 1;
 	}
       }
@@ -127,37 +136,40 @@ int addFunction(int heap[101], int heapSize) {
   return 101;
 }
 
-void addByFile(int heap[101], char fileNameInput[20], int heapSize) {
+void addByFile(int heap[101], char fileNameInput[20], int &heapSize) {
   cout << "Reading from \"" << fileNameInput << "\"" << endl;
   int temp[100];
   for (int i = 0; i < 100; i++) {
     temp[i] = 0;
   }
   int num;
-  int count = 0;
-  int input;
+  //int count = 0;
+  //int input;
   ifstream File (fileNameInput);
   if (File.is_open()) {
     while (File >> num) {
-      cout << num << " ";
-      temp[count++] = num;
+      //cout << num << " ";
+      cout << "Heap Size: " << heapSize << endl;
+      if (num > 0 && num <= 1000 && heapSize+1 < 101 && heap[heapSize+1] == 0) {
+	//cout << num << " ";
+	heap[heapSize+1] = num;
+	heapSize++;
+      }
     }
     cout << endl;
+    /*
     for (int i = 0; i < 100; i++) {//ensures that the file translated to the temporary array correctly
       cout << temp[i] << endl;
       input = temp[i];
       cout << input << endl;
-      for (int i = 1; i < 101; i++) {//add to the array in the first available slot
-        if (input > 0 && input <= 1000 && heapSize < 100 && heap[i] == 0) {
-          heap[i] = input;
-	}
+      if (input > 0 && input <= 1000 && heapSize < 100 && heap[i] == 0) {
+	heap[i] = input;
       }
     }
   }
   else {
     cout << "Unable to open first name file" << endl;
   }
-  cout << "Adding from file is complete" << endl;
 
   for (int i = 1; i < 101; i++) {//add to the array in the first available slot
     if (heap[i] == 0) {
@@ -166,8 +178,11 @@ void addByFile(int heap[101], char fileNameInput[20], int heapSize) {
       //cout << "Slot added to: " << i << endl;
       //cout << "heap[i] = " << heap[i] << endl;
       //return 1;
-    }
+      }*/
   }
+  cout << "Adding from file is complete." << endl;
+  sortHeap(heap);
+  cout << "Sorting complete." << endl;
 }
 
 void deleteFunction(int heap[101]) {
