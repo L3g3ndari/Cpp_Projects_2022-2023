@@ -149,7 +149,7 @@ void addByFile(int heap[101], char fileNameInput[20], int &heapSize) {
   if (File.is_open()) {
     while (File >> num) {
       //cout << num << " ";
-      cout << "Heap Size: " << heapSize << endl;
+      //cout << "Heap Size: " << heapSize << endl;
       if (num > 0 && num <= 1000 && heapSize+1 < 101 && heap[heapSize+1] == 0) {
 	//cout << num << " ";
 	heap[heapSize+1] = num;
@@ -201,6 +201,15 @@ void deleteFunction(int heap[101], int &heapSize) {
   }
   else if (strcmp(ans, "a") == 0) {//delete whole heap
     cout << "Out: ";
+    while (heapSize != 0) {
+      int temp = heap[heapSize];
+      heap[heapSize] = heap[1];//switch the root with the last slot
+      heap[1] = temp;//switch complete
+      cout << heap[heapSize] << ", ";
+      heap[heapSize] = 0;//erase the original root
+      heapSize--;
+      sortHeap(heap);
+    }
     //look at root
     //stuff
     cout << endl << "Deleted whole heap." << endl;
@@ -220,14 +229,14 @@ void sortHeap(int heap[101]) {
 	int temp = heap[i];
 	heap[i] = heap[i*2];
 	heap[i*2] = temp;
-	cout << "Performed swap with left child!" << endl;
+	//cout << "Performed swap with left child!" << endl;
 	sortHeap(heap);//call itself to loop it until completely sorted
       }
       while (heap[i] < heap[i*2+1] && heap[i*2+1] != 0) {//check if parent is less than right child
 	int temp = heap[i];
 	heap[i] = heap[i*2+1];
 	heap[i*2+1] = temp;
-	cout << "Performed swap with right child!" << endl;
+	//cout << "Performed swap with right child!" << endl;
 	sortHeap(heap);//call itself to loop it until completely sorted
       }
     }
