@@ -4,9 +4,9 @@ Heap
 C++ Programming
 Mr. Galbraith
 Project Completed: 
-Outside Sources Used: 
+Outside Sources Used: None.
 
-Description:
+Description: This program creates a max heap of integers between 1 and 1000.
 */
 
 #include <iostream>
@@ -74,7 +74,9 @@ void printFunction(int heap[101]) {
   for (int i = 0; i < 101; i++) {
     cout << heap[i] << " ";
   }
+  cout << endl;
   //start at slot index 1 and find its children, then move to number 2 and find its children, etc.
+  
 }
 
 int addFunction(int heap[101], int &heapSize) {
@@ -244,7 +246,4 @@ void sortHeap(int heap[101]) {
 }
 
 //STILL NEED TO FIX
-
-//Deleting from wrong spot, leaving a weird 0
-//Adding from file still doesn't work, won't grab individual numbers
 //Print as a tree
