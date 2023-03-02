@@ -3,8 +3,8 @@ Nathan Wu
 Heap
 C++ Programming
 Mr. Galbraith
-Project Completed: 
-Outside Sources Used: None.
+Project Completed: 3/2/2023
+Outside Sources Used: I adjusted Mr. Galbraith's printing function and used it as my printing function.
 
 Description: This program creates a max heap of integers between 1 and 1000.
 */
@@ -28,7 +28,7 @@ int main() {
 
   int heap[101];
   int heapSize = 0;
-  for (int i = 0; i < 101; i++) {
+  for (int i = 0; i < 101; i++) {//sets all the values in the heap to null (zero, in this case. The domain given in the assignment was very convenient).
     heap[i] = 0;
   }
   
@@ -71,25 +71,24 @@ int main() {
 }
 
 void printFunction(int heap[101], int current, int depth) {
-  for (int i = 0; i < 101; i++) {//string printing, not tree
+  /*for (int i = 0; i < 101; i++) {//string printing, not tree
     cout << heap[i] << " ";
   }
-  cout << endl;
+  cout << endl;*/
 
-  /*
+  
   //TREE PRINTING
   //start at slot index 1 and find its children, then move to number 2 and find its children, etc.
-  if (heap[current*2+1] != 0) {//if current's right child has something
+  if (heap[current*2+1] != 0 && current < 50) {//if current's right child has something
     printFunction(heap, current*2+1, depth+1);
   }
   for (int i = 0; i < depth; i++) {
     cout << '\t';
   }
   cout << heap[current] << endl;
-  if (heap[current*2] != 0) {//if left child has something
+  if (heap[current*2] != 0 && current < 49) {//if left child has something
     printFunction(heap, current*2, depth+1);
   }
-  */
 }
 
 int addFunction(int heap[101], int &heapSize) {
