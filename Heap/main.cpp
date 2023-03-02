@@ -219,13 +219,11 @@ void deleteFunction(int heap[101], int &heapSize) {
       int temp = heap[heapSize];
       heap[heapSize] = heap[1];//switch the root with the last slot
       heap[1] = temp;//switch complete
-      cout << heap[heapSize] << ", ";
+      cout << heap[heapSize] << ", ";//this creates the output
       heap[heapSize] = 0;//erase the original root
       heapSize--;
       sortHeap(heap);
     }
-    //look at root
-    //stuff
     cout << endl << "Deleted whole heap." << endl;
   }
   else {
