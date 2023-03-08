@@ -18,16 +18,17 @@ void Stack::push(Node* input) {//add to head
     head -> setNext(temp);
     temp -> setPrevious(head);
   }
+  cout << "Push" << endl;
 }
 
 char Stack::peek() {//returns value of head
   return head -> getValue(); 
 }
 
-char Stack::pop(Node* head) {//deletes head and then returns it
+char Stack::pop() {//deletes head and then returns it
   if (head == NULL) {
     cout << "Stack is empty." << endl;
-    return 'L';
+    //return 'L';
   }
   char temp = head -> getValue();//this is what we're returning at the end
   head = head -> getNext();//create the new head

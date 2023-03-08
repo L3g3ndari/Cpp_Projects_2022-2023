@@ -6,7 +6,7 @@ using namespace std;
 class Queue {
  public:
   Queue();
-  ~Queue();
+  //~Queue();
   void enqueue(Node*);
   Node* dequeue();
   char peek();

@@ -6,10 +6,10 @@ using namespace std;
 class Stack {
  public:
   Stack();
-  ~Stack();
+  //~Stack();
   void push(Node*);
   char peek();
-  char pop(Node*);
+  char pop();
 
  private:
   Node* head;
