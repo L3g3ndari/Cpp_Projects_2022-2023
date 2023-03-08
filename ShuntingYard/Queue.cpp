@@ -20,16 +20,23 @@ void Queue::enqueue(Node* input) {//add to tail
   cout << "Enqueue" << endl;
 }
 
-Node* Queue::dequeue() {//delete head and then return it
+char Queue::dequeue() {//delete head and then return it
   if (head == NULL) {
     cout << "Stack is empty." << endl;
-    return NULL;
+    return 'L';
   }
-  else {
-    Node* temp = head;//this is what we're returning at the end
+  //cout << "BLAHAHA" << endl;
+  char temp = head -> getValue();//this is what we're returning at the end
+  Node* oldHead = head;
+    //cout << "blah2" << endl;
+    //cout << "Head: " << head << endl;
+    //cout << "HeadNext: " << head -> getNext() << endl;
     head = head -> getNext();//create the new head
+    delete oldHead;
+    cout << "Temp: " << temp << endl;
+    //cout << "TempNext: " << temp -> getNext() << endl;
+    //cout << "TempVal: " << temp -> getValue() << endl;
     return temp;//change the return to char?
-  }
 }
 
 char Queue::peek() {//returns value of head

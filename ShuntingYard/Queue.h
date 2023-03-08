@@ -8,7 +8,7 @@ class Queue {
   Queue();
   //~Queue();
   void enqueue(Node*);
-  Node* dequeue();
+  char dequeue();
   char peek();
 
  private:

@@ -31,7 +31,8 @@ char Stack::pop() {//deletes head and then returns it
     //return 'L';
   }
   char temp = head -> getValue();//this is what we're returning at the end
+  Node* oldHead = head;
   head = head -> getNext();//create the new head
-  delete head -> getPrevious();//deletes old head
+  delete oldHead;//deletes old head
   return temp;
 }
