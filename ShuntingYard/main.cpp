@@ -20,7 +20,8 @@ This program uses a shunting yard algorithm and a binary expression tree to conv
 
 using namespace std;
 
-void shuntingYard(char* input, int len, Stack stack, Queue queue);
+void shuntingYard(char* input, int len, Stack stack, Queue queue, int* &qSize);
+bool checkHiPrec(char subject, char peeked);
 
 int main() {
   cout << "Welcome to the Shunting Yard Algorithm Program." << endl << endl;
@@ -28,6 +29,7 @@ int main() {
 
   Stack stack = Stack();
   Queue queue = Queue();
+  int* qSize;
   
   while (true) {
     char input[20];
@@ -35,15 +37,17 @@ int main() {
     //cin.clear();
     //cin.ignore(20, '\n');
     int expressionLen = strlen(input);
-    char* SY = shuntingYard(input, expressionLen, stack, queue);
-    for (int i = 0; i < strlen(SY); i++) {
-      cout << SY[i];
+    shuntingYard(input, expressionLen, stack, queue, qSize);
+    cout << endl << "SY completed" << endl;
+    cout << "qSize: " << qSize << endl;
+    for (int i = 0; i < *qSize; i++) {
+      cout << queue.dequeue();
     }
     cout << endl;
   }
 }
 
-void shuntingYard(char* input, int len, Stack stack, Queue queue) {//Uses stack and queue to store elements, then returns the expression in postfix notation.
+void shuntingYard(char* input, int len, Stack stack, Queue queue, int* &qSize) {//Uses stack and queue to store elements, then returns the expression in postfix notation.
   cout << "Performing SY algorithm..." << endl;
   int i = 0;
   int queueSize = 0;
@@ -51,7 +55,7 @@ void shuntingYard(char* input, int len, Stack stack, Queue queue) {//Uses stack 
   cout << "Length: " << len << endl;
   while (i != len) {//traverse the inputted expression
     if (input[i] == '(') {//if character is a left parentheses
-      stack.push(newNode(input[i]));
+      stack.push(new Node(input[i]));
       stackSize++;
     }
     if (isdigit(input[i])) {//if character is a number
@@ -76,37 +80,55 @@ void shuntingYard(char* input, int len, Stack stack, Queue queue) {//Uses stack 
 	input[i] == '/' ||
 	input[i] == '^') {//if the character is an operator
       if (checkHiPrec(input[i], stack.peek()) == true) {//check if higher precedence, subject has higher precedence
-	queue.enqueue(new Node*(input[i]));
+	queue.enqueue(new Node(input[i]));
+	queueSize++;
       }
       else {//subject has equal or lower precedence, enqueue head of stack (pop)
 	while (checkHiPrec(input[i], stack.peek()) == false) {//while precedence is lower
-	  queue.enqueue(new Node*(stack.pop()));
+	  queue.enqueue(new Node(stack.pop()));//HERE IS WHERE SEG FAULT OCCURS (POP) (infinite loop?)
+	  queueSize++;
+	  stackSize--;
 	}
+	stack.push(new Node(input[i]));//afterwards, push the operator to the stack
+	stackSize++;
       }
     }
     i++;
   }
+  cout << "stackSize = " << stackSize << endl;
+  cout << "queueSize = " << queueSize << endl;
+  int originalStackSize = stackSize;
+  for (int i = 0; i < originalStackSize; i++) {
+    queue.enqueue(new Node(stack.pop()));
+    queueSize++;
+    stackSize--;
+  }
+  cout << "queue is complete." << endl;
+  cout << "queueSize = " << queueSize << endl;
+  *qSize = queueSize;
 }
 
 bool checkHiPrec(char subject, char peeked) {//if subject has greater P than peeked, return true
   if (peeked == '(') {
     return false;//we want to push the operator we are checking to the stack, regardless
   }
-  if (subject == '^') {
+  else if (subject == '^') {
     if (peeked != '^') {//if the stack has any other operator, '^' holds precedence
       return true;
     }
     return false;
   }
-  if (subject == '*' || subject == '/') {//if '*' or '/' has equal or higher precedence to stack
+  else if (subject == '*' || subject == '/') {//if '*' or '/' has equal or higher precedence to stack
     if (peeked == '+' || peeked == '-') {//only has higher precedence over '+' and '-'
       return true;
     }
     return false;
   }
-  if (subject == '+' || subject == '-') {//will never have higher precedence
+  else if (subject == '+' || subject == '-') {//will never have higher precedence
     return false;
   }
+  cout << "Didn't hit any cases?" << endl;
+  return false;
 }
 
   /*

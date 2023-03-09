@@ -22,17 +22,22 @@ void Stack::push(Node* input) {//add to head
 }
 
 char Stack::peek() {//returns value of head
-  return head -> getValue(); 
+  if (head != NULL) {
+    return head -> getValue();
+  }
+  return 'L';
 }
 
 char Stack::pop() {//deletes head and then returns it
-  if (head == NULL) {
-    cout << "Stack is empty." << endl;
-    //return 'L';
+  if (head != NULL) {
+    char temp = head -> getValue();//this is what we're returning at the end
+    Node* oldHead = head;
+    head = head -> getNext();//create the new head
+    delete oldHead;//deletes old head
+    return temp;
   }
-  char temp = head -> getValue();//this is what we're returning at the end
-  Node* oldHead = head;
-  head = head -> getNext();//create the new head
-  delete oldHead;//deletes old head
-  return temp;
+  else {
+    cout << "Stack is empty." << endl;
+    return 'L';
+  }
 }
