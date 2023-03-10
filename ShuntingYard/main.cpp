@@ -20,8 +20,9 @@ This program uses a shunting yard algorithm and a binary expression tree to conv
 
 using namespace std;
 
-void shuntingYard(char* input, int len, Stack stack, Queue queue, int* &qSize);
+void shuntingYard(char* input, int len, Stack &stack, Queue &queue);
 bool checkHiPrec(char subject, char peeked);
+int getOperatorVal(char op);
 
 int main() {
   cout << "Welcome to the Shunting Yard Algorithm Program." << endl << endl;
@@ -29,7 +30,6 @@ int main() {
 
   Stack stack = Stack();
   Queue queue = Queue();
-  int* qSize;
   
   while (true) {
     char input[20];
@@ -37,25 +37,27 @@ int main() {
     //cin.clear();
     //cin.ignore(20, '\n');
     int expressionLen = strlen(input);
-    shuntingYard(input, expressionLen, stack, queue, qSize);
-    cout << endl << "SY completed" << endl;
-    cout << "qSize: " << qSize << endl;
-    for (int i = 0; i < *qSize; i++) {
-      cout << queue.dequeue();
+    shuntingYard(input, expressionLen, stack, queue);
+    cout << endl << "Algorithm completed" << endl;
+    cout << "qSize: " << queue.getSize() << endl;
+    for (int i = 0; i < queue.getSize(); i++) {
+      cout << queue.enqueue(new Node(queue.dequeue()));
     }
     cout << endl;
   }
 }
 
-void shuntingYard(char* input, int len, Stack stack, Queue queue, int* &qSize) {//Uses stack and queue to store elements, then returns the expression in postfix notation.
+void shuntingYard(char* input, int len, Stack &stack, Queue &queue) {//Uses stack and queue to store elements, then returns the expression in postfix notation.
   cout << "Performing SY algorithm..." << endl;
   int i = 0;
   int queueSize = 0;
   int stackSize = 0;
+  bool closedParentheses = true;
   cout << "Length: " << len << endl;
-  while (i != len) {//traverse the inputted expression
+  while (i < len) {//traverse the inputted expression
     if (input[i] == '(') {//if character is a left parentheses
       stack.push(new Node(input[i]));
+      closedParentheses = false;
       stackSize++;
     }
     if (isdigit(input[i])) {//if character is a number
@@ -65,12 +67,15 @@ void shuntingYard(char* input, int len, Stack stack, Queue queue, int* &qSize) {
     }
     if (input[i] == ')') {//if character is right parentheses
       //repeatedly pop from stack and add it to the queue until a "(" is encountered.
-      while (stack.peek() != '(') {//if not a "(", pop from stack and add to queue
-	queue.enqueue(new Node(stack.pop()));
-	stackSize--;
-	queueSize++;
+      while (stack.peek() != '(' && stack.peek() != 'L') {//if not a "(", pop from stack and add to queue
+	if (stack.peek() != ' ') {
+	  queue.enqueue(new Node(stack.pop()));
+	  stackSize--;
+	  queueSize++;
+	}
       }
       stack.pop();//removes the "(" from the stack but doesn't add it to the queue
+      closedParentheses = true;
     }
     if (//input[i] == '(' ||
 	//input[i] == ')' ||
@@ -79,113 +84,60 @@ void shuntingYard(char* input, int len, Stack stack, Queue queue, int* &qSize) {
 	input[i] == '*' ||
 	input[i] == '/' ||
 	input[i] == '^') {//if the character is an operator
-      if (checkHiPrec(input[i], stack.peek()) == true) {//check if higher precedence, subject has higher precedence
-	queue.enqueue(new Node(input[i]));
-	queueSize++;
+      if (checkHiPrec(input[i], stack.peek()) == true) {//check if higher precedence, if subject has higher precedence
+	stack.push(new Node(input[i]));
+	stackSize++;
       }
       else {//subject has equal or lower precedence, enqueue head of stack (pop)
 	while (checkHiPrec(input[i], stack.peek()) == false) {//while precedence is lower
-	  queue.enqueue(new Node(stack.pop()));//HERE IS WHERE SEG FAULT OCCURS (POP) (infinite loop?)
+	  queue.enqueue(new Node(stack.pop()));
 	  queueSize++;
 	  stackSize--;
+	  cout << checkHiPrec(input[i], stack.peek()) << endl;
 	}
 	stack.push(new Node(input[i]));//afterwards, push the operator to the stack
 	stackSize++;
       }
     }
+    else {//potential solution to spaces
+      cout << "I think I hit a space." << endl;
+    }
     i++;
   }
+  //Constructing full queue
   cout << "stackSize = " << stackSize << endl;
   cout << "queueSize = " << queueSize << endl;
   int originalStackSize = stackSize;
   for (int i = 0; i < originalStackSize; i++) {
-    queue.enqueue(new Node(stack.pop()));
-    queueSize++;
-    stackSize--;
+    cout << i << " < " << originalStackSize << endl;
+    if (stack.peek() != 'L') {
+      queue.enqueue(new Node(stack.pop()));
+      queueSize++;
+      stackSize--;
+    }
   }
   cout << "queue is complete." << endl;
-  cout << "queueSize = " << queueSize << endl;
-  *qSize = queueSize;
+  cout << "queueSize = " << queue.getSize() << endl;
+  if (closedParentheses == false) {//give error message and clear queue
+    cout << "The algorithm tried to process an invalid expression. Please check your parentheses." << endl;
+    while (queue.getSize() != 0) {
+      queue.dequeue();
+    }
+  }
+}
+
+int getOperatorVal(char op) {
+  if (op == '(') return 5;
+  if (op == '^') return 4;
+  if (op == '*' || op == '/') return 3;
+  if (op == '+' || op == '-') return 2;
+  if (op == 'L') return 1;
+  return 111;
 }
 
 bool checkHiPrec(char subject, char peeked) {//if subject has greater P than peeked, return true
-  if (peeked == '(') {
-    return false;//we want to push the operator we are checking to the stack, regardless
-  }
-  else if (subject == '^') {
-    if (peeked != '^') {//if the stack has any other operator, '^' holds precedence
-      return true;
-    }
-    return false;
-  }
-  else if (subject == '*' || subject == '/') {//if '*' or '/' has equal or higher precedence to stack
-    if (peeked == '+' || peeked == '-') {//only has higher precedence over '+' and '-'
-      return true;
-    }
-    return false;
-  }
-  else if (subject == '+' || subject == '-') {//will never have higher precedence
-    return false;
-  }
-  cout << "Didn't hit any cases?" << endl;
-  return false;
+  cout << "Peeked: " << peeked << endl;
+  if (peeked == '(') return true;
+  if (getOperatorVal(subject) <= getOperatorVal(peeked)) return false;
+  else return true;
 }
-
-  /*
-  cout << "Performing SY algorithm..." << endl;
-  int i = 0;
-  int queueSize = 0;
-  int stackSize = 0;
-  cout << "Length: " << len << endl;
-  while (i != len) {//traverse the inputted expression
-    cout << "i = " << i << endl;
-    if (isdigit(input[i])) {//if character is a number
-      cout << "Character " << i << " = " << input[i] << endl;
-      //put into output queue
-      queue.enqueue(new Node(input[i]));
-      queueSize++;
-    }
-    else if (input[i] == '(' ||
-	     //input[i] == ')' ||
-	     input[i] == '+' ||
-	     input[i] == '-' ||
-	     input[i] == '*' ||
-	     input[i] == '/' ||
-	     input[i] == '^') {//if the character is an operator
-      cout << "Character " << i << " is an operator." << endl;
-      //push to stack
-      stack.push(new Node(input[i]));
-      stackSize++;
-    }
-    else if (input[i] == ')') {
-      //
-    }
-    else {//if character is a space or unrecognizable, ignore and move on
-      //break;
-    }
-    i++;
-  }
-  cout << "About to start constructing postfix notation" << endl;
-  //return using components from the stack and queue to get postfix notation
-  char* pfNotation = new char[queueSize + stackSize]; 
-  //dequeue from queue to get the numbers
-  int j = 0;
-  cout << "queueSize = " << queueSize << endl;
-  for (;j < queueSize; j++) {
-    cout << "One iteration through queue started." << endl;
-    pfNotation[j] = (queue.dequeue());
-    cout << "The char: " << pfNotation[j] << endl;
-    cout << "One iteration through queue complete" << endl;
-  }
-  //pop off stack to get operators (in reverse order)
-  cout << "stackSize = " << stackSize << endl;
-  for (;j < queueSize + stackSize; j++) {
-    pfNotation[j] = stack.pop();
-    cout << "One iteration through stack complete" << endl;
-  }
-  pfNotation[j] = '\0';
-  cout << "Finished building postfix notation, about to return." << endl;
-  return pfNotation;
-  //return input;
-}
-  */

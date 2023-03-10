@@ -6,9 +6,14 @@ using namespace std;
 Queue::Queue() {
   head = NULL;
   tail = NULL;
+  length = 0;
 }
 
-void Queue::enqueue(Node* input) {//add to tail
+int Queue::getSize() {
+  return length;
+}
+
+char Queue::enqueue(Node* input) {//add to tail
   if (tail == NULL) {
     tail = input;
     head = input;
@@ -17,12 +22,14 @@ void Queue::enqueue(Node* input) {//add to tail
     tail -> setNext(input);
     tail = input;    
   }
-  cout << "Enqueue" << endl;
+  length++;
+  //cout << "Enqueued " << input -> getValue() << endl;
+  return input -> getValue();
 }
 
 char Queue::dequeue() {//delete head and then return it
   if (head == NULL) {
-    cout << "Stack is empty." << endl;
+    cout << "Queue is empty." << endl;
     return 'L';
   }
   //cout << "BLAHAHA" << endl;
@@ -33,9 +40,10 @@ char Queue::dequeue() {//delete head and then return it
     //cout << "HeadNext: " << head -> getNext() << endl;
     head = head -> getNext();//create the new head
     delete oldHead;
-    cout << "Temp: " << temp << endl;
+    //cout << "Temp: " << temp << endl;
     //cout << "TempNext: " << temp -> getNext() << endl;
     //cout << "TempVal: " << temp -> getValue() << endl;
+    length--;
     return temp;//change the return to char?
 }
 

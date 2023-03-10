@@ -18,7 +18,7 @@ void Stack::push(Node* input) {//add to head
     head -> setNext(temp);
     temp -> setPrevious(head);
   }
-  cout << "Push" << endl;
+  cout << "Pushed " << input -> getValue() << endl;
 }
 
 char Stack::peek() {//returns value of head

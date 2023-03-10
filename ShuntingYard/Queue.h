@@ -7,11 +7,13 @@ class Queue {
  public:
   Queue();
   //~Queue();
-  void enqueue(Node*);
+  char enqueue(Node*);
   char dequeue();
   char peek();
+  int getSize();
 
  private:
   Node* head;
   Node* tail;
+  int length;
 };
