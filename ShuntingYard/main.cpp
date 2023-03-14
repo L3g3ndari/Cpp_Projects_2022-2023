@@ -33,7 +33,7 @@ int main() {
   
   while (true) {
     char input[20];
-    cin.getline(input, 19);
+    cin.getline(input, 20);
     //cin.clear();
     //cin.ignore(20, '\n');
     int expressionLen = strlen(input);
@@ -63,17 +63,21 @@ void shuntingYard(char* input, int len, Stack &stack, Queue &queue) {//Uses stac
     if (isdigit(input[i])) {//if character is a number
       //cout << "Character " << i << " = " << input[i] << endl;
       queue.enqueue(new Node(input[i]));
+      cout << "Enqueued " << input[i] << endl;
       queueSize++;
     }
     if (input[i] == ')') {//if character is right parentheses
+      cout << "Hit a right parentheses" << endl;
       //repeatedly pop from stack and add it to the queue until a "(" is encountered.
       while (stack.peek() != '(' && stack.peek() != 'L') {//if not a "(", pop from stack and add to queue
 	if (stack.peek() != ' ') {
 	  queue.enqueue(new Node(stack.pop()));
+	  cout << "Enqueued " << queue.peek() << endl;
 	  stackSize--;
 	  queueSize++;
 	}
       }
+      cout << "Removed " << stack.peek() << ", thinking it was a parenthese" << endl;
       stack.pop();//removes the "(" from the stack but doesn't add it to the queue
       closedParentheses = true;
     }
@@ -85,12 +89,16 @@ void shuntingYard(char* input, int len, Stack &stack, Queue &queue) {//Uses stac
 	input[i] == '/' ||
 	input[i] == '^') {//if the character is an operator
       if (checkHiPrec(input[i], stack.peek()) == true) {//check if higher precedence, if subject has higher precedence
+	cout << input[i] << " has higher precedence than " << stack.peek() << endl;
 	stack.push(new Node(input[i]));
 	stackSize++;
       }
       else {//subject has equal or lower precedence, enqueue head of stack (pop)
 	while (checkHiPrec(input[i], stack.peek()) == false) {//while precedence is lower
+	  cout << input[i] << " has lower precedence than " << stack.peek() << endl;
+	  cout << "Stack.peek() = " << stack.peek() << endl;
 	  queue.enqueue(new Node(stack.pop()));
+	  //cout << "Popped " << queue.peek() << " off the stack and enqueued it." << endl;
 	  queueSize++;
 	  stackSize--;
 	  cout << checkHiPrec(input[i], stack.peek()) << endl;
