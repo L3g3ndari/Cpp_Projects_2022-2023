@@ -21,6 +21,7 @@ This program uses a shunting yard algorithm and a binary expression tree to conv
 using namespace std;
 
 void shuntingYard(char* input, int len, Stack &stack, Queue &queue);
+char* biExTree(Stack &stack, Queue &queue);
 bool checkHiPrec(char subject, char peeked);
 int getOperatorVal(char op);
 
@@ -59,6 +60,13 @@ int main() {
       cout << queue.enqueue(new Node(queue.dequeue()));
     }
     cout << endl;
+    char postfixSY[20];
+    for (int i = 0; i < queue.getSize(); i++) {
+      postfixSY[i] = queue.enqueue(new Node(queue.dequeue()));
+    }
+    cout << "Postfix expression from Shunting Yard Algorithm: " << postfixSY << endl;
+    char output[20];
+    output = biExTree(stack, queue);
   }
 }
 
@@ -163,4 +171,11 @@ bool checkHiPrec(char subject, char peeked) {//if subject has greater P than pee
   if (peeked == '(') return true;
   if (getOperatorVal(subject) <= getOperatorVal(peeked)) return false;
   else return true;
+}
+
+char* biExTree(Stack &stack, Queue &queue) {
+  cout << "Constructing Binary Expression Tree..." << endl;
+    for (int i = 0; i < queue.getSize(); i++) {
+      cout << queue.enqueue(new Node(queue.dequeue()));
+    }
 }
