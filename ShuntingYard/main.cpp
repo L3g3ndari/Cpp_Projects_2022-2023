@@ -32,10 +32,25 @@ int main() {
   Queue queue = Queue();
   
   while (true) {
-    char input[20];
-    cin.getline(input, 20);
+    char inputU[50];
+    cin.getline(inputU, 50);
     //cin.clear();
-    //cin.ignore(20, '\n');
+    //cin.ignore(50, '\n');
+
+//remove spaces
+    char input[50];
+    for (int c = 0, g = 0; c < strlen(inputU); c++) {
+      if (inputU[c] != ' ') {
+        input[g] = inputU[c];
+        g++;
+      }
+    }
+    cout << "This is going into the algorithm: ";
+    for (int i = 0; i < strlen(input); i++) {
+      cout << input[i];
+    }
+    cout << endl;
+    
     int expressionLen = strlen(input);
     shuntingYard(input, expressionLen, stack, queue);
     cout << endl << "Algorithm completed" << endl;
