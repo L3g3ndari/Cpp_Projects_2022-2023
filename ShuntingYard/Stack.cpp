@@ -18,7 +18,7 @@ void Stack::push(Node* input) {//add to head
     head -> setNext(temp);
     temp -> setPrevious(head);
   }
-  cout << "Pushed " << input -> getValue() << endl;
+  //cout << "Pushed " << input -> getValue() << endl;
 }
 
 char Stack::peek() {//returns value of head
@@ -37,7 +37,7 @@ char Stack::pop() {//deletes head and then returns it
     return temp;
   }
   else {
-    cout << "Stack is empty." << endl;
+    //cout << "Stack is empty." << endl;
     return 'L';
   }
 }
@@ -50,7 +50,7 @@ Node* Stack::popNode() {//deletes head and then returns it
     return oldHead;
   }
   else {
-    cout << "Stack is empty." << endl;
+    //cout << "Stack is empty." << endl;
     return NULL;
   }
 }

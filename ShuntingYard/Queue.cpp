@@ -29,7 +29,7 @@ char Queue::enqueue(Node* input) {//add to tail
 
 char Queue::dequeue() {//delete head and then return it
   if (head == NULL) {
-    cout << "Queue is empty." << endl;
+    //cout << "Queue is empty." << endl;
     return 'L';
   }
   //cout << "BLAHAHA" << endl;
@@ -52,7 +52,7 @@ char Queue::peek() {//returns value of head
     return head -> getValue();
   }
   else {
-    cout << "Queue is empty." << endl;
+    //cout << "Queue is empty." << endl;
     return 'L';
   }
 }
