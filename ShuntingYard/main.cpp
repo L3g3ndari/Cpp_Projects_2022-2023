@@ -65,8 +65,9 @@ int main() {
       postfixSY[i] = queue.enqueue(new Node(queue.dequeue()));
     }
     cout << "Postfix expression from Shunting Yard Algorithm: " << postfixSY << endl;
-    char output[20];
+    char* output = new char[20];
     output = biExTree(stack, queue);
+    cout << "Here is what biExTree returns: " << output << endl;
   }
 }
 
@@ -174,8 +175,42 @@ bool checkHiPrec(char subject, char peeked) {//if subject has greater P than pee
 }
 
 char* biExTree(Stack &stack, Queue &queue) {
-  cout << "Constructing Binary Expression Tree..." << endl;
-    for (int i = 0; i < queue.getSize(); i++) {
-      cout << queue.enqueue(new Node(queue.dequeue()));
+  char* output = new char[50];
+  bool valid = false;
+  char outType[10];
+  while (valid == false) {
+    cout << endl << "Please select an input type (infix, prefix, or postfix)" << endl << "Output type: ";
+    cin >> outType;
+    cin.clear();
+    cin.ignore(10, '\n');
+    if (strcmp(outType, "infix") == 0 ||
+	strcmp(outType, "prefix") == 0 ||
+	strcmp(outType, "postfix") == 0) {//if one of the valid inputs
+      valid = true;
     }
+    else {
+      valid = false;
+      cout << "That is not a valid input type." << endl;
+    }
+  }
+  cout << "Constructing Binary Expression Tree..." << endl;
+  for (int i = 0; i < queue.getSize(); i++) {
+    cout << queue.enqueue(new Node(queue.dequeue()));
+  }
+  cout << endl;
+
+  if (strcmp(outType, "infix") == 0) {
+    cout << "constructing infix output" << endl;
+  }
+
+  if (strcmp(outType, "prefix") == 0) {
+    cout << "constructing prefix output" << endl;
+  }
+
+  if (strcmp(outType, "postfix") == 0) {
+    cout << "constructing postfix output" << endl;
+  }
+  
+  cout << endl;
+  return output;
 }
