@@ -48,5 +48,11 @@ char Queue::dequeue() {//delete head and then return it
 }
 
 char Queue::peek() {//returns value of head
-  return head -> getValue();
+  if (head != NULL) {
+    return head -> getValue();
+  }
+  else {
+    cout << "Queue is empty." << endl;
+    return 'L';
+  }
 }

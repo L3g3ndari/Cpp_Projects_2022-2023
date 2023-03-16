@@ -21,9 +21,12 @@ This program uses a shunting yard algorithm and a binary expression tree to conv
 using namespace std;
 
 void shuntingYard(char* input, int len, Stack &stack, Queue &queue);
-char* biExTree(Stack &stack, Queue &queue);
+void biExTree(Stack &stack, Queue &queue, Node* root);
 bool checkHiPrec(char subject, char peeked);
 int getOperatorVal(char op);
+void infix(Node* current);
+void prefix(Node* current);
+void postfix(Node* current);
 
 int main() {
   cout << "Welcome to the Shunting Yard Algorithm Program." << endl << endl;
@@ -31,6 +34,7 @@ int main() {
 
   Stack stack = Stack();
   Queue queue = Queue();
+  Node* root = NULL;
   
   while (true) {
     char inputU[50];
@@ -65,9 +69,38 @@ int main() {
       postfixSY[i] = queue.enqueue(new Node(queue.dequeue()));
     }
     cout << "Postfix expression from Shunting Yard Algorithm: " << postfixSY << endl;
-    char* output = new char[20];
-    output = biExTree(stack, queue);
-    cout << "Here is what biExTree returns: " << output << endl;
+
+    biExTree(stack, queue, root);
+
+    char* output = new char[50];
+    bool valid = false;
+    char outType[10];
+    while (valid == false) {
+      cout << endl << "Please select an input type (infix, prefix, or postfix)" << endl << "Output type: ";
+      cin >> outType;
+      cin.clear();
+      cin.ignore(10, '\n');
+      if (strcmp(outType, "infix") == 0 ||
+	  strcmp(outType, "prefix") == 0 ||
+	  strcmp(outType, "postfix") == 0) {//if one of the valid inputs
+	valid = true;
+      }
+      else {
+	valid = false;
+	cout << "That is not a valid input type." << endl;
+      }
+    }
+    if (strcmp(outType, "infix") == 0) {
+      infix(root);
+    }
+
+    if (strcmp(outType, "prefix") == 0) {
+      prefix(root);
+    }
+
+    if (strcmp(outType, "postfix") == 0) {
+      postfix(root);
+    }
   }
 }
 
@@ -174,43 +207,57 @@ bool checkHiPrec(char subject, char peeked) {//if subject has greater P than pee
   else return true;
 }
 
-char* biExTree(Stack &stack, Queue &queue) {
-  char* output = new char[50];
-  bool valid = false;
-  char outType[10];
-  while (valid == false) {
-    cout << endl << "Please select an input type (infix, prefix, or postfix)" << endl << "Output type: ";
-    cin >> outType;
-    cin.clear();
-    cin.ignore(10, '\n');
-    if (strcmp(outType, "infix") == 0 ||
-	strcmp(outType, "prefix") == 0 ||
-	strcmp(outType, "postfix") == 0) {//if one of the valid inputs
-      valid = true;
-    }
-    else {
-      valid = false;
-      cout << "That is not a valid input type." << endl;
-    }
-  }
+void biExTree(Stack &stack, Queue &queue, Node* root) {//builds the tree
   cout << "Constructing Binary Expression Tree..." << endl;
-  for (int i = 0; i < queue.getSize(); i++) {
-    cout << queue.enqueue(new Node(queue.dequeue()));
+  while (true) {
+    char temp = queue.peek();
+    if (isdigit(temp) == true) {//if num, push to stack
+      Node* num = new Node(queue.dequeue());
+      stack.push(num);
+      cout << "Pushed: " << temp << endl;
+    }
+    else if (temp == '+' ||
+	     temp == '-' ||
+	     temp == '*' ||
+	     temp == '/' ||
+	     temp == '^') {//if the character is an operator
+      Node* n = new Node(queue.dequeue());
+      if (queue.peek() == 'L') {//if queue is empty, we are at the root
+	cout << "We are at the root." << endl;
+	root = n;
+	Node* r = new Node(stack.pop());
+	root -> setRight(r);
+	r -> setPrevious(root);
+	Node* l = new Node(stack.pop());
+        root -> setRight(l);
+        l -> setPrevious(root);
+	break;
+      }
+      else {//everything else that isn't the root
+	cout << "Creating branches" << endl;
+	Node* r = new Node(stack.pop());
+        n -> setRight(r);
+        r -> setPrevious(n);
+        Node* l = new Node(stack.pop());
+        n -> setRight(l);
+        l -> setPrevious(n);
+	stack.push(n);
+      }
+    }
+    else {//invalid character
+      cout << "Invalid character." << endl;
+    }
   }
-  cout << endl;
+}
 
-  if (strcmp(outType, "infix") == 0) {
-    cout << "constructing infix output" << endl;
-  }
+void infix(Node* current) {
+  cout << "Constructing infix output" << endl;
+}
 
-  if (strcmp(outType, "prefix") == 0) {
-    cout << "constructing prefix output" << endl;
-  }
+void prefix(Node* current) {
+  cout << "Constructing prefix output" << endl;
+}
 
-  if (strcmp(outType, "postfix") == 0) {
-    cout << "constructing postfix output" << endl;
-  }
-  
-  cout << endl;
-  return output;
+void postfix(Node* current) {
+  cout << "Constructing postfix output" << endl;
 }
