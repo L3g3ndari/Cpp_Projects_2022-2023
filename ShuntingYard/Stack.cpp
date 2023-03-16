@@ -41,3 +41,16 @@ char Stack::pop() {//deletes head and then returns it
     return 'L';
   }
 }
+
+Node* Stack::popNode() {//deletes head and then returns it
+  if (head != NULL) {
+    Node* oldHead = head;
+    head = head -> getNext();//create the new head
+    //delete oldHead;//deletes old head
+    return oldHead;
+  }
+  else {
+    cout << "Stack is empty." << endl;
+    return NULL;
+  }
+}

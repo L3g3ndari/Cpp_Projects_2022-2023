@@ -10,6 +10,7 @@ class Stack {
   void push(Node* head);
   char peek();
   char pop();
+  Node* popNode();
 
  private:
   Node* head;

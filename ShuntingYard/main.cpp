@@ -21,7 +21,7 @@ This program uses a shunting yard algorithm and a binary expression tree to conv
 using namespace std;
 
 void shuntingYard(char* input, int len, Stack &stack, Queue &queue);
-void biExTree(Stack &stack, Queue &queue, Node* root);
+void biExTree(Stack &stack, Queue &queue, Node* &root);
 bool checkHiPrec(char subject, char peeked);
 int getOperatorVal(char op);
 void infix(Node* current);
@@ -91,14 +91,18 @@ int main() {
       }
     }
     if (strcmp(outType, "infix") == 0) {
+      cout << "Constructing infix output" << endl;
       infix(root);
     }
 
     if (strcmp(outType, "prefix") == 0) {
+      cout << "Constructing prefix output" << endl;
       prefix(root);
     }
 
     if (strcmp(outType, "postfix") == 0) {
+      cout << "Constructing postfix output" << endl << endl;
+      cout << "Postfix Output: ";
       postfix(root);
     }
   }
@@ -207,7 +211,7 @@ bool checkHiPrec(char subject, char peeked) {//if subject has greater P than pee
   else return true;
 }
 
-void biExTree(Stack &stack, Queue &queue, Node* root) {//builds the tree
+void biExTree(Stack &stack, Queue &queue, Node* &root) {//builds the tree
   cout << "Constructing Binary Expression Tree..." << endl;
   while (true) {
     char temp = queue.peek();
@@ -225,21 +229,21 @@ void biExTree(Stack &stack, Queue &queue, Node* root) {//builds the tree
       if (queue.peek() == 'L') {//if queue is empty, we are at the root
 	cout << "We are at the root." << endl;
 	root = n;
-	Node* r = new Node(stack.pop());
+	Node* r = stack.popNode();
 	root -> setRight(r);
 	r -> setPrevious(root);
-	Node* l = new Node(stack.pop());
-        root -> setRight(l);
+	Node* l = stack.popNode();
+        root -> setLeft(l);
         l -> setPrevious(root);
 	break;
       }
       else {//everything else that isn't the root
 	cout << "Creating branches" << endl;
-	Node* r = new Node(stack.pop());
+	Node* r = stack.popNode();
         n -> setRight(r);
         r -> setPrevious(n);
-        Node* l = new Node(stack.pop());
-        n -> setRight(l);
+        Node* l = stack.popNode();
+        n -> setLeft(l);
         l -> setPrevious(n);
 	stack.push(n);
       }
@@ -251,13 +255,19 @@ void biExTree(Stack &stack, Queue &queue, Node* root) {//builds the tree
 }
 
 void infix(Node* current) {
-  cout << "Constructing infix output" << endl;
+  
 }
 
 void prefix(Node* current) {
-  cout << "Constructing prefix output" << endl;
+  if (current == NULL) return;
+  cout << current -> getValue();
+  prefix(current -> getLeft());
+  prefix(current -> getRight());
 }
 
 void postfix(Node* current) {
-  cout << "Constructing postfix output" << endl;
+  if (current == NULL) return;
+  postfix(current -> getLeft());
+  postfix(current -> getRight());
+  cout << current -> getValue();
 }
