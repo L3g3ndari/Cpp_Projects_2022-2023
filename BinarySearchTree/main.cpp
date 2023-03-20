@@ -71,7 +71,15 @@ int main() {
     }
 
     if (strcmp(command, "DELETE") == 0) {
-      
+      cout << "What value would you like to delete?" << endl << "Target: ";
+      int target;
+      cin >> target;
+      if (search(root, searchTerm) == true) {//it exists
+        //call deleteNode function
+      }
+      else {
+        cout << "Could not find " << target << " in the tree." << endl;
+      }
     }
 
     if (strcmp(command, "PRINT") == 0) {
@@ -127,7 +135,12 @@ void add(treeNode* &current, int subject) {
   }
 }
 
-void deleteNode(treeNode* &current, int target) {}
+void deleteNode(treeNode* &current, int target) {
+  //Cases
+  //No children
+  //1 child
+  //2 children
+}
 
 bool search(treeNode* current, int target) {
   if (current != NULL) {//while we haven't reached the end of a branch
