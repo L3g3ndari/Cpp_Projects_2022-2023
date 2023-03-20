@@ -19,7 +19,7 @@ using namespace std;
 void printTree(treeNode* current, int depth);
 void add(treeNode* &current, int subject);
 void deleteNode(treeNode* &current, int target);
-bool search(int target);
+bool search(treeNode* root, int target);
 
 int main() {
   cout << "Welcome to the Binary Search Tree program. Your available commands are ADD, DELETE, PRINT, SEARCH, and QUIT." << endl;
@@ -65,7 +65,15 @@ int main() {
     }
 
     if (strcmp(command, "SEARCH") == 0) {
-      
+      cout << endl << "What value would you like to search for?" << endl << "Search: ";
+      int searchTerm;
+      cin >> searchTerm;
+      if (search(root, searchTerm) == true) {//we found it!
+	cout << searchTerm << " exists in the tree." << endl;
+      }
+      else {
+	cout << "Could not find " << searchTerm << " in the tree." << endl;
+      }
     }
 
     if (strcmp(command, "QUIT") == 0) {
@@ -107,6 +115,21 @@ void add(treeNode* &current, int subject) {
 
 void deleteNode(treeNode* &current, int target) {}
 
-bool search(int target) {
-  return true;
+bool search(treeNode* current, int target) {
+  if (current != NULL) {//while we haven't reached the end of a branch
+    cout << "not null" << endl;
+    if (target == current -> getValue()) {
+      cout << "Found it!" << endl;
+      return true;
+    }
+    else if (target < current -> getValue()) {
+      cout << "going left" << endl;
+      search(current -> getLeft(), target);
+    }
+    else {
+      cout << "going right" << endl;
+      search(current -> getRight(), target);
+    }
+  }
+  return false;//need to find better return value to make this work.
 }
