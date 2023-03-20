@@ -9,8 +9,8 @@ class treeNode {
   int getValue();//returns the character that the node stores
   void setRight(treeNode*);
   void setLeft(treeNode*);
-  treeNode* getRight();
-  treeNode* getLeft();
+  treeNode* &getRight();
+  treeNode* &getLeft();
  private:
   int value;
   treeNode* right;

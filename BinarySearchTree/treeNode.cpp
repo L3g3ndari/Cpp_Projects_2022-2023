@@ -27,9 +27,9 @@ void treeNode::setLeft(treeNode* newLeft) {
   left = newLeft;
 }
 
-treeNode* treeNode::getRight() {
+treeNode* &treeNode::getRight() {
   return right;
 }
-treeNode* treeNode::getLeft() {
+treeNode* &treeNode::getLeft() {
   return left;
 }

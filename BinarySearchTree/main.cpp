@@ -16,9 +16,9 @@ This program creates a binary search tree of integers between 1 and 999. The use
 
 using namespace std;
 
-void printTree(treeNode* &root);
-void add(treeNode* &root, treeNode* subject);
-void deleteNode(treeNode* &root, int target);
+void printTree(treeNode* current);
+void add(treeNode* current, treeNode* &root, int subject);
+void deleteNode(treeNode* &current, int target);
 bool search(int target);
 
 int main() {
@@ -28,13 +28,13 @@ int main() {
 
   while (true) {
     cout << endl << "Expecting new command: ";
-    char input[20];
-    cin >> input;
+    char command[20];
+    cin >> command;
     cin.clear();
     cin.ignore(20, '\n');
     cout << endl;
 
-    if (strcmp(input, "ADD") == 0) {
+    if (strcmp(command, "ADD") == 0) {
       cout << "Manual input, type \"1\", file input, type \"2\"." << endl;
       char typeInput;
       cin >> typeInput;
@@ -42,9 +42,11 @@ int main() {
       cin.ignore(1, '\n');
       if (typeInput == '1') {//add manually
 	cout << "Please type a sequence of numbers. Please separate by using space." << endl << "Input Sequence: ";
-	char inputSeq[50];
-	cin.getline(inputSeq, 50);
-	//find out how to parse so that we get integers
+	int input;
+	cin >> input;
+	if (input > 0 && input < 1000) {//if it is a valid input
+	  add(root, input);
+	}
       }
       else if (typeInput == '2') {//add by file
 
@@ -54,19 +56,19 @@ int main() {
       }
     }
 
-    if (strcmp(input, "DELETE") == 0) {
+    if (strcmp(command, "DELETE") == 0) {
       
     }
 
-    if (strcmp(input, "PRINT") == 0) {
+    if (strcmp(command, "PRINT") == 0) {
       
     }
 
-    if (strcmp(input, "SEARCH") == 0) {
+    if (strcmp(command, "SEARCH") == 0) {
       
     }
 
-    if (strcmp(input, "QUIT") == 0) {
+    if (strcmp(command, "QUIT") == 0) {
       cout << "Goodbye." << endl;
       exit(0);
     }
@@ -75,9 +77,27 @@ int main() {
   
 }
 
-void printTree(treeNode* &root) {}
-void add(treeNode* &root, treeNode* subject) {}
-void deleteNode(treeNode* &root, int target) {}
+void printTree(treeNode* current) {}
+
+void add(treeNode* &current, int subject) {
+  if (current == NULL) {
+    current = new treeNode(subject);
+    return;
+  }
+  if (subject < current -> getValue()) {//if subject is less than current
+    //keep traversing left
+    add(current -> getLeft(), subject);
+  }
+  else {//if subject is greater than or equal to current
+    //keep traversing right
+    add(current -> getRight(), subject);
+  }
+
+  }
+}
+
+void deleteNode(treeNode* &current, int target) {}
+
 bool search(int target) {
   return true;
 }
