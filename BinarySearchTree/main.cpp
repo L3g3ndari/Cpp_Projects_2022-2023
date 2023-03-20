@@ -12,6 +12,7 @@ This program creates a binary search tree of integers between 1 and 999. The use
 
 #include <iostream>
 #include <cstring>
+#include <fstream>
 #include "treeNode.h"
 
 using namespace std;
@@ -49,7 +50,20 @@ int main() {
 	}
       }
       else if (typeInput == '2') {//add by file
-
+	cout << "File Name: ";
+	char fileName[20];
+	cin.getline(fileName, 20);
+	cin.clear();
+	int num;
+	ifstream File (fileName);
+	if (File.is_open()) {
+	  while (File >> num) {
+	    if (num > 0 && num < 1000) {
+	      add(root, num);
+	    }
+	  }
+	  cout << endl << "Adding from file is completed." << endl;
+	}
       }
       else {
 	cout << "That is not a valid input type. Please type either 1 or 2." << endl;
