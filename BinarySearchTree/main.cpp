@@ -16,8 +16,8 @@ This program creates a binary search tree of integers between 1 and 999. The use
 
 using namespace std;
 
-void printTree(treeNode* current);
-void add(treeNode* current, treeNode* &root, int subject);
+void printTree(treeNode* current, int depth);
+void add(treeNode* &current, int subject);
 void deleteNode(treeNode* &current, int target);
 bool search(int target);
 
@@ -41,7 +41,7 @@ int main() {
       cin.clear();
       cin.ignore(1, '\n');
       if (typeInput == '1') {//add manually
-	cout << "Please type a sequence of numbers. Please separate by using space." << endl << "Input Sequence: ";
+	cout << endl << "Please input a number." << endl << "Input: ";
 	int input;
 	cin >> input;
 	if (input > 0 && input < 1000) {//if it is a valid input
@@ -61,7 +61,7 @@ int main() {
     }
 
     if (strcmp(command, "PRINT") == 0) {
-      
+      printTree(root, 0);
     }
 
     if (strcmp(command, "SEARCH") == 0) {
@@ -77,7 +77,18 @@ int main() {
   
 }
 
-void printTree(treeNode* current) {}
+void printTree(treeNode* current, int depth) {
+  if (current -> getRight() != NULL) {//if current's right child has something
+    printTree(current -> getRight(), depth+1);
+  }
+  for (int i = 0; i < depth; i++) {
+    cout << '\t';
+  }
+  cout << current -> getValue() << endl;
+  if (current -> getLeft() != NULL) {//if left child has something
+    printTree(current -> getLeft(), depth+1);
+  }
+}
 
 void add(treeNode* &current, int subject) {
   if (current == NULL) {
@@ -91,8 +102,6 @@ void add(treeNode* &current, int subject) {
   else {//if subject is greater than or equal to current
     //keep traversing right
     add(current -> getRight(), subject);
-  }
-
   }
 }
 
