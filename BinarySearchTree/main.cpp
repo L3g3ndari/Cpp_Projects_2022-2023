@@ -147,6 +147,14 @@ void add(treeNode* &current, int subject) {
   }
 }
 
+treeNode* FindInorderSuc(treeNode* current) {
+  while (current != NULL && current -> getLeft() != NULL) {
+    current = current -> getLeft();
+  }
+  cout << "Inorder successor (value): " << current -> getValue() << endl;
+  return current;
+}
+
 void deleteNode(treeNode* target) {
   if (target == NULL) return;
   //Cases
@@ -157,6 +165,12 @@ void deleteNode(treeNode* target) {
   int numKids = (target -> getLeft() != NULL) + (target -> getRight() != NULL);
   if (numKids == 2) {//2 children
     cout << "2 child deletion" << endl;
+    //find inorder successor
+    treeNode* inorderSuc = FindInorderSuc(target);
+    //replace target's value with inorder successor's value
+    target -> setValue(inorderSuc -> getValue());
+    //delete inorder successor, rewire pointers?
+    delete inorderSuc;
   }
   else if (numKids == 1) {//1 child
     cout << "1 child deletion" << endl;
@@ -192,7 +206,7 @@ void deleteNode(treeNode* target) {
   }
 }
 
-bool search(treeNode* current, int target) {
+bool search(treeNode* current, int target) {d
   if (current == NULL) {
     return 0;
   }

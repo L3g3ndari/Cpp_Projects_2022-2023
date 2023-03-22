@@ -16,8 +16,12 @@ treeNode::~treeNode() {
   parent = NULL;
 }
 
-int treeNode::getValue() {//returns the char
+int treeNode::getValue() {//returns the int
   return value;
+}
+
+void treeNode::setValue(int newValue) {
+  value = newValue;
 }
 
 void treeNode::setRight(treeNode* newRight) {
