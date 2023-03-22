@@ -19,8 +19,9 @@ using namespace std;
 
 void printTree(treeNode* current, int depth);
 void add(treeNode* &current, int subject);
-void deleteNode(treeNode* &current, int target);
+void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
+treeNode* searchN(treeNode* root, int target);
 
 int main() {
   cout << "Welcome to the Binary Search Tree program. Your available commands are ADD, DELETE, PRINT, SEARCH, and QUIT." << endl;
@@ -74,12 +75,14 @@ int main() {
       cout << "What value would you like to delete?" << endl << "Target: ";
       int target;
       cin >> target;
-      if (search(root, target) == true) {//it exists
-        //call deleteNode function
+      treeNode* searchResult = searchN(root, target);
+      while (searchResult != NULL) {//it exists
+        cout << "We are deleting: " << searchResult -> getValue() << endl;
+	deleteNode(searchResult);
+	//searchResult = searchN(root, target);
+	searchResult = NULL;
       }
-      else {
-        cout << "Could not find " << target << " in the tree." << endl;
-      }
+      cout << "Deleted all occurences of " << target << " in the tree." << endl;
     }
 
     if (strcmp(command, "PRINT") == 0) {
@@ -125,21 +128,54 @@ void add(treeNode* &current, int subject) {
     current = new treeNode(subject);
     return;
   }
+  
   if (subject < current -> getValue()) {//if subject is less than current
     //keep traversing left
+    if (current -> getLeft() == NULL) {
+      current -> setLeft(new treeNode(subject));
+      return;
+    }
     add(current -> getLeft(), subject);
   }
   else {//if subject is greater than or equal to current
     //keep traversing right
+    if (current -> getRight() == NULL) {
+      current -> setRight(new treeNode(subject));
+      return;
+    }
     add(current -> getRight(), subject);
   }
 }
 
-void deleteNode(treeNode* &current, int target) {
+void deleteNode(treeNode* target) {
+  if (target == NULL) return;
   //Cases
   //No children
   //1 child
   //2 children
+  
+  int numKids = (target -> getLeft() != NULL) + (target -> getRight() != NULL);
+  if (numKids == 2) {//2 children
+    cout << "2 child deletion" << endl;
+  }
+  else if (numKids == 1) {//1 child
+    cout << "1 child deletion" << endl;
+  }
+  else {//0 children
+    cout << "no children deletion \n" << flush;
+    cout << "Parent: " << target -> getParent() << flush;
+    cout << "\nParent value: " << target -> getParent() -> getValue() << flush;
+    if (target -> getParent() -> getRight() == target) {//if we know target to be the right child
+      cout << "We are the right child." << endl;
+      target -> getParent() -> setRight(NULL);
+    }
+    else {
+      cout << "We are the left child." << endl;
+      target -> getParent() -> setLeft(NULL);
+    }
+    cout << "Deleting target..." << endl;
+    delete target;
+  }
 }
 
 bool search(treeNode* current, int target) {
@@ -150,24 +186,19 @@ bool search(treeNode* current, int target) {
     return 1;
   }
   return search(current -> getRight(), target) + search(current -> getLeft(), target);
-  
+}
 
-  /*
-  if (current != NULL) {//while we haven't reached the end of a branch
-    cout << "not null" << endl;
-    if (target == current -> getValue()) {
-      cout << "Found it!" << endl;
-      return true;
-    }
-    else if (target < current -> getValue()) {
-      cout << "going left" << endl;
-      search(current -> getLeft(), target);
-    }
-    else {
-      cout << "going right" << endl;
-      search(current -> getRight(), target);
-    }
+treeNode* searchN(treeNode* current, int target) {//same as bool search, but returns the node that matches
+  if (current == NULL) {
+    return NULL;
   }
-  return false;//need to find better return value to make this work.
-  */
+  if (target == current -> getValue()) {
+    return current;
+  }
+  treeNode* rightResult = searchN(current -> getRight(), target);
+  treeNode* leftResult = searchN(current -> getLeft(), target);
+  if (rightResult != NULL) {
+    return rightResult;
+  }
+  return leftResult;
 }

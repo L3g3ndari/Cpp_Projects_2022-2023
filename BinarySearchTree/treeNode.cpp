@@ -13,6 +13,7 @@ treeNode::~treeNode() {
   value = 0;
   right = NULL;
   left = NULL;
+  parent = NULL;
 }
 
 int treeNode::getValue() {//returns the char
@@ -21,15 +22,28 @@ int treeNode::getValue() {//returns the char
 
 void treeNode::setRight(treeNode* newRight) {
   right = newRight;
+  if (right != NULL)
+    right -> setParent(this);
 }
 
 void treeNode::setLeft(treeNode* newLeft) {
   left = newLeft;
+  if (left != NULL)
+    left -> setParent(this);
 }
 
 treeNode* &treeNode::getRight() {
   return right;
 }
+
 treeNode* &treeNode::getLeft() {
   return left;
+}
+
+void treeNode::setParent(treeNode* newParent) {
+  parent = newParent;
+}
+
+treeNode* &treeNode::getParent() {
+  return parent;
 }

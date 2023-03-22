@@ -11,8 +11,11 @@ class treeNode {
   void setLeft(treeNode*);
   treeNode* &getRight();
   treeNode* &getLeft();
+  void setParent(treeNode*);
+  treeNode* &getParent();
  private:
   int value;
   treeNode* right;
   treeNode* left;
+  treeNode* parent;
 };
