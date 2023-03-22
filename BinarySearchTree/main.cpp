@@ -160,6 +160,20 @@ void deleteNode(treeNode* target) {
   }
   else if (numKids == 1) {//1 child
     cout << "1 child deletion" << endl;
+    treeNode* temp;
+    if (target -> getRight() != NULL) {//set the temporary node as the child of the target
+      temp = target -> getRight();
+    }
+    else {
+      temp = target -> getLeft();
+    }
+    if (target -> getParent() -> getRight() == target) {//set the target's parent's pointer to the correct child (temp)
+	target -> getParent() -> setRight(temp);
+    }
+    else {
+      target -> getParent() -> setLeft(temp);
+    }
+    delete target;//delete the target, all connections should be okay
   }
   else {//0 children
     cout << "no children deletion \n" << flush;
