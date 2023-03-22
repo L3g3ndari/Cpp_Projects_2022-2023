@@ -74,7 +74,7 @@ int main() {
       cout << "What value would you like to delete?" << endl << "Target: ";
       int target;
       cin >> target;
-      if (search(root, searchTerm) == true) {//it exists
+      if (search(root, target) == true) {//it exists
         //call deleteNode function
       }
       else {
@@ -143,6 +143,16 @@ void deleteNode(treeNode* &current, int target) {
 }
 
 bool search(treeNode* current, int target) {
+  if (current == NULL) {
+    return 0;
+  }
+  if (target == current -> getValue()) {
+    return 1;
+  }
+  return search(current -> getRight(), target) + search(current -> getLeft(), target);
+  
+
+  /*
   if (current != NULL) {//while we haven't reached the end of a branch
     cout << "not null" << endl;
     if (target == current -> getValue()) {
@@ -159,4 +169,5 @@ bool search(treeNode* current, int target) {
     }
   }
   return false;//need to find better return value to make this work.
+  */
 }
