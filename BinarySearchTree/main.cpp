@@ -4,8 +4,10 @@ Shunting Yard Algorithm
 Binary Search Tree
 C++ Programming
 Mr. Galbraith
-Project Completed:
+Project Completed: 3/24/2023
 Outside Sources Used:
+ - https://www.programiz.com/dsa/binary-search-tree = helped with visualizing deletion cases
+ - Collaborated with Sam van Dahl
 
 This program creates a binary search tree of integers between 1 and 999. The user can add and delete from the tree, as well as search it and display it.
 */
@@ -75,9 +77,9 @@ int main() {
       cout << "What value would you like to delete?" << endl << "Target: ";
       int target;
       cin >> target;
-      treeNode* searchResult = searchN(root, target);
-      while (searchResult != NULL) {//it exists
-        cout << "We are deleting: " << searchResult -> getValue() << endl;
+      while (searchN(root, target) != NULL) {//it exists
+	treeNode* searchResult = searchN(root, target);
+	//cout << "We are deleting: " << searchResult -> getValue() << endl;
 	deleteNode(searchResult);
 	//searchResult = searchN(root, target);
 	searchResult = NULL;
@@ -148,10 +150,11 @@ void add(treeNode* &current, int subject) {
 }
 
 treeNode* FindInorderSuc(treeNode* current) {
+  current = current -> getRight();
   while (current != NULL && current -> getLeft() != NULL) {
     current = current -> getLeft();
   }
-  cout << "Inorder successor (value): " << current -> getValue() << endl;
+  //cout << "Inorder successor (value): " << current -> getValue() << endl;
   return current;
 }
 
@@ -163,17 +166,17 @@ void deleteNode(treeNode* target) {
   //2 children
   
   int numKids = (target -> getLeft() != NULL) + (target -> getRight() != NULL);
+
   if (numKids == 2) {//2 children
-    cout << "2 child deletion" << endl;
+    //cout << "2 child deletion" << endl;
     //find inorder successor
     treeNode* inorderSuc = FindInorderSuc(target);
     //replace target's value with inorder successor's value
     target -> setValue(inorderSuc -> getValue());
-    //delete inorder successor, rewire pointers?
-    delete inorderSuc;
+    deleteNode(inorderSuc);
   }
   else if (numKids == 1) {//1 child
-    cout << "1 child deletion" << endl;
+    //cout << "1 child deletion" << endl;
     treeNode* temp;
     if (target -> getRight() != NULL) {//set the temporary node as the child of the target
       temp = target -> getRight();
@@ -190,23 +193,23 @@ void deleteNode(treeNode* target) {
     delete target;//delete the target, all connections should be okay
   }
   else {//0 children
-    cout << "no children deletion \n" << flush;
-    cout << "Parent: " << target -> getParent() << flush;
-    cout << "\nParent value: " << target -> getParent() -> getValue() << flush;
+    //cout << "no children deletion \n" << flush;
+    //cout << "Parent: " << target -> getParent() << flush;
+    //cout << "\nParent value: " << target -> getParent() -> getValue() << flush;
     if (target -> getParent() -> getRight() == target) {//if we know target to be the right child
-      cout << "We are the right child." << endl;
+      //cout << "We are the right child." << endl;
       target -> getParent() -> setRight(NULL);
     }
     else {
-      cout << "We are the left child." << endl;
+      //cout << "We are the left child." << endl;
       target -> getParent() -> setLeft(NULL);
     }
-    cout << "Deleting target..." << endl;
+    //cout << "Deleting target..." << endl;
     delete target;
   }
 }
 
-bool search(treeNode* current, int target) {d
+bool search(treeNode* current, int target) {
   if (current == NULL) {
     return 0;
   }
