@@ -3,10 +3,11 @@
 
 using namespace std;
 
-treeNode::treeNode(int Value) {
+treeNode::treeNode(int Value, char Color) {
   value = Value;
   right = NULL;
   left = NULL;
+  color = Color;
 }
 
 treeNode::~treeNode() {
@@ -14,6 +15,7 @@ treeNode::~treeNode() {
   right = NULL;
   left = NULL;
   parent = NULL;
+  color = 'b';
 }
 
 int treeNode::getValue() {//returns the int
@@ -49,5 +51,33 @@ void treeNode::setParent(treeNode* newParent) {
 }
 
 treeNode* &treeNode::getParent() {
+  return parent;
+}
+
+void treeNode::makeBlack(treeNode* subject) {
+  color = 'b';
+}
+
+void treeNode::makeRed(treeNode* subject) {
+  color = 'r';
+}
+
+char treeNode::getColor() {
+  return color;
+}
+
+treeNode* &treeNode::getSibling() {
+  if (parent != NULL) {
+    if (parent -> getLeft() != NULL && parent -> getLeft() == this) {
+      if (parent -> getRight() != NULL) {
+	return parent -> getRight();
+      }
+    }
+    if (parent -> getRight() != NULL && parent -> getRight() == this) {
+      if (parent -> getLeft() != NULL) {
+	return parent -> getLeft();
+      }
+    }
+  }
   return parent;
 }

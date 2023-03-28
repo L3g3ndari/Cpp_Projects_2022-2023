@@ -4,7 +4,7 @@ using namespace std;
 
 class treeNode {
  public:
-  treeNode(int Value);//constructs a node
+  treeNode(int Value, char Color);//constructs a node
   ~treeNode();//deconstructor
   int getValue();//returns the integer that the node stores
   void setValue(int);
@@ -14,9 +14,15 @@ class treeNode {
   treeNode* &getLeft();
   void setParent(treeNode*);
   treeNode* &getParent();
+  void makeBlack(treeNode*);
+  void makeRed(treeNode*);
+  char getColor();
+  treeNode* &getSibling();
+  
  private:
   int value;
   treeNode* right;
   treeNode* left;
   treeNode* parent;
+  char color;
 };
