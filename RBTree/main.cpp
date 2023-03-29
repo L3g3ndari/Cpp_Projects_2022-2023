@@ -16,6 +16,10 @@ Outside Sources Used:
 using namespace std;
 
 void add(treeNode* &current, int subject);
+void printTree(treeNode* current, int depth);
+void deleteNode(treeNode* target);
+bool search(treeNode* root, int target);
+treeNode* searchN(treeNode* root, int target);
 
 
 int main() {
@@ -58,20 +62,59 @@ int main() {
     }
     
     if (strcmp(command, "PRINT") == 0) {
-
+      printTree(root, 0);
     }
 
     if (strcmp(command, "DELETE") == 0) {
-
+      cout << "What value would you like to delete?" << endl << "Target: ";
+      int target;
+      cin >> target;
+      while (searchN(root, target) != NULL) {//it exists
+	treeNode* searchResult = searchN(root, target);
+	//cout << "We are deleting: " << searchResult -> getValue() << endl;
+	deleteNode(searchResult);
+	//searchResult = searchN(root, target);
+	searchResult = NULL;
+      }
+      cout << "Deleted all occurences of " << target << " in the tree." << endl;
     }
 
     if (strcmp(command, "SEARCH") == 0) {
-
+      cout << endl << "What value would you like to search for?" << endl << "Search: ";
+      int searchTerm;
+      cin >> searchTerm;
+      if (search(root, searchTerm) == true) {//we found it!
+	cout << searchTerm << " exists in the tree." << endl;
+      }
+      else {
+	cout << "Could not find " << searchTerm << " in the tree." << endl;
+      }
     }
-    
+
+    if (strcmp(command, "QUIT") == 0) {
+      cout << "Goodbye." << endl;
+      exit(0);
+    }
   }
 }
 
 void add(treeNode* &current, int subject) {
-
+  
 }
+
+void printTree(treeNode* current, int depth) {
+  if (current -> getRight() != NULL) {//if current's right child has something
+    printTree(current -> getRight(), depth+1);
+  }
+  for (int i = 0; i < depth; i++) {
+    cout << '\t';
+  }
+  cout << current -> getColor() << current -> getValue() << endl;
+  if (current -> getLeft() != NULL) {//if left child has something
+    printTree(current -> getLeft(), depth+1);
+  }
+}
+
+void deleteNode(treeNode* target) {}
+bool search(treeNode* root, int target) {return true;}
+treeNode* searchN(treeNode* root, int target) {return NULL;}
