@@ -99,7 +99,28 @@ int main() {
 }
 
 void add(treeNode* &current, int subject) {
-  
+  if (current == NULL) {//adding to the root
+    current = new treeNode(subject, 'B');
+    return;
+  }
+  if (subject < current -> getValue()) {//if subject is less than current
+    //keep traversing left
+    if (current -> getLeft() == NULL) {
+      current -> setLeft(new treeNode(subject, 'R'));
+      return;
+    }
+    add(current -> getLeft(), subject);
+    //complete checks
+  }
+  else {//if subject is greater than or equal to current
+    //keep traversing right
+    if (current -> getRight() == NULL) {
+      current -> setRight(new treeNode(subject, 'R'));
+      return;
+    }
+    add(current -> getRight(), subject);
+    //complete checks
+  }
 }
 
 void printTree(treeNode* current, int depth) {
@@ -115,6 +136,20 @@ void printTree(treeNode* current, int depth) {
   }
 }
 
-void deleteNode(treeNode* target) {}
-bool search(treeNode* root, int target) {return true;}
-treeNode* searchN(treeNode* root, int target) {return NULL;}
+void deleteNode(treeNode* target) {
+
+}
+
+bool search(treeNode* current, int target) {
+  if (current == NULL) {
+    return 0;
+  }
+  if (target == current -> getValue()) {
+    return 1;
+  }
+  return search(current -> getRight(), target) + search(current -> getLeft(), target);
+}
+
+treeNode* searchN(treeNode* root, int target) {
+  return NULL;
+}
