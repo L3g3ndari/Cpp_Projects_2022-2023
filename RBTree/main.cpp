@@ -21,7 +21,7 @@ void printTree(treeNode* current, int depth);
 void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
 treeNode* searchN(treeNode* root, int target);
-void addFix(treeNode* subject, treeNode* root);
+void addFix(treeNode* &subject, treeNode* &root);
 
 
 int main() {
@@ -130,10 +130,16 @@ void add(treeNode* &current, int subject, treeNode* &root) {
 
 void addFix(treeNode* &subject, treeNode* &root) {
   if (subject == root) {//if subject is root, then we need to make it black
-    subject -> makeBlack(subject);
+    subject -> setBlack(subject);
     return;
   }
   if (subject -> getParent() == NULL || subject -> getParent() -> getColor() == 'B' || subject -> getColor() == 'B') {//we don't have to do any recoloring in these cases
+    /*Used to test if childType function works (I think it works now)
+    if (subject -> childType(subject) == 2) {//subject is a left child
+        cout << "I am left child" << endl;
+      }
+      else cout << "I am not left child" << endl;
+    */
     return;
   }
   //From now on, we assume that the node we just added is not the root. We also assume that the node is red.
@@ -147,15 +153,18 @@ void addFix(treeNode* &subject, treeNode* &root) {
       }
       //call recursively on subject's grandparent
       if (subject -> getGrand(subject) != subject) {//if grandparent exists
-	addFix(subject -> getGrand(subject));
+	addFix(subject -> getGrand(subject), root);
       }
       else {//we are on height=2 and we just need to check our parent (which should be the root)
-	addFix(subject -> getParent());
+	addFix(subject -> getParent(), root);
       }
     }
     else if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'B') {//if uncle is black, we need to do rotations
       //check for the 4 cases: Left Left (LL), Left Right (LR), etc. (RR), (RL).
-      //Should probably TEST at this point
+      if (subject -> childType(subject) == 2) {//subject is a left child
+	cout << "I am left child" << endl;
+      }
+      else cout << "I am not left child" << endl;
     }
   }
 }

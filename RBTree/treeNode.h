@@ -22,9 +22,11 @@ class treeNode {
   treeNode* &getGrand(treeNode*);
   treeNode* &getUnc(treeNode*);
   
-  void makeBlack(treeNode*);
-  void makeRed(treeNode*);
+  void setBlack(treeNode*);
+  void setRed(treeNode*);
   char getColor();
+
+  int childType(treeNode*);
   
  private:
   int value;

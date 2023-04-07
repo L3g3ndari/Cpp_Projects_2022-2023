@@ -54,11 +54,11 @@ treeNode* &treeNode::getParent() {
   return parent;
 }
 
-void treeNode::makeBlack(treeNode* subject) {
+void treeNode::setBlack(treeNode* subject) {
   color = 'B';
 }
 
-void treeNode::makeRed(treeNode* subject) {
+void treeNode::setRed(treeNode* subject) {
   color = 'R';
 }
 
@@ -66,7 +66,7 @@ char treeNode::getColor() {
   return color;
 }
 
-treeNode* &treeNode::getSibling() {
+treeNode* &treeNode::getSibling(treeNode* subject) {
   if (parent != NULL) {
     if (parent -> getLeft() != NULL && parent -> getLeft() == this) {
       if (parent -> getRight() != NULL) {
@@ -92,10 +92,18 @@ treeNode* &treeNode::getGrand(treeNode* subject) {
 }
 
 treeNode* &treeNode::getUnc(treeNode* subject) {
-  if (subject -> getParent() != NULL && subject -> getParent -> getSibling() != subject -> getParent()) {
-    return subject -> getParent() -> getSibling();
+  if (subject -> getParent() != NULL && subject -> getParent() -> getSibling(subject) != subject -> getParent()) {
+    return subject -> getParent() -> getSibling(subject);
   }
-  else {
-    return subject;
+  return subject;
+}
+
+int treeNode::childType(treeNode* subject) {//returns 1 if right, 2 if left, and 0 if none
+  if (subject -> getParent() == NULL) {//we have the root, which has no parent
+    return 0;
   }
+  else if (subject -> getParent() -> getRight() == subject) {//if we are the right child
+    return 1;
+  }
+  else return 2;//we must be the left child
 }
