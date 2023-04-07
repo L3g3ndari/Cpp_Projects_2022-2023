@@ -81,3 +81,21 @@ treeNode* &treeNode::getSibling() {
   }
   return parent;
 }
+
+treeNode* &treeNode::getGrand(treeNode* subject) {
+  if (subject -> getParent() != NULL && subject -> getParent() -> getParent() != NULL) {
+    return subject -> getParent() -> getParent();
+  }
+  else {
+    return subject;
+  }
+}
+
+treeNode* &treeNode::getUnc(treeNode* subject) {
+  if (subject -> getParent() != NULL && subject -> getParent -> getSibling() != subject -> getParent()) {
+    return subject -> getParent() -> getSibling();
+  }
+  else {
+    return subject;
+  }
+}

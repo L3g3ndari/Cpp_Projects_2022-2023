@@ -5,6 +5,7 @@ C++ Programming
 Mr. Galbraith
 Project Completed:
 Outside Sources Used:
+ - https://www.geeksforgeeks.org/insertion-in-red-black-tree/
 
 */
 
@@ -15,11 +16,12 @@ Outside Sources Used:
 
 using namespace std;
 
-void add(treeNode* &current, int subject);
+void add(treeNode* &current, int subject, treeNode* &root);
 void printTree(treeNode* current, int depth);
 void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
 treeNode* searchN(treeNode* root, int target);
+void addFix(treeNode* subject, treeNode* root);
 
 
 int main() {
@@ -40,7 +42,7 @@ int main() {
       int input;
       cin >> input;
       if (input > 0 && input < 1000) {//if it is a valid input
-	add(root, input);
+	add(root, input, root);
       }
     }
 
@@ -54,7 +56,7 @@ int main() {
       if (File.is_open()) {
 	while (File >> num) {
 	  if (num > 0 && num < 1000) {
-	    add(root, num);
+	    add(root, num, root);
 	  }
 	}
 	cout << endl << "Adding from file is completed." << endl;
@@ -98,30 +100,66 @@ int main() {
   }
 }
 
-void add(treeNode* &current, int subject) {
+void add(treeNode* &current, int subject, treeNode* &root) {
   if (current == NULL) {//adding to the root
-    current = new treeNode(subject, 'B');
+    current = new treeNode(subject, 'R');
+    addFix(current, root);
     return;
   }
   if (subject < current -> getValue()) {//if subject is less than current
     //keep traversing left
     if (current -> getLeft() == NULL) {
       current -> setLeft(new treeNode(subject, 'R'));
+      //fix if neccessary (rebalance)
+      addFix(current -> getLeft(), root);
       return;
     }
-    add(current -> getLeft(), subject);
-    //complete checks
+    add(current -> getLeft(), subject, root);
   }
   else {//if subject is greater than or equal to current
     //keep traversing right
     if (current -> getRight() == NULL) {
       current -> setRight(new treeNode(subject, 'R'));
+      //fix if neccessary (rebalance)
+      addFix(current -> getRight(), root);
       return;
     }
-    add(current -> getRight(), subject);
-    //complete checks
+    add(current -> getRight(), subject, root);
   }
 }
+
+void addFix(treeNode* &subject, treeNode* &root) {
+  if (subject == root) {//if subject is root, then we need to make it black
+    subject -> makeBlack(subject);
+    return;
+  }
+  if (subject -> getParent() == NULL || subject -> getParent() -> getColor() == 'B' || subject -> getColor() == 'B') {//we don't have to do any recoloring in these cases
+    return;
+  }
+  //From now on, we assume that the node we just added is not the root. We also assume that the node is red.
+  if (subject -> getParent() -> getColor() != 'B') {//if the parent is not black (it is red) a rbt property has been violated and we must fix
+    if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'R') {//checking if uncle is red. If so, only recoloring is required. If getUnc() returns itself, then it doesn't exist and we're looking at a null leaf, which is black.
+      //parent and uncle become black, grandparent becomes red
+      subject -> getParent() -> setBlack(subject -> getParent());//make parent black
+      subject -> getUnc(subject) -> setBlack(subject -> getUnc(subject));//make uncle black
+      if (subject -> getGrand(subject) != subject) {//if grandparent exists
+	subject -> getGrand(subject) -> setRed(subject -> getGrand(subject));//make grandparent red
+      }
+      //call recursively on subject's grandparent
+      if (subject -> getGrand(subject) != subject) {//if grandparent exists
+	addFix(subject -> getGrand(subject));
+      }
+      else {//we are on height=2 and we just need to check our parent (which should be the root)
+	addFix(subject -> getParent());
+      }
+    }
+    else if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'B') {//if uncle is black, we need to do rotations
+      //check for the 4 cases: Left Left (LL), Left Right (LR), etc. (RR), (RL).
+      //Should probably TEST at this point
+    }
+  }
+}
+
 
 void printTree(treeNode* current, int depth) {
   if (current -> getRight() != NULL) {//if current's right child has something
@@ -140,7 +178,7 @@ void deleteNode(treeNode* target) {
 
 }
 
-bool search(treeNode* current, int target) {
+bool search(treeNode* current, int target) {//same search function as BST
   if (current == NULL) {
     return 0;
   }
