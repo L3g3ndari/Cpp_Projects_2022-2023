@@ -15,7 +15,7 @@ treeNode::~treeNode() {
   right = NULL;
   left = NULL;
   parent = NULL;
-  color = 'B';
+  color = 'R';
 }
 
 int treeNode::getValue() {//returns the int
@@ -54,11 +54,11 @@ treeNode* &treeNode::getParent() {
   return parent;
 }
 
-void treeNode::setBlack(treeNode* subject) {
+void treeNode::setBlack() {
   color = 'B';
 }
 
-void treeNode::setRed(treeNode* subject) {
+void treeNode::setRed() {
   color = 'R';
 }
 

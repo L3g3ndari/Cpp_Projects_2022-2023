@@ -22,8 +22,8 @@ class treeNode {
   treeNode* &getGrand(treeNode*);
   treeNode* &getUnc(treeNode*);
   
-  void setBlack(treeNode*);
-  void setRed(treeNode*);
+  void setBlack();
+  void setRed();
   char getColor();
 
   int childType(treeNode*);

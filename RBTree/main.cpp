@@ -7,6 +7,7 @@ Project Completed:
 Outside Sources Used:
  - https://www.geeksforgeeks.org/insertion-in-red-black-tree/
  - https://algorithmtutor.com/Data-Structures/Tree/Red-Black-Trees/
+ - https://www.codesdope.com/course/data-structures-red-black-trees-insertion/
 */
 
 #include <iostream>
@@ -22,6 +23,8 @@ void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
 treeNode* searchN(treeNode* root, int target);
 void addFix(treeNode* &subject, treeNode* &root);
+void rRotation(treeNode* &subject, treeNode* &root);
+void lRotation(treeNode* &subject, treeNode* &root);
 
 
 int main() {
@@ -128,9 +131,17 @@ void add(treeNode* &current, int subject, treeNode* &root) {
   }
 }
 
+void rRotation(treeNode* &subject, treeNode* &root) {
+  
+}
+
+void lRotation(treeNode* &subject, treeNode* &root) {
+
+}
+
 void addFix(treeNode* &subject, treeNode* &root) {
   if (subject == root) {//if subject is root, then we need to make it black
-    subject -> setBlack(subject);
+    subject -> setBlack();
     return;
   }
   if (subject -> getParent() == NULL || subject -> getParent() -> getColor() == 'B' || subject -> getColor() == 'B') {//we don't have to do any recoloring in these cases
@@ -146,10 +157,10 @@ void addFix(treeNode* &subject, treeNode* &root) {
   if (subject -> getParent() -> getColor() != 'B') {//if the parent is not black (it is red) a rbt property has been violated and we must fix
     if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'R') {//checking if uncle is red. If so, only recoloring is required. If getUnc() returns itself, then it doesn't exist and we're looking at a null leaf, which is black.
       //parent and uncle become black, grandparent becomes red
-      subject -> getParent() -> setBlack(subject -> getParent());//make parent black
-      subject -> getUnc(subject) -> setBlack(subject -> getUnc(subject));//make uncle black
+      subject -> getParent() -> setBlack();//make parent black
+      subject -> getUnc(subject) -> setBlack();//make uncle black
       if (subject -> getGrand(subject) != subject) {//if grandparent exists
-	subject -> getGrand(subject) -> setRed(subject -> getGrand(subject));//make grandparent red
+	subject -> getGrand(subject) -> setRed();//make grandparent red
       }
       //call recursively on subject's grandparent
       if (subject -> getGrand(subject) != subject) {//if grandparent exists
@@ -159,12 +170,42 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	addFix(subject -> getParent(), root);
       }
     }
-    else if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'B') {//if uncle is black, we need to do rotations
-      //check for the 4 cases: Left Left (LL), Left Right (LR), etc. (RR), (RL).
-      if (subject -> childType(subject) == 2) {//subject is a left child
-	cout << "I am left child" << endl;
+    else if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'B' || subject -> getUnc(subject) == NULL) {//if uncle is black or null, we need to do rotations
+      if (subject -> getParent() != root) {//if parent is not the root, we proceed with rotations normally
+	//after this point, we assume that the tree is not rotating through the root, but make sure to still check if grandparent is root and adjust the head pointer correctly
+	//check for the 4 cases: Left Left (LL), Left Right (LR), etc. (RR), (RL).
+	if (subject -> childType(subject) == 2) {//subject is a left child
+	  cout << "I am left child" << endl;
+	  if (subject -> getParent() -> childType(subject -> getParent()) == 2) {
+	    cout << "Left Left Case" << endl;
+	  }
+	  else if (subject -> getParent() -> childType(subject -> getParent()) == 1) {
+	    cout << "Right Left Case" << endl;
+	  }
+	  else {//grandparent is root
+	    //what happens???
+	  }
+	}
+	else if (subject -> childType(subject) == 1) {//subject is a right child
+	  cout << "I am right child" << endl;
+	  if (subject -> getParent() -> childType(subject -> getParent()) == 2) {
+	    cout << "Left Right Case" << endl;
+	  }
+	  else if (subject -> getParent() -> childType(subject -> getParent()) == 1) {
+	    cout << "Right Right Case" << endl;
+	    //perform left rotation at grandparent
+	  }
+	  else {//grandparent is root
+	    //what happens???
+	  }
+	}
+	else {//parent is root
+	  //what happens?
+	}
       }
-      else cout << "I am not left child" << endl;
+      else {//parent is the root and we have special rotation cases
+	cout << "Parent is the root" << end;
+      }
     }
   }
 }
