@@ -225,7 +225,7 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	  else if (subject -> getParent() -> childType(subject -> getParent()) == 1) {
 	    cout << "Right Left Case" << endl;
 	    //perform right rotation at parent
-	    Node* b = subject -> getParent;
+	    Node* b = subject -> getParent();
 	    rRotation(b, root);
 	    //This now becomes an RR case.
 	    Node* b = b -> getGrand(b);
@@ -242,6 +242,15 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	  cout << "I am right child" << endl;
 	  if (subject -> getParent() -> childType(subject -> getParent()) == 2) {
 	    cout << "Left Right Case" << endl;
+	    //perform left rotation at parent
+	    Node* c = subject -> getParent();
+	    lRotation(c, root);
+	    //This now becomes a LL case.
+	    Node* c = c -> getGrand(c);
+	    rRotation(c, root);
+            //Recolor a to red and parent of a to black
+            c -> setRed();
+            c -> getParent() -> setBlack();
 	  }
 	  else if (subject -> getParent() -> childType(subject -> getParent()) == 1) {
 	    cout << "Right Right Case" << endl;
