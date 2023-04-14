@@ -134,8 +134,8 @@ void add(treeNode* &current, int subject, treeNode* &root) {
 //Code for rotations was written from pseudocode and logic found on codesdope.com
 void rRotation(treeNode* &subject, treeNode* &root) {//the subject in the rotation functions is the grandparent of the subject in addFix()
   cout << "Performing Right Rotation on " << subject -> getValue() << endl;
-  Node* x = subject;
-  Node* y = x -> getLeft();
+  treeNode* x = subject;
+  treeNode* y = x -> getLeft();
   x -> setLeft(y -> getRight());
   if (y -> getRight() != NULL) {
     y -> getRight() -> setParent(x);
@@ -156,8 +156,8 @@ void rRotation(treeNode* &subject, treeNode* &root) {//the subject in the rotati
 
 void lRotation(treeNode* &subject, treeNode* &root) {
   cout << "Performing Left Rotation on " << subject -> getValue() << endl;
-  Node* x = subject;
-  Node* y = x -> getRight();
+  treeNode* x = subject;
+  treeNode* y = x -> getRight();
   x -> setRight(y -> getLeft());
   if (y -> getLeft() != NULL) {
     y -> getLeft() -> setParent(x);
@@ -167,10 +167,10 @@ void lRotation(treeNode* &subject, treeNode* &root) {
     root = y;
   }
   else if (x -> childType(x) == 2) {//x is left child
-    x -> getParent -> setLeft(y);
+    x -> getParent() -> setLeft(y);
   }
   else {//x is right child
-    x -> getParent -> setRight(y);
+    x -> getParent() -> setRight(y);
   }
   y -> setLeft(x);//x becomes the left child of y
   x -> setParent(y);
@@ -216,7 +216,7 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	  if (subject -> getParent() -> childType(subject -> getParent()) == 2) {
 	    cout << "Left Left Case" << endl;
 	    //perform right rotation on grandparent
-	    Node* a = subject -> getGrand(subject);
+	    treeNode* a = subject -> getGrand(subject);
 	    rRotation(a, root);
 	    //Recolor a to red and parent of a to black
 	    a -> setRed();
@@ -225,10 +225,10 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	  else if (subject -> getParent() -> childType(subject -> getParent()) == 1) {
 	    cout << "Right Left Case" << endl;
 	    //perform right rotation at parent
-	    Node* b = subject -> getParent();
+	    treeNode* b = subject -> getParent();
 	    rRotation(b, root);
 	    //This now becomes an RR case.
-	    Node* b = b -> getGrand(b);
+	    b = b -> getGrand(b);
 	    lRotation(b, root);
             b -> setRed();
             b -> getParent() -> setBlack();
@@ -243,10 +243,10 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	  if (subject -> getParent() -> childType(subject -> getParent()) == 2) {
 	    cout << "Left Right Case" << endl;
 	    //perform left rotation at parent
-	    Node* c = subject -> getParent();
+	    treeNode* c = subject -> getParent();
 	    lRotation(c, root);
 	    //This now becomes a LL case.
-	    Node* c = c -> getGrand(c);
+	    c = c -> getGrand(c);
 	    rRotation(c, root);
             //Recolor a to red and parent of a to black
             c -> setRed();
@@ -255,7 +255,7 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	  else if (subject -> getParent() -> childType(subject -> getParent()) == 1) {
 	    cout << "Right Right Case" << endl;
 	    //perform left rotation at grandparent
-	    Node* d = subject -> getGrand(subject);
+	    treeNode* d = subject -> getGrand(subject);
 	    lRotation(d, root);
 	    //Recolor d to red and parent of d to black
 	    d -> setRed();
@@ -272,7 +272,7 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	}
       }
       else {//parent is the root and we have special rotation cases
-	cout << "Parent is the root (special cases)" << end;
+	cout << "Parent is the root (special cases)" << endl;
       }
     }
   }
