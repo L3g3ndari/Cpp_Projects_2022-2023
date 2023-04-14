@@ -131,12 +131,49 @@ void add(treeNode* &current, int subject, treeNode* &root) {
   }
 }
 
-void rRotation(treeNode* &subject, treeNode* &root) {
-  
+//Code for rotations was written from pseudocode and logic found on codesdope.com
+void rRotation(treeNode* &subject, treeNode* &root) {//the subject in the rotation functions is the grandparent of the subject in addFix()
+  cout << "Performing Right Rotation on " << subject -> getValue() << endl;
+  Node* x = subject;
+  Node* y = x -> getLeft();
+  x -> setLeft(y -> getRight());
+  if (y -> getRight() != NULL) {
+    y -> getRight() -> setParent(x);
+  }
+  y -> setParent(x -> getParent());
+  if (x -> getParent() == NULL) {//x is the root
+    root = y;
+  }
+  else if (x -> childType(x) == 1) {//x is right child
+    x -> getParent() -> setRight(y);
+  }
+  else {//x is left child
+    x -> getParent() -> setLeft(y);
+  }
+  y -> setRight(x);//x becomes the right child of y
+  x -> setParent(y);
 }
 
 void lRotation(treeNode* &subject, treeNode* &root) {
-
+  cout << "Performing Left Rotation on " << subject -> getValue() << endl;
+  Node* x = subject;
+  Node* y = x -> getRight();
+  x -> setRight(y -> getLeft());
+  if (y -> getLeft() != NULL) {
+    y -> getLeft() -> setParent(x);
+  }
+  x -> setParent(y -> getParent());
+  if (x -> getParent() == NULL) {//x is the root
+    root = y;
+  }
+  else if (x -> childType(x) == 2) {//x is left child
+    x -> getParent -> setLeft(y);
+  }
+  else {//x is right child
+    x -> getParent -> setRight(y);
+  }
+  y -> setLeft(x);//x becomes the left child of y
+  x -> setParent(y);
 }
 
 void addFix(treeNode* &subject, treeNode* &root) {
@@ -182,8 +219,9 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	  else if (subject -> getParent() -> childType(subject -> getParent()) == 1) {
 	    cout << "Right Left Case" << endl;
 	  }
-	  else {//grandparent is root
+	  else {//parent is root
 	    //what happens???
+	    cout << "Parent is root. Didn't know how to proceed from here. This might not even be possible." << endl;
 	  }
 	}
 	else if (subject -> childType(subject) == 1) {//subject is a right child
@@ -195,16 +233,18 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	    cout << "Right Right Case" << endl;
 	    //perform left rotation at grandparent
 	  }
-	  else {//grandparent is root
+	  else {//parent is root
 	    //what happens???
+	    cout << "Parent is root. Didn't know how to proceed from here. This might not even be possible." << endl;
 	  }
 	}
-	else {//parent is root
+	else {//subject is the root
 	  //what happens?
+	  cout << "Checking for 4 cases and we are at the root." << endl;
 	}
       }
       else {//parent is the root and we have special rotation cases
-	cout << "Parent is the root" << end;
+	cout << "Parent is the root (special cases)" << end;
       }
     }
   }
