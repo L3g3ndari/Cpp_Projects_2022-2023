@@ -3,11 +3,15 @@ Nathan Wu
 Red Black Tree
 C++ Programming
 Mr. Galbraith
-Project Completed:
+Project Completed: 4/14/2023
 Outside Sources Used:
- - https://www.geeksforgeeks.org/insertion-in-red-black-tree/
- - https://algorithmtutor.com/Data-Structures/Tree/Red-Black-Trees/
- - https://www.codesdope.com/course/data-structures-red-black-trees-insertion/
+ - https://www.geeksforgeeks.org/insertion-in-red-black-tree/   for logic.
+ - https://algorithmtutor.com/Data-Structures/Tree/Red-Black-Trees/   another perspective on logic.
+ - https://www.codesdope.com/course/data-structures-red-black-trees-insertion/   for logic, specifically for rotations. Used pseudocode to build my rotation code.
+ - https://www.cs.usfca.edu/~galles/visualization/RedBlack.html   for visualization of RBT concepts and for checking my work.
+
+This project emulates a Red-Black Tree, which is a binary search tree that can (roughly) rebalance itself. So far, the tree can be built, either manually or by file input, printed, and searched.
+ 
 */
 
 #include <iostream>
@@ -27,7 +31,7 @@ void rRotation(treeNode* &subject, treeNode* &root);
 void lRotation(treeNode* &subject, treeNode* &root);
 
 
-int main() {
+int main() {//took a lot of code from my BST project to build the skeleton of this one. The READ command is essentially the same. The ADD and DELETE commands are the same, but with the added algorithms of the RBT. PRINT and SEARCH are also the same as my BST.
   cout << "Welcome to the Red-Black Tree program. Your available commands are ADD, READ, DELETE, PRINT, SEARCH, and QUIT." << endl;
 
   treeNode* root = NULL;
@@ -92,7 +96,7 @@ int main() {
 	cout << searchTerm << " exists in the tree." << endl;
       }
       else {
-	cout << "Could not find " << searchTerm << " in the tree." << endl;
+	cout << searchTerm << " does not exist in the tree." << endl;
       }
     }
 
@@ -111,8 +115,8 @@ void add(treeNode* &current, int subject, treeNode* &root) {
   }
   if (subject < current -> getValue()) {//if subject is less than current
     //keep traversing left
-    if (current -> getLeft() == NULL) {
-      current -> setLeft(new treeNode(subject, 'R'));
+    if (current -> getLeft() == NULL) {//when at the end of a branch,
+      current -> setLeft(new treeNode(subject, 'R'));//add in the node
       //fix if neccessary (rebalance)
       addFix(current -> getLeft(), root);
       return;
@@ -121,26 +125,28 @@ void add(treeNode* &current, int subject, treeNode* &root) {
   }
   else {//if subject is greater than or equal to current
     //keep traversing right
-    if (current -> getRight() == NULL) {
-      current -> setRight(new treeNode(subject, 'R'));
+    if (current -> getRight() == NULL) {//when at the end of a branch,
+      current -> setRight(new treeNode(subject, 'R'));//add in the node
       //fix if neccessary (rebalance)
       addFix(current -> getRight(), root);
       return;
     }
-    add(current -> getRight(), subject, root);
+    add(current -> getRight(), subject, root);//gets called recursively for transversal
   }
 }
 
 //Code for rotations was written from pseudocode and logic found on codesdope.com
 void rRotation(treeNode* &subject, treeNode* &root) {//the subject in the rotation functions is the grandparent of the subject in addFix()
   cout << "Performing Right Rotation on " << subject -> getValue() << endl;
-  treeNode* x = subject;
-  treeNode* y = x -> getLeft();
-  x -> setLeft(y -> getRight());
+  treeNode* x = subject;//grandparent of the node we just added
+  treeNode* y = x -> getLeft();//x's left child
+  x -> setLeft(y -> getRight());//y's right child becomes x's left child
+  //Fix parent pointers
   if (y -> getRight() != NULL) {
     y -> getRight() -> setParent(x);
   }
   y -> setParent(x -> getParent());
+  //make checks for where x is now
   if (x -> getParent() == NULL) {//x is the root
     root = y;
   }
@@ -151,18 +157,20 @@ void rRotation(treeNode* &subject, treeNode* &root) {//the subject in the rotati
     x -> getParent() -> setLeft(y);
   }
   y -> setRight(x);//x becomes the right child of y
-  x -> setParent(y);
+  x -> setParent(y);//don't forget to fix the parent pointer!
 }
 
 void lRotation(treeNode* &subject, treeNode* &root) {
   cout << "Performing Left Rotation on " << subject -> getValue() << endl;
-  treeNode* x = subject;
-  treeNode* y = x -> getRight();
-  x -> setRight(y -> getLeft());
+  treeNode* x = subject;//grandparent of the node we just added
+  treeNode* y = x -> getRight();//x's right child
+  x -> setRight(y -> getLeft());//y's left child becoes x's right child
+  //Fix parent pointers
   if (y -> getLeft() != NULL) {
     y -> getLeft() -> setParent(x);
   }
-  x -> setParent(y -> getParent());
+  y -> setParent(x -> getParent());
+  //make checks for where x is now
   if (x -> getParent() == NULL) {//x is the root
     root = y;
   }
@@ -173,10 +181,11 @@ void lRotation(treeNode* &subject, treeNode* &root) {
     x -> getParent() -> setRight(y);
   }
   y -> setLeft(x);//x becomes the left child of y
-  x -> setParent(y);
+  x -> setParent(y);//don't forget to fix the parent pointer!
 }
 
-void addFix(treeNode* &subject, treeNode* &root) {
+void addFix(treeNode* &subject, treeNode* &root) {//this is the complicated part of this project, the algorithms that keep the tree balanced.
+  //recoloring always comes first, then restructuring and rotations if recoloring can't fix things.
   if (subject == root) {//if subject is root, then we need to make it black
     subject -> setBlack();
     return;
@@ -190,7 +199,8 @@ void addFix(treeNode* &subject, treeNode* &root) {
     */
     return;
   }
-  //From now on, we assume that the node we just added is not the root. We also assume that the node is red.
+  
+  //From now on, we assume that the node we just added is not the root. We also need to remember that the node we are adding is red by default.
   if (subject -> getParent() -> getColor() != 'B') {//if the parent is not black (it is red) a rbt property has been violated and we must fix
     if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'R') {//checking if uncle is red. If so, only recoloring is required. If getUnc() returns itself, then it doesn't exist and we're looking at a null leaf, which is black.
       //parent and uncle become black, grandparent becomes red
@@ -206,10 +216,11 @@ void addFix(treeNode* &subject, treeNode* &root) {
       else {//we are on height=2 and we just need to check our parent (which should be the root)
 	addFix(subject -> getParent(), root);
       }
-    }
+    }//beyond this point, we need to restructure the tree to fix things
     else if (subject -> getUnc(subject) != subject && subject -> getUnc(subject) -> getColor() == 'B' || subject -> getUnc(subject) == NULL) {//if uncle is black or null, we need to do rotations
       if (subject -> getParent() != root) {//if parent is not the root, we proceed with rotations normally
 	//after this point, we assume that the tree is not rotating through the root, but make sure to still check if grandparent is root and adjust the head pointer correctly
+
 	//check for the 4 cases: Left Left (LL), Left Right (LR), etc. (RR), (RL).
 	if (subject -> childType(subject) == 2) {//subject is a left child
 	  cout << "I am left child" << endl;
@@ -272,7 +283,7 @@ void addFix(treeNode* &subject, treeNode* &root) {
 	}
       }
       else {//parent is the root and we have special rotation cases
-	cout << "Parent is the root (special cases)" << endl;
+	cout << "Parent is the root (special cases?)" << endl;
       }
     }
   }
@@ -293,7 +304,7 @@ void printTree(treeNode* current, int depth) {
 }
 
 void deleteNode(treeNode* target) {
-
+  //this function will be written in the second part of this project
 }
 
 bool search(treeNode* current, int target) {//same search function as BST
