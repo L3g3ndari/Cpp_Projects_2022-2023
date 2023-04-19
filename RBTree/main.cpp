@@ -28,6 +28,8 @@ void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
 treeNode* searchN(treeNode* root, int target);
 void addFix(treeNode* subject, treeNode* &root);
+treeNode* FindInOrderSuc(treeNode* current);
+void deleteFix(treeNode* subject, treeNode* &root);
 void rRotation(treeNode* subject, treeNode* &root);
 void lRotation(treeNode* subject, treeNode* &root);
 
@@ -334,8 +336,68 @@ void printTree(treeNode* current, int depth) {
   }
 }
 
+treeNode* FindInorderSuc(treeNode* current) {
+  current = current -> getRight();
+  while (current != NULL && current -> getLeft() != NULL) {
+    current = current -> getLeft();
+  }
+  //cout << "Inorder successor (value): " << current -> getValue() << endl;
+  return current;
+}
+
 void deleteNode(treeNode* target) {
-  //this function will be written in the second part of this project
+  if (target == NULL) return;
+  //Cases
+  //No children
+  //1 child
+  //2 children
+  
+  int numKids = (target -> getLeft() != NULL) + (target -> getRight() != NULL);
+
+  if (numKids == 2) {//2 children
+    //cout << "2 child deletion" << endl;
+    //find inorder successor
+    treeNode* inorderSuc = FindInorderSuc(target);
+    //replace target's value with inorder successor's value
+    target -> setValue(inorderSuc -> getValue());
+    deleteNode(inorderSuc);
+  }
+  else if (numKids == 1) {//1 child
+    //cout << "1 child deletion" << endl;
+    treeNode* temp;
+    if (target -> getRight() != NULL) {//set the temporary node as the child of the target
+      temp = target -> getRight();
+    }
+    else {
+      temp = target -> getLeft();
+    }
+    if (target -> getParent() -> getRight() == target) {//set the target's parent's pointer to the correct child (temp)
+	target -> getParent() -> setRight(temp);
+    }
+    else {
+      target -> getParent() -> setLeft(temp);
+    }
+    delete target;//delete the target, all connections should be okay
+  }
+  else {//0 children
+    //cout << "no children deletion \n" << flush;
+    //cout << "Parent: " << target -> getParent() << flush;
+    //cout << "\nParent value: " << target -> getParent() -> getValue() << flush;
+    if (target -> getParent() -> getRight() == target) {//if we know target to be the right child
+      //cout << "We are the right child." << endl;
+      target -> getParent() -> setRight(NULL);
+    }
+    else {
+      //cout << "We are the left child." << endl;
+      target -> getParent() -> setLeft(NULL);
+    }
+    //cout << "Deleting target..." << endl;
+    delete target;
+  }
+}
+
+void deleteFix(treeNode* subject, treeNode* &root) {
+
 }
 
 bool search(treeNode* current, int target) {//same search function as BST
