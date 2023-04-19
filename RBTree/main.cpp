@@ -21,7 +21,8 @@ This project emulates a Red-Black Tree, which is a binary search tree that can (
 
 using namespace std;
 
-void add(treeNode* &current, int subject, treeNode* &root);
+void add(treeNode* &root, int subject);
+void add(treeNode* current, int subject, treeNode* &root);
 void printTree(treeNode* current, int depth);
 void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
@@ -49,7 +50,7 @@ int main() {//took a lot of code from my BST project to build the skeleton of th
       int input;
       cin >> input;
       if (input > 0 && input < 1000) {//if it is a valid input
-	add(root, input, root);
+	add(root, input);
       }
     }
 
@@ -63,7 +64,7 @@ int main() {//took a lot of code from my BST project to build the skeleton of th
       if (File.is_open()) {
 	while (File >> num) {
 	  if (num > 0 && num < 1000) {
-	    add(root, num, root);
+	    add(root, num);
 	  }
 	}
 	cout << endl << "Adding from file is completed." << endl;
@@ -107,12 +108,42 @@ int main() {//took a lot of code from my BST project to build the skeleton of th
   }
 }
 
-void add(treeNode* &current, int subject, treeNode* &root) {
+void add(treeNode* &root, int subject) {//adding at the root
+if (root == NULL) {//adding to the root
+    root = new treeNode(subject, 'R');
+    addFix(root, root);
+    return;
+  }
+  if (subject < root -> getValue()) {//if subject is less than current
+    //keep traversing left
+    if (root -> getLeft() == NULL) {//when at the end of a branch,
+      root -> setLeft(new treeNode(subject, 'R'));//add in the node
+      //fix if neccessary (rebalance)
+      addFix(root -> getLeft(), root);
+      return;
+    }
+    add(root -> getLeft(), subject, root);
+  }
+  else {//if subject is greater than or equal to current
+    //keep traversing right
+    if (root -> getRight() == NULL) {//when at the end of a branch,
+      root -> setRight(new treeNode(subject, 'R'));//add in the node
+      //fix if neccessary (rebalance)
+      addFix(root -> getRight(), root);
+      return;
+    }
+    add(root -> getRight(), subject, root);//gets called recursively for transversal
+  }
+}
+
+void add(treeNode* current, int subject, treeNode* &root) {//adding nodes
+  /*
   if (current == NULL) {//adding to the root
     current = new treeNode(subject, 'R');
     addFix(current, root);
     return;
   }
+  */
   if (subject < current -> getValue()) {//if subject is less than current
     //keep traversing left
     if (current -> getLeft() == NULL) {//when at the end of a branch,
