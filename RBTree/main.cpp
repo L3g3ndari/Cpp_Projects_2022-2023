@@ -3,7 +3,7 @@ Nathan Wu
 Red Black Tree
 C++ Programming
 Mr. Galbraith
-Project Completed: 4/14/2023
+Project Completed: 4/19/2023
 Outside Sources Used:
  - https://www.geeksforgeeks.org/insertion-in-red-black-tree/   for logic.
  - https://algorithmtutor.com/Data-Structures/Tree/Red-Black-Trees/   another perspective on logic.
@@ -26,7 +26,7 @@ void printTree(treeNode* current, int depth);
 void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
 treeNode* searchN(treeNode* root, int target);
-void addFix(treeNode* &subject, treeNode* &root);
+void addFix(treeNode* subject, treeNode* &root);
 void rRotation(treeNode* &subject, treeNode* &root);
 void lRotation(treeNode* &subject, treeNode* &root);
 
@@ -184,7 +184,7 @@ void lRotation(treeNode* &subject, treeNode* &root) {
   x -> setParent(y);//don't forget to fix the parent pointer!
 }
 
-void addFix(treeNode* &subject, treeNode* &root) {//this is the complicated part of this project, the algorithms that keep the tree balanced.
+void addFix(treeNode* subject, treeNode* &root) {//this is the complicated part of this project, the algorithms that keep the tree balanced.
   //recoloring always comes first, then restructuring and rotations if recoloring can't fix things.
   if (subject == root) {//if subject is root, then we need to make it black
     subject -> setBlack();

@@ -67,7 +67,7 @@ char treeNode::getColor() {
   return color;
 }
 
-treeNode* &treeNode::getSibling(treeNode* subject) {
+treeNode* treeNode::getSibling(treeNode* subject) {
   if (parent != NULL) {
     if (parent -> getLeft() != NULL && parent -> getLeft() == this) {
       if (parent -> getRight() != NULL) {
@@ -83,7 +83,7 @@ treeNode* &treeNode::getSibling(treeNode* subject) {
   return parent;
 }
 
-treeNode* &treeNode::getGrand(treeNode* subject) {
+treeNode* treeNode::getGrand(treeNode* subject) {
   if (subject -> getParent() != NULL && subject -> getParent() -> getParent() != NULL) {
     return subject -> getParent() -> getParent();
   }
@@ -92,7 +92,7 @@ treeNode* &treeNode::getGrand(treeNode* subject) {
   }
 }
 
-treeNode* &treeNode::getUnc(treeNode* subject) {
+treeNode* treeNode::getUnc(treeNode* subject) {
   if (subject -> getParent() != NULL && subject -> getParent() -> getSibling(subject) != subject -> getParent()) {
     return subject -> getParent() -> getSibling(subject);
   }

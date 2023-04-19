@@ -18,9 +18,9 @@ class treeNode {
   void setParent(treeNode*);
   treeNode* &getParent();
 
-  treeNode* &getSibling(treeNode*);
-  treeNode* &getGrand(treeNode*);
-  treeNode* &getUnc(treeNode*);
+  treeNode* getSibling(treeNode*);
+  treeNode* getGrand(treeNode*);
+  treeNode* getUnc(treeNode*);
   
   void setBlack();
   void setRed();
