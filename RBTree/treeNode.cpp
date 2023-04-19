@@ -7,6 +7,7 @@ treeNode::treeNode(int Value, char Color) {
   value = Value;
   right = NULL;
   left = NULL;
+  parent = NULL;
   color = Color;
 }
 
