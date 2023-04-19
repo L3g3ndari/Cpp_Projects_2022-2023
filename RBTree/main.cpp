@@ -28,8 +28,8 @@ void deleteNode(treeNode* target);
 bool search(treeNode* root, int target);
 treeNode* searchN(treeNode* root, int target);
 void addFix(treeNode* subject, treeNode* &root);
-void rRotation(treeNode* &subject, treeNode* &root);
-void lRotation(treeNode* &subject, treeNode* &root);
+void rRotation(treeNode* subject, treeNode* &root);
+void lRotation(treeNode* subject, treeNode* &root);
 
 
 int main() {//took a lot of code from my BST project to build the skeleton of this one. The READ command is essentially the same. The ADD and DELETE commands are the same, but with the added algorithms of the RBT. PRINT and SEARCH are also the same as my BST.
@@ -167,7 +167,7 @@ void add(treeNode* current, int subject, treeNode* &root) {//adding nodes
 }
 
 //Code for rotations was written from pseudocode and logic found on codesdope.com
-void rRotation(treeNode* &subject, treeNode* &root) {//the subject in the rotation functions is the grandparent of the subject in addFix()
+void rRotation(treeNode* subject, treeNode* &root) {//the subject in the rotation functions is the grandparent of the subject in addFix()
   cout << "Performing Right Rotation on " << subject -> getValue() << endl;
   treeNode* x = subject;//grandparent of the node we just added
   treeNode* y = x -> getLeft();//x's left child
@@ -191,7 +191,7 @@ void rRotation(treeNode* &subject, treeNode* &root) {//the subject in the rotati
   x -> setParent(y);//don't forget to fix the parent pointer!
 }
 
-void lRotation(treeNode* &subject, treeNode* &root) {
+void lRotation(treeNode* subject, treeNode* &root) {
   cout << "Performing Left Rotation on " << subject -> getValue() << endl;
   treeNode* x = subject;//grandparent of the node we just added
   treeNode* y = x -> getRight();//x's right child
