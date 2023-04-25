@@ -84,7 +84,7 @@ int main() {//took a lot of code from my BST project to build the skeleton of th
       while (searchN(root, target) != NULL) {//it exists
 	treeNode* searchResult = searchN(root, target);
 	//cout << "We are deleting: " << searchResult -> getValue() << endl;
-	deleteNode(searchResult);
+	deleteNode(searchResult, root);
 	//searchResult = searchN(root, target);
 	searchResult = NULL;
       }
@@ -351,9 +351,11 @@ void deleteNode(treeNode* target, treeNode* &root) {
   //No children
   //1 child
   //2 children
+
   if (target == root) {}
   
   int numKids = (target -> getLeft() != NULL) + (target -> getRight() != NULL);
+  cout << "# of children: " << numKids << endl;
 
   if (numKids == 2) {//2 children
     cout << "There are 2 children" << endl;
@@ -361,7 +363,7 @@ void deleteNode(treeNode* target, treeNode* &root) {
     treeNode* inorderSuc = FindInorderSuc(target);
     //replace target's value with inorder successor's value
     target -> setValue(inorderSuc -> getValue());
-    deleteNode(inorderSuc);
+    deleteNode(inorderSuc, root);
   }
   else if (numKids == 1) {//1 child
     cout << "There is 1 child" << endl;
@@ -414,7 +416,7 @@ void deleteNode(treeNode* target, treeNode* &root) {
 	}
 	//Case 3.4 (terminal case): sib's right is red
 	//Change sib's right child to black, target's parent to black, then perform left rotation on target's parent.
-	char pc = target -> getParent -> getColor();
+	char pc = target -> getParent() -> getColor();
 	if (pc == 'B') {
 	  sib -> setBlack();
 	}
@@ -456,5 +458,6 @@ bool search(treeNode* current, int target) {//same search function as BST
 }
 
 treeNode* searchN(treeNode* root, int target) {
+  cout << "Remember to fix searchN." << endl;
   return NULL;
 }
