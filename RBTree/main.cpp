@@ -26,7 +26,7 @@ void add(treeNode* current, int subject, treeNode* &root);
 void printTree(treeNode* current, int depth);
 void deleteNode(treeNode* target, treeNode* &root);
 bool search(treeNode* root, int target);
-treeNode* searchN(treeNode* root, int target);
+treeNode* searchN(treeNode* root, treeNode* current, int target);
 void addFix(treeNode* subject, treeNode* &root);
 treeNode* FindInOrderSuc(treeNode* current);
 void deleteFix(treeNode* subject, treeNode* &root);
@@ -81,8 +81,8 @@ int main() {//took a lot of code from my BST project to build the skeleton of th
       cout << "What value would you like to delete?" << endl << "Target: ";
       int target;
       cin >> target;
-      while (searchN(root, target) != NULL) {//it exists
-	treeNode* searchResult = searchN(root, target);
+      while (searchN(root, root, target) != NULL) {//it exists
+	treeNode* searchResult = searchN(root, root, target);
 	//cout << "We are deleting: " << searchResult -> getValue() << endl;
 	deleteNode(searchResult, root);
 	//searchResult = searchN(root, target);
@@ -347,25 +347,33 @@ treeNode* FindInorderSuc(treeNode* current) {
 
 void deleteNode(treeNode* target, treeNode* &root) {
   if (target == NULL) return;
-  //Cases
-  //No children
-  //1 child
-  //2 children
-
-  if (target == root) {}
-  
   int numKids = (target -> getLeft() != NULL) + (target -> getRight() != NULL);
   cout << "# of children: " << numKids << endl;
 
   if (numKids == 2) {//2 children
-    cout << "There are 2 children" << endl;
+    //cout << "2 child deletion" << endl;
     //find inorder successor
     treeNode* inorderSuc = FindInorderSuc(target);
     //replace target's value with inorder successor's value
     target -> setValue(inorderSuc -> getValue());
-    deleteNode(inorderSuc, root);
+    deleteNode(inorderSuc, root);//2-child case has now been converted to a one-child case
   }
-  else if (numKids == 1) {//1 child
+  else if (numKids == 0) {
+    //cout << "no children deletion \n" << flush;
+    //cout << "Parent: " << target -> getParent() << flush;
+    //cout << "\nParent value: " << target -> getParent() -> getValue() << flush;
+    if (target -> getParent() -> getRight() == target) {//if we know target to be the right child
+      //cout << "We are the right child." << endl;
+      target -> getParent() -> setRight(NULL);
+    }
+    else {
+      //cout << "We are the left child." << endl;
+      target -> getParent() -> setLeft(NULL);
+    }
+    //cout << "Deleting target..." << endl;
+    delete target;
+  }
+  else {//the target has 1 child
     cout << "There is 1 child" << endl;
     treeNode* the1Child = target -> getRight() == NULL? target -> getLeft() : target -> getRight();//gives the existing child. hmm.
 
@@ -380,10 +388,10 @@ void deleteNode(treeNode* target, treeNode* &root) {
       delete target;//delete the target
       return;
     }
-
     if (the1Child -> getColor() == 'R') {//if target has a red child (case 2)
       //replace target with its red child and change the child's color to red(? but maybe black?)
-      if (target -> childType(target) == 1) {//if target is the right child, we must make target's child the new right child of target's parent
+      if (target -> childType(target) == 1) {//if target is the right child, we must make target's child the new right \
+child of target's parent
         target -> getParent() -> setRight(the1Child);
       }
       else {//target is the left child
@@ -393,6 +401,10 @@ void deleteNode(treeNode* target, treeNode* &root) {
       delete target;
       return;
     }
+
+  }
+
+  
 
     if (target -> getColor() == 'B'){//if target is a black node, things get more complicated from here (case 3)
       treeNode* sib = target -> getSibling(target);
@@ -416,13 +428,16 @@ void deleteNode(treeNode* target, treeNode* &root) {
 	}
 	//Case 3.4 (terminal case): sib's right is red
 	//Change sib's right child to black, target's parent to black, then perform left rotation on target's parent.
-	char pc = target -> getParent() -> getColor();
-	if (pc == 'B') {
+	char pc = target -> getParent() -> getColor();//gets parents color
+	if (pc == 'B') {//make sibling's color the color of sibling
 	  sib -> setBlack();
 	}
 	else sib -> setRed();
-	sib -> getRight() -> setBlack();
-	
+	sib -> getRight() -> setBlack();//sibling's right becomes black
+	target -> getParent() -> setBlack();//parent becomes black
+	lRotation(target -> getParent(), root);
+	target = root;
+	deleteNode(root, root);
       }
     }
   }
@@ -457,7 +472,18 @@ bool search(treeNode* current, int target) {//same search function as BST
   return search(current -> getRight(), target) + search(current -> getLeft(), target);
 }
 
-treeNode* searchN(treeNode* root, int target) {
-  cout << "Remember to fix searchN." << endl;
-  return NULL;
+treeNode* searchN(treeNode* root, treeNode* current, int target) {
+  //cout << "Remember to fix searchN." << endl;
+if (current == NULL) {
+    return NULL;
+  }
+  if (target == current -> getValue()) {
+    return current;
+  }
+  treeNode* rightResult = searchN(root, current -> getRight(), target);
+  treeNode* leftResult = searchN(root, current -> getLeft(), target);
+  if (rightResult != NULL) {
+    return rightResult;
+  }
+  return leftResult;
 }
