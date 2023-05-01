@@ -357,6 +357,7 @@ void deleteNode(treeNode* target, treeNode* &root) {
     //replace target's value with inorder successor's value
     target -> setValue(inorderSuc -> getValue());
     deleteNode(inorderSuc, root);//2-child case has now been converted to a one-child case
+    return;
   }
   else if (numKids == 0) {
     //cout << "no children deletion \n" << flush;
@@ -372,37 +373,51 @@ void deleteNode(treeNode* target, treeNode* &root) {
     }
     //cout << "Deleting target..." << endl;
     delete target;
+    return;
   }
-  else {//the target has 1 child
-    cout << "The node we want to delete has one child" << endl;
-    treeNode* the1Child = target -> getRight() == NULL? target -> getLeft() : target -> getRight();//gives the existing child. hmm.
+  //target has 1 child
+  cout << "The node we want to delete has one child" << endl;
+  treeNode* the1Child = target -> getRight() == NULL? target -> getLeft() : target -> getRight();//gives the existing child. hmm.
+  
+  //SWAP target and its one child
+  int the1ChildType the1Child -> childType(the1Child);
+  
+  if (target -> childType(target) == 1) {//if target is a right child
+    target -> getParent() -> setRight(the1Child);
+  }
+  else {//if target is a left child
+    target -> getParent() -> setLeft(the1Child);
+  }
+  the1Child -> setLeft(NULL);
+  the1Child -> setRight(NULL);
+  the1Child -> setParent(target -> getParent());
+  
+  //the target and its child have been swapped and we can now delete the target
 
-    if (target -> getColor() == 'R') {//if target is a red node (CASE 1)
-      //simply delete the target, making sure to link its child to the parent
-      cout << "Deletion Case 1" << endl;
-      if (target -> childType(target) == 1) {//if target is a right child
-        target -> getParent() -> setRight(target -> getRight() == NULL? target -> getLeft() : target -> getRight());
-      }
-      else {////if target is a left child
-        target -> getParent() -> setLeft(target -> getRight() == NULL? target -> getLeft() : target -> getRight());
-      }
-      delete target;//delete the target
-      return;
-    }
-    if (the1Child -> getColor() == 'R') {//if target has a red child (the target must be black) (CASE 2)
-      //replace target with its red child and change the child's color to black
-      cout << "Deletion Case 2" << endl;
-      if (target -> childType(target) == 1) {//if target is the right child, we must make target's child the new right child of target's parent
-        target -> getParent() -> setRight(the1Child);
-      }
-      else {//target is the left child
-        target -> getParent() -> setLeft(the1Child);
-      }
-      the1Child -> setParent(target -> getParent());
-      the1Child -> setBlack();
-      delete target;
-      return;
-    }
+  if (target -> getColor() == 'R') {//if target is red, do nothing
+
+  } 
+  else if (the1Child -> getColor() == 'R') {//if target has a red child (the target must be black), and we make the child black
+    the1Child -> setBlack();
+  }
+  else {//both target and its child are black
+    //THE CASES BEGIN
+    deleteFix();
+  }
+  delete target;
+  return;
+}
+
+void deleteFix(treeNode* subject, treeNode* target, treeNode* &root) {//target has one child
+  cout << "deleteFix initiated" << endl;
+  treeNode* N = target -> getParent();//this used to be the1Child, the node that replaced the target
+
+  //CASE 1: if N
+}
+
+void deleteNode2(treeNode* target, treeNode* &root) {
+  
+  
     //From this point on, we assume target is black.
     if (target -> getColor() == 'B' && the1Child -> getColor() == 'B') {//CASE 3: target and its child are both black
       cout << "Deletion Case 3" << endl;
@@ -442,10 +457,6 @@ void deleteNode(treeNode* target, treeNode* &root) {
       
     }
   }
-
-}
-
-void deleteFix(treeNode* subject, treeNode* &root) {
 
 }
 
