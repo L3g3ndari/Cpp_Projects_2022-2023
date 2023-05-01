@@ -25,6 +25,7 @@ class treeNode {
   void setBlack();
   void setRed();
   char getColor();
+  bool isBlack();
 
   int childType(treeNode*);
   

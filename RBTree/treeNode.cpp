@@ -67,6 +67,13 @@ char treeNode::getColor() {
   return color;
 }
 
+bool treeNode::isBlack() {
+  if (color == 'R') {
+    return false;
+  }
+  else return true;
+}
+
 treeNode* treeNode::getSibling(treeNode* subject) {
   if (parent != NULL) {
     if (parent -> getLeft() != NULL && parent -> getLeft() == this) {
