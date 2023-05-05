@@ -25,6 +25,7 @@ void add(treeNode* &root, int subject);
 void add(treeNode* current, int subject, treeNode* &root);
 void printTree(treeNode* current, int depth);
 void deleteNode(treeNode* target, treeNode* &root);
+void deleteRoot(treeNode* &root);
 bool search(treeNode* root, int target);
 treeNode* searchN(treeNode* root, treeNode* current, int target);
 void addFix(treeNode* subject, treeNode* &root);
@@ -74,7 +75,10 @@ int main() {//took a lot of code from my BST project to build the skeleton of th
     }
     
     if (strcmp(command, "PRINT") == 0) {
-      printTree(root, 0);
+      if (root != NULL) {
+	printTree(root, 0);
+      }
+      else cout << "The tree does not exist" << endl;
     }
 
     if (strcmp(command, "DELETE") == 0) {
@@ -84,7 +88,12 @@ int main() {//took a lot of code from my BST project to build the skeleton of th
       while (searchN(root, root, target) != NULL) {//it exists
 	treeNode* searchResult = searchN(root, root, target);
 	//cout << "We are deleting: " << searchResult -> getValue() << endl;
-	deleteNode(searchResult, root);
+	if (root -> getValue() == target) {
+	  deleteRoot(root);
+	}
+	else {
+	  deleteNode(searchResult, root);
+	}
 	//searchResult = searchN(root, target);
 	searchResult = NULL;
       }
@@ -416,18 +425,19 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
   cout << "deleteFix initiated" << endl;  //in the first iteration, subject is the1Child, which replaced target
   treeNode* sib = subject -> getSibling(subject);
   
-  //CASE 1: if subject is the (new) root, do nothing
+  //CASE 1: if subject is the (new) root (of the isolated section), do nothing
   if (subject == root) {
     cout << "Case 1" << endl;
+    return;
   }
 
   //CASE 2: if subject's sibling is red, switch sibling's color to black, make parent red, then rotate through the parent. Call Case 3 
-  else if (sib -> getColor() == 'R') {
+  if (sib -> getColor() == 'R') {
     cout << "Case 2" << endl;
     sib -> setBlack();//make sibling black
     sib -> getParent() -> setRed();//make parent red
     //do the proper rotation
-    if (sib -> childType == 1) {//if sib is a right child
+    if (sib -> childType(sib) == 1) {//if sib is a right child
       lRotation(sib -> getParent(), root);
     }
     else {//sib is a left child
@@ -445,7 +455,7 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
 
   //CASE 4: if parent is red, sibling is black, and sibling's children are black, color parent black and color sibling red
   if (subject -> getParent() -> getColor() == 'R' && sib -> isBlack() == true &&
-      sib -> getRight -> isBlack() == true && sib -> getLeft -> isBlack() == true) {
+      sib -> getRight() -> isBlack() == true && sib -> getLeft() -> isBlack() == true) {
     cout << "Case 4" << endl;
     subject -> getParent() -> setBlack();
     sib -> setRed();
@@ -482,19 +492,62 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
             if sibling is black, sibling's RIGHT is red, and subject is LEFT*/
   if (sib -> isBlack() == true && sib -> getLeft() -> isBlack() == false && subject -> childType(subject) == 1) {
     cout << "Case 6.1" << endl;
-    //rotate through parent
+    rRotation(sib -> getParent(), root);
     //switch parent and sibling's colors
+    char tempPC = sib -> getParent() -> getColor();//temp variable for storing parent's color
+    sib -> getParent() -> setBlack();//sib is always black in this case, so we make parent black
+    if (tempPC == 'R') {//if parent was red, we make sib red, but if parent was black, sib is already black so we don't need to change
+      sib -> setRed();
+    }
+    //make sibling's child black
     sib -> getLeft() -> setBlack();
     return;
   }
 
-  if (sib -> isBlack() == true && sib -> getRight() isBlack() == false && subject -> childType(subject) == 2) {
+  if (sib -> isBlack() == true && sib -> getRight() -> isBlack() == false && subject -> childType(subject) == 2) {
     cout << "Case 6.2" << endl;
-    //rotate through parent
+    lRotation(sib -> getParent(), root);
     //switch parent and sibling's colors
+    char tempPC = sib -> getParent() -> getColor();//temp variable for storing parent's color
+    sib -> getParent() -> setBlack();//sib is always black in this case, so we make parent black
+    if (tempPC == 'R') {//if parent was red, we make sib red, but if parent was black, sib is already black so we don't need to change
+      sib -> setRed();
+    }
+    //make sibling's child black
     sib -> getRight() -> setBlack();
     return;
   }
+}
+
+void deleteRoot(treeNode* &root) {
+  if (root == NULL) return;
+  int numKids = (root -> getLeft() != NULL) + (root -> getRight() != NULL);
+  cout << "# of children: " << numKids << endl;
+
+  if (numKids == 2) {//2 children
+    //cout << "2 child deletion" << endl;
+    //find inorder successor
+    treeNode* inorderSuc = FindInorderSuc(root);
+    //replace target's value with inorder successor's value
+    root -> setValue(inorderSuc -> getValue());
+    deleteNode(inorderSuc, root);//2-child case has now been converted to a one-child case
+    return;
+  }
+  else if (numKids == 0) {
+    delete root;
+    root = NULL;
+    return;
+  }
+  //root has 1 child
+  cout << "The root has one child" << endl;
+  treeNode* the1Child = root -> getRight() == NULL? root -> getLeft() : root -> getRight();//gives the existing child. hmm.
+
+  //make the1Child the root and delete the previous root
+  treeNode* temp = root;
+  root = the1Child;//child becomes the new root
+  root -> setBlack();
+  delete temp;
+  return;
 }
 
 bool search(treeNode* current, int target) {//same search function as BST
