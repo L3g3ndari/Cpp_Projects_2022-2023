@@ -11,12 +11,17 @@ This program creates a basic directed graph. User can add and delete nodes and e
 
 #include <iostream>
 #include <cstring>
+#include <Node.h>
 
 using namespace std;
 
 int main() {
-  cout << "Welcome to Graph Creator. Your available commands are ADD, DELETE, PRINT, FSP, and QUIT." << endl;
+  cout << "Welcome to Graph Creator. Your available commands are ADD, DELETE, PRINT, PATH, and QUIT." << endl;
 
+  vector<Node> nodeList;
+  vector<Edge> edgeList;
+  vector<vector<bool>> adjacency;
+  
   while (true) {
     cout << endl << "Expecting new command: ";
     char command[20];
@@ -26,7 +31,7 @@ int main() {
     cout << endl;
 
     if (strcmp(command, "ADD") == 0) {
-      cout << "Adding a node or anb edge (n/e)" << endl;
+      cout << "Adding a node or an edge (n/e)" << endl;
       char typeInput;
       cin >> typeInput;
       cin.clear();
@@ -35,9 +40,28 @@ int main() {
 	cout << endl << "Label: ";
 	char label[10];
 	cin >> label;
-	//Add it
-	}
+	//add it
       }
+    }
+
+    if (strcmp(command, "PRINT") == 0) {
+
+    }
+
+    if (strcmp(command, "PATH") == 0) {
+
+    }
+
+    if (strcmp(command, "DELETE") == 0) {
+
+    }
+
+    if (strcmp(command, "QUIT") == 0) {
+      cout << "Goodbye." << endl;
+      exit(0);
+    }
+    
+  }
 
   
 }
