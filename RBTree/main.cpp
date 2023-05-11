@@ -33,6 +33,7 @@ treeNode* FindInOrderSuc(treeNode* current);
 void deleteFix(treeNode* subject, treeNode* &root);
 void rRotation(treeNode* subject, treeNode* &root);
 void lRotation(treeNode* subject, treeNode* &root);
+char getColor(treeNode* subject);
 
 
 int main() {//took a lot of code from my BST project to build the skeleton of this one. The READ command is essentially the same. The ADD and DELETE commands are the same, but with the added algorithms of the RBT. PRINT and SEARCH are also the same as my BST.
@@ -363,10 +364,15 @@ treeNode* FindInorderPre(treeNode* current) {
   return current;
 }
 
+char getColor(treeNode* subject) {
+  if (subject == NULL) return 'B';
+  return subject -> getColor();
+}
+
 void deleteNode(treeNode* target, treeNode* &root) {
   if (target == NULL) return;
   int numKids = (target -> getLeft() != NULL) + (target -> getRight() != NULL);
-  cout << "# of children: " << numKids << endl;
+  cout << "# of children: " << numKids << "\n" << flush;
   cout << "Target = " << target -> getValue() << "\n" << flush;
 
   if (numKids == 2) {//2 children
@@ -464,7 +470,8 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
       rRotation(sib -> getParent(), root);
     }
     //Calling Case 3
-    if (sib -> isBlack() == true) {
+    if (getColor(sib) == 'B' && getColor(sib -> getRight()) == 'B' && getColor(sib -> getLeft()) \
+	     == 'B' && getColor(subject -> getParent()) == 'B'){
       cout << "Case 3\n" << flush;
       sib -> setRed();
       deleteNode(subject -> getParent(), root);//recursively call case 1 on parent
@@ -529,16 +536,16 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
     }
   }
 
-  //CASE 3: if subject's sibling is black,
-  else {
+  //CASE 3: if subject's sibling is black, both sibling's children are black, and if the parent is black
+  else if (getColor(sib) == 'B' && getColor(sib -> getRight()) == 'B' && getColor(sib -> getLeft()) == 'B' && getColor(subject -> getParent()) == 'B'){
     cout << "Case 3\n" << flush;
     sib -> setRed();
     deleteNode(subject -> getParent(), root);//recursively call case 1 on parent
   }
 
   //CASE 4: if parent is red, sibling is black, and sibling's children are black, color parent black and color sibling red
-  if (subject -> getParent() -> getColor() == 'R' && sib -> isBlack() == true &&
-      sib -> getRight() -> isBlack() == true && sib -> getLeft() -> isBlack() == true) {
+  if (subject -> getParent() -> getColor() == 'R' && getColor(sib) == 'B' &&
+      getColor(sib -> getRight()) == 'B' && getColor(sib -> getLeft()) == 'B') {
     cout << "Case 4\n" << flush;
     subject -> getParent() -> setBlack();
     sib -> setRed();
@@ -550,8 +557,8 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
     OR
 
             if sibling is black, sibling's LEFT is RED, sibling's right is black, and subject is a LEFT child */
-  if (sib -> isBlack() == true && sib -> getLeft() -> isBlack() == true &&
-      sib -> getRight() -> isBlack() == false && subject -> childType(subject) == 1) {//childType 1 = right child
+  if (getColor(sib) == 'B' && getColor(sib -> getLeft()) == 'B' &&
+      getColor(sib -> getRight()) == 'R' && subject -> childType(subject) == 1) {//childType 1 = right child
     cout << "Case 5.1\n" << flush;
     lRotation(sib, root);
     sib -> setRed();
@@ -559,8 +566,8 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
     return;
   }
 
-  if (sib -> isBlack() == true && sib -> getLeft() -> isBlack() == false &&
-      sib -> getRight() -> isBlack() == true && subject -> childType(subject) == 2) {//childType 2 = left child
+  if (getColor(sib) == 'B' && getColor(sib -> getLeft()) == 'R' &&
+      getColor(sib -> getRight()) == 'B' && subject -> childType(subject) == 2) {//childType 2 = left child
     cout << "Case 5.2\n" << flush;
     rRotation(sib, root);
     sib -> setRed();
@@ -573,7 +580,7 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
     OR
 
             if sibling is black, sibling's RIGHT is red, and subject is LEFT*/
-  if (sib -> isBlack() == true && sib -> getLeft() -> isBlack() == false && subject -> childType(subject) == 1) {
+  if (getColor(sib) == 'B' && getColor(sib -> getLeft()) == 'R' && subject -> childType(subject) == 1) {
     cout << "Case 6.1\n" << flush;
     rRotation(sib -> getParent(), root);
     //switch parent and sibling's colors
@@ -587,7 +594,7 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
     return;
   }
 
-  if (sib -> isBlack() == true && sib -> getRight() -> isBlack() == false && subject -> childType(subject) == 2) {
+  if (getColor(sib) == 'B' && getColor(sib -> getRight()) == 'R' && subject -> childType(subject) == 2) {
     cout << "Case 6.2\n" << flush;
     lRotation(sib -> getParent(), root);
     //switch parent and sibling's colors
@@ -646,7 +653,7 @@ bool search(treeNode* current, int target) {//same search function as BST
 
 treeNode* searchN(treeNode* root, treeNode* current, int target) {
   //cout << "Remember to fix searchN." << endl;
-if (current == NULL) {
+  if (current == NULL) {
     return NULL;
   }
   if (target == current -> getValue()) {
