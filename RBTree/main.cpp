@@ -443,7 +443,7 @@ void deleteNode(treeNode* target, treeNode* &root) {
 
 void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
   cout << "deleteFix initiated\n" << flush; //in the first iteration, subject is the1Child, which replaced target
-  treeNode* sib = subject -> getSibling(subject);
+  treeNode* sib = subject -> getSibling(subject);//THIS COULD BE WHERE THINGS ARE BREAKING.
   
   //CASE 1: if subject is the (new) root (of the isolated section), do nothing
   if (subject == root) {
@@ -464,16 +464,76 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
       rRotation(sib -> getParent(), root);
     }
     //Calling Case 3
-    cout << "Case 3\n" << flush;
-    sib -> setRed();
-    deleteNode(subject -> getParent(), root);
+    if (sib -> isBlack() == true) {
+      cout << "Case 3\n" << flush;
+      sib -> setRed();
+      deleteNode(subject -> getParent(), root);//recursively call case 1 on parent
+    }
+    else {
+      //Calling Case 4
+      if (subject -> getParent() -> getColor() == 'R' && sib -> isBlack() == true &&
+	  sib -> getRight() -> isBlack() == true && sib -> getLeft() -> isBlack() == true) {
+	cout << "Case 4\n" << flush;
+	subject -> getParent() -> setBlack();
+	sib -> setRed();
+	return;//everything is supposedly fixed, return to deleteFunction to finish out
+      }
+      
+      //Calling Case 5
+      if (sib -> isBlack() == true && sib -> getLeft() -> isBlack() == true &&
+	  sib -> getRight() -> isBlack() == false && subject -> childType(subject) == 1) {//childType 1 = right child
+	cout << "Case 5.1\n" << flush;
+	lRotation(sib, root);
+	sib -> setRed();
+	sib -> getRight() -> setBlack();
+	return;
+      }
+
+      if (sib -> isBlack() == true && sib -> getLeft() -> isBlack() == false &&
+	  sib -> getRight() -> isBlack() == true && subject -> childType(subject) == 2) {//childType 2 = left child
+	cout << "Case 5.2\n" << flush;
+	rRotation(sib, root);
+	sib -> setRed();
+	sib -> getLeft() -> setBlack();
+	return;
+      }
+
+      //Calling Case 6
+      if (sib -> isBlack() == true && sib -> getLeft() -> isBlack() == false && subject -> childType(subject) == 1) {
+	cout << "Case 6.1\n" << flush;
+	rRotation(sib -> getParent(), root);
+	//switch parent and sibling's colors
+	char tempPC = sib -> getParent() -> getColor();//temp variable for storing parent's color
+	sib -> getParent() -> setBlack();//sib is always black in this case, so we make parent black
+	if (tempPC == 'R') {//if parent was red, we make sib red, but if parent was black, sib is already black so we don't need to change
+	  sib -> setRed();
+	}
+	//make sibling's child black
+	sib -> getLeft() -> setBlack();
+	return;
+      }
+
+      if (sib -> isBlack() == true && sib -> getRight() -> isBlack() == false && subject -> childType(subject) == 2) {
+	cout << "Case 6.2\n" << flush;
+	lRotation(sib -> getParent(), root);
+	//switch parent and sibling's colors
+	char tempPC = sib -> getParent() -> getColor();//temp variable for storing parent's color
+	sib -> getParent() -> setBlack();//sib is always black in this case, so we make parent black
+	if (tempPC == 'R') {//if parent was red, we make sib red, but if parent was black, sib is already black so we don't need to change
+	  sib -> setRed();
+	}
+	//make sibling's child black
+	sib -> getRight() -> setBlack();
+	return;
+      }
+    }
   }
 
   //CASE 3: if subject's sibling is black,
   else {
     cout << "Case 3\n" << flush;
     sib -> setRed();
-    deleteNode(subject -> getParent(), root);
+    deleteNode(subject -> getParent(), root);//recursively call case 1 on parent
   }
 
   //CASE 4: if parent is red, sibling is black, and sibling's children are black, color parent black and color sibling red
