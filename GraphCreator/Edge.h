@@ -11,8 +11,9 @@ class Edge {
   void setWeight(int);
   void setFirst(Node*);
   void setSecond(Node*);
-  Node* &getFirst();
-  Node* &getSecond();
+  Node* getFirst();
+  Node* getSecond();
+  Node* getOtherEnd(Node* n);
  private:
   int weight;
   Node* first;

@@ -24,6 +24,7 @@ using namespace std;
 void add(treeNode* &root, int subject);
 void add(treeNode* current, int subject, treeNode* &root);
 void printTree(treeNode* current, int depth);
+void printFromRoot(treeNode* current);
 void deleteNode(treeNode* target, treeNode* &root);
 void deleteRoot(treeNode* &root);
 bool search(treeNode* root, int target);
@@ -346,6 +347,14 @@ void printTree(treeNode* current, int depth) {
   }
 }
 
+void printFromRoot(treeNode* current) {
+  if (current == NULL) return;
+  cout << current -> getColor() << current -> getValue() << ": ";
+  printFromRoot(current -> getLeft());
+  cout << ", ";
+  printFromRoot(current -> getRight());
+}
+
 treeNode* FindInorderSuc(treeNode* current) {
   current = current -> getRight();
   while (current != NULL && current -> getLeft() != NULL) {
@@ -388,8 +397,17 @@ void deleteNode(treeNode* target, treeNode* &root) {
   else if (numKids == 0) {
     cout << "The node we want to delete has zero literal children.\n" << flush;
     if (target -> isBlack() == true) {//we have a double black situation and we need to call cases
+      cout << "about to run deleteFix on no child" << endl;
       deleteFix(target, root);
+      cout << "finished deleteFix on no child" << endl;
+      if (target -> childType(target) == 1) {
+        target -> getParent() -> setRight(NULL);
+      }
+      else target -> getParent() -> setLeft(NULL);
+      cout << target -> getParent() -> getLeft() << endl;
+      cout << target -> getParent() -> getRight() << endl;
       delete target;
+      printFromRoot(root);
       return;
     }
     else {
@@ -404,6 +422,7 @@ void deleteNode(treeNode* target, treeNode* &root) {
 	target -> getParent() -> setLeft(NULL);
       }
       //cout << "Deleting target..." << endl;
+      printFromRoot(root);
       delete target;
       //cout << "deleteNode succeeded\n" << flush;
       return;
@@ -440,7 +459,9 @@ void deleteNode(treeNode* target, treeNode* &root) {
     }
     else {//both target and its child are black
       //THE CASES BEGIN
+      cout << "about to run deleteFix on 1 child" << endl;
       deleteFix(the1Child, root);
+      cout << "finished deleteFix on 1 child" << endl;
     }
     delete target;
     return;
@@ -469,6 +490,10 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
     else {//sib is a left child
       rRotation(sib -> getParent(), root);
     }
+
+    sib = subject -> getSibling(subject);
+    if (!sib) return;
+    
     //Calling Case 3
     if (getColor(sib) == 'B' && getColor(sib -> getRight()) == 'B' && getColor(sib -> getLeft()) \
 	     == 'B' && getColor(subject -> getParent()) == 'B'){
@@ -478,11 +503,13 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
     }
     else {
       //Calling Case 4
+      if (!sib) return;
       if (subject -> getParent() -> getColor() == 'R' && sib -> isBlack() == true &&
 	  sib -> getRight() -> isBlack() == true && sib -> getLeft() -> isBlack() == true) {
 	cout << "Case 4\n" << flush;
 	subject -> getParent() -> setBlack();
 	sib -> setRed();
+	cout << "Case 4 is ready to return." << endl;
 	return;//everything is supposedly fixed, return to deleteFunction to finish out
       }
       
@@ -544,11 +571,13 @@ void deleteFix(treeNode* subject, treeNode* &root) {//target has one child
   }
 
   //CASE 4: if parent is red, sibling is black, and sibling's children are black, color parent black and color sibling red
-  if (subject -> getParent() -> getColor() == 'R' && getColor(sib) == 'B' &&
+  if (!sib) return; 
+  if (getColor(subject -> getParent()) == 'R' && getColor(sib) == 'B' &&
       getColor(sib -> getRight()) == 'B' && getColor(sib -> getLeft()) == 'B') {
     cout << "Case 4\n" << flush;
     subject -> getParent() -> setBlack();
     sib -> setRed();
+    cout << "Case 4 is ready to return" << endl;
     return;//everything is supposedly fixed, return to deleteFunction to finish out
   }
 
