@@ -650,7 +650,7 @@ void deleteRoot(treeNode* &root) {
     treeNode* inorderSuc = FindInorderSuc(root);
     //replace target's value with inorder successor's value
     root -> setValue(inorderSuc -> getValue());
-    deleteNode(inorderSuc, root);//2-child case has now been converted to a one-child case
+    deleteRoot(inorderSuc);//2-child case has now been converted to a one-child case
     return;
   }
   else if (numKids == 0) {
