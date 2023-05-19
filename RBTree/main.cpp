@@ -688,10 +688,14 @@ treeNode* searchN(treeNode* root, treeNode* current, int target) {
   if (target == current -> getValue()) {
     return current;
   }
-  treeNode* rightResult = searchN(root, current -> getRight(), target);
-  treeNode* leftResult = searchN(root, current -> getLeft(), target);
-  if (rightResult != NULL) {
-    return rightResult;
+  if (current -> getValue() < target) {
+    return searchN(root, current -> getRight(), target);
   }
-  return leftResult;
+  return searchN(root, current -> getLeft(), target);
+  //treeNode* rightResult = searchN(root, current -> getRight(), target);
+  //treeNode* leftResult = searchN(root, current -> getLeft(), target);
+  //if (rightResult != NULL) {
+  //return rightResult;
+  //}
+  //return leftResult;
 }
