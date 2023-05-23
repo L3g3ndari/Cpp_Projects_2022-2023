@@ -28,7 +28,7 @@ We can implement this in the form of an array of linked lists, with the array st
 
 using namespace std;
 
-void addVertex();
+void addVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label);
 void addEdge();
 int getVertexIndex();
 Vertex* getVertex();
@@ -43,10 +43,9 @@ bool isNumber(char*);
 int main() {
   cout << "Welcome to Graph Creator. Your available commands are ADD, DELETE, PRINT, PATH, and QUIT." << endl;
 
-  
-  vector<Node*> nodeList;
-  vector<Edge*> edgeList;
-  vector<vector<bool>> adjacencyT;
+  vector<char*> nodeList;
+  //vector<Edge*> edgeList;
+  vector<vector<int>> matrix;
   
   while (true) {
     cout << endl << "Expecting new command: ";
@@ -152,8 +151,16 @@ int main() {
 }
 
 
-void addVertex() {
-
+void addVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label) {
+  nodeList.push_back(label);//adds to the nodeList
+  
+  matrix.push_back(vector<int>());//adds a new empty row to the matrix
+  for (int r = 0; r < matrix.size() - 1; r++) {//populates the row we just added with zeros
+    matrix[matrix.size()-1].push_back(0);  
+  }
+  for (int c = 0; c < matrix.size(); c++) {
+    matrix[c].push_back(0);
+  }  
 }
 
 void addEdge() {
