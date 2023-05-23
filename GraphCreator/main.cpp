@@ -7,29 +7,43 @@ Project Completed:
 Outside Sources Used:
 
 This program creates a basic directed graph. User can add and delete nodes and edges. Nodes can be labeled and edges can be given a weight. There is also a function that will find the shortest path between two nodes.
+
+ - Nathan's Quick Notes - 
+We can implement this in the form of an array of linked lists, with the array storing vertices and the linked lists storing all the edges. Edges store the pointer to the connected vertex or its index in the array. A node stores 3 pieces of information: the vertex, a visit marker, and a head pointer to the connected edges.
+
+* Things to Find Out from Mr. Galbraith *
+ - What is the implementation? Do I need separate Node and Vertex classes or can I combine all the info into one Node class?
+ - Do I need an Edge class?
+ - Still very confused on implementation
+ - Do the edges only have one direction, since it's a directed graph? Or is it more similar to our graphs in Java where direction doesn't matter?
+ - Do I need nodeList and edgeList? Do I need the adjacency table as an object? If so, what type of implementation? Vectors?
+
 */
 
 #include <iostream>
 #include <cstring>
-#include "Node.h"
+#include <vector>
+#include "Vertex.h"
 #include "Edge.h"
 
 using namespace std;
 
-void addNode(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, char* newLabel);
-void addEdge(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, vector<Edge*> &edgeList, int newWeight, Node* first, Node* second);
-int getNodeIndex(Node* n, vector<Node*> &nodeList);
-Node* getNode(vector<Node*> &nodeList, char* label);
-bool nodeExists(char* label, vector<Node*> &nodeList);
-//getConnectedEdges function
-void deleteNode(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, char* label);
-void deleteEdge(vector<vector<bool>> &adjacencyT, vector<Edge*> &edgeList, int weight);
-void printAdj(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, vector<Edge*> &edgeList);
-void findShortestPath(vector<vector<bool>> &adjacencyT, Node* start, Node* end);//this must return something else but I don't know what yet
+void addVertex();
+void addEdge();
+int getVertexIndex();
+Vertex* getVertex();
+bool vertexExists();
+//getConnectedEdges function   - What type of return is this?
+void deleteVertex();
+void deleteEdge();
+void printAdj();
+void findShortestPath();//this must return something else but I don't know what yet
+bool isNumber(char*);
 
 int main() {
   cout << "Welcome to Graph Creator. Your available commands are ADD, DELETE, PRINT, PATH, and QUIT." << endl;
 
+  
   vector<Node*> nodeList;
   vector<Edge*> edgeList;
   vector<vector<bool>> adjacencyT;
@@ -43,88 +57,85 @@ int main() {
     cout << endl;
 
     if (strcmp(command, "ADD") == 0) {
-      cout << "Adding a node or an edge (n/e)" << endl;
+      cout << "Adding a vertex or an edge (v/e)" << endl;
       char typeInput;
       cin >> typeInput;
       cin.clear();
       cin.ignore(1, '\n');
-      if (typeInput == 'n') {//add a node
+      if (typeInput == 'v') {//add a node
 	cout << endl << "Label: ";
 	char label[10];
 	cin >> label;
-	addNode(adjacencyT, nodeList, label);
+	addVertex();
       }
       else if (typeInput == 'e') {//add an edge
-	cout << "First Connected Node: ";
-	char* node1;
-	cin >> node1;
-	cout << endl << "Second Connected Node: ";
-	char* node2;
-	cin >> node2;
-	if (nodeExists(node1, nodeList) == true && nodeExists(node2, nodeList) == true) {//if both entered nodes exist, we can create an edge between them.
+	cout << "First Connected Vertex: ";
+	char* v1;
+	cin >> v1;
+	cout << endl << "Second Connected Vertex: ";
+	char* v2;
+	cin >> v2;
+	if (vertexExists() == true && vertexExists() == true) {//if both entered vertices exist, we can create an edge between them.
 	  cout << endl << "Weight: ";
-	  int weight[5];
+	  char* weight[5];
 	  cin >> weight;
-	  if (weight.isNumber() == true) {
-	    addEdge(adjacencyT, nodeList, edgeList, weight, first, second);
+	  if (isNumber(weight) == true) {
+	    addEdge();
 	  }
 	  else {
 	    cout << "Not a valid input. The weight of an edge must be a integer value." << endl;
 	  }
 	}
 	else {
-	  cout << "You entered a node that doesn't exist. Please try again." << endl;
+	  cout << "You entered a vertex that doesn't exist. Please try again." << endl;
 	}
       }
       else {
-	cout << "Not a valid input." << endl;
-      }
-      else {
-	cout << "Not a valid input. Please enter either \"n\" to add a node or \"e\" to add an edge." << endl;
+	cout << "Not a valid input. Please enter either \"v\" to add a vertex or \"e\" to add an edge." << endl;
       }
     }
 
     if (strcmp(command, "PRINT") == 0) {
-      printAdj(adjacencyT, nodeList, edgeList);
+      printAdj();
       cout << endl;
     }
 
     if (strcmp(command, "PATH") == 0) {
-      cout << "Enter two nodes and I will find the shortest path between them, if it exists." << endl;
+      cout << "Enter two vertices and I will find the shortest path between them, if it exists." << endl;
       cout << "Origin: ";
       char* origin[10];
       cin >> origin;
       cout << endl << "Destination: ";
       char* dest[10];
       cin >> dest;
-      if (nodeExists(origin, nodeList) == true && nodeExists(dest, nodeList) == true) {
-	findShortestPath(adjacencyT, blah, blah);
+      if (vertexExists() == true && vertexExists() == true) {
+	findShortestPath();
       }
       else {
-	cout << "You entered a node that doesn't exist. Please try again." << endl;
+	cout << "You entered a vertex that doesn't exist. Please try again." << endl;
       }
     }
 
     if (strcmp(command, "DELETE") == 0) {
-      cout << "Deleting a node or an edge (n/e)" << endl;
+      cout << "Deleting a vertex or an edge (v/e)" << endl;
       char typeInput;
       cin >> typeInput;
       cin.clear();
       cin.ignore(1, '\n');
-      if (typeInput == 'n') {//delete a node
+      if (typeInput == 'v') {//delete a node
         cout << endl << "Label: ";
         char label[10];
         cin >> label;
-        deleteNode(adjacencyT, nodeList, label);
+        deleteVertex();
       }
       else if (typeInput == 'e') {//delete an edge
-	cout << "First Connected Node: ";
-        char* node1;
-        cin >> node1;
-        cout << endl << "Second Connected Node: ";
-        char* node2;
-        cin >> node2;
-        if (nodeExists(node1, nodeList) == true && nodeExists(node2, nodeList) == true) {//if both entered nodes exist and an edge exists between them, we can delete the edge.
+	cout << "First Connected Vertex: ";
+        char* v1;
+        cin >> v1;
+        cout << endl << "Second Connected Vertex: ";
+        char* v2;
+        cin >> v2;
+        if (vertexExists() == true && vertexExists() == true) {//if both entered nodes exist and an edge exists between them, we can delete the edge.
 	  //check if there is an edge between the two nodes in the above if statement
 	}
       }
@@ -141,40 +152,49 @@ int main() {
 }
 
 
-void addNode(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, char* newLabel) {
+void addVertex() {
 
 }
 
-void addEdge(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, vector<Edge*> &edgeList, int newWeight, Node* first, Node* second) {
+void addEdge() {
 
 }
 
-int getNodeIndex(Node* n, vector<Node*> &nodeList) {
+int getVertexIndex() {
 
 }
 
-Node* getNode(vector<Node*> &nodeList, char* label) {
+Vertex* getVertex() {
 
 }
 
-bool nodeExists(char* label, vector<Node*> &nodeList) {
+bool vertexExists() {
 
 }
 
 //getConnectedEdges function
 
-void deleteNode(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, char* label) {
+void deleteVertex() {
 
 }
 
-void deleteEdge(vector<vector<bool>> &adjacencyT, vector<Edge*> &edgeList, int weight) {
+void deleteEdge() {
 
 }
 
-void printAdj(vector<vector<bool>> &adjacencyT, vector<Node*> &nodeList, vector<Edge*> &edgeList) {
+void printAdj() {
 
 }
 
-void findShortestPath(vector<vector<bool>> &adjacencyT, Node* start, Node* end) {
+void findShortestPath() {
 
+}
+
+bool isNumber(char* input) {
+  for (int i = 0; i < sizeof(input)/sizeof(char); i++) {
+    if (isdigit(input[i]) == false) {
+      return false;
+    }
+  }
+  return true;
 }

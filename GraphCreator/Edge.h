@@ -1,21 +1,21 @@
 #include <iostream>
-#include <Node.h>
+#include <Vertex.h>
 
 using namespace std;
 
 class Edge {
  public:
-  Edge(int Weight, Node* First, Node* Second);//constructs a node
-  ~Edge();//deconstructor
-  int getWeight();//returns the integer that the node stores
+  Edge(int Weight, Vertex* First, Vertex* Second);
+  ~Edge();
+  int getWeight();
   void setWeight(int);
-  void setFirst(Node*);
-  void setSecond(Node*);
-  Node* getFirst();
-  Node* getSecond();
-  Node* getOtherEnd(Node* n);
+  void setFirst(Vertex*);
+  void setSecond(Vertex*);
+  Vertex* getFirst();
+  Vertex* getSecond();
+  Vertex* getOtherEnd(Vertex* v);
  private:
   int weight;
-  Node* first;
-  Node* second;
+  Vertex* first;
+  Vertex* second;
 };

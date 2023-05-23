@@ -1,10 +1,10 @@
 #include <iostream>
-#include "Node.h"
+#include "Vertex.h"
 #include "Edge.h"
 
 using namespace std;
 
-Edge::Edge(int Weight, Node* First, Node* Second) {
+Edge::Edge(int Weight, Vertex* First, Vertex* Second) {
   weight = Weight;
   first = First;
   second = Second;
@@ -24,24 +24,24 @@ void Edge::setWeight(int newWeight) {
   weight = newWeight;
 }
 
-void Edge::setFirst(Node* First) {
+void Edge::setFirst(Vertex* First) {
   first = First;
 }
 
-Node* Edge::getFirst() {
+Vertex* Edge::getFirst() {
   return first;
 }
 
-void Edge::setSecond(Node* Second) {
+void Edge::setSecond(Vertex* Second) {
   second = Second;
 }
 
-Node* Edge::getSecond() {
+Vertex* Edge::getSecond() {
   return second;
 }
 
-Node* Edge::getOtherEnd(Node* n) {
-  if (n == first) return second;
-  else if (n == second) return first;
+Vertex* Edge::getOtherEnd(Vertex* v) {
+  if (v == first) return second;
+  else if (v == second) return first;
   else return NULL;
 }
