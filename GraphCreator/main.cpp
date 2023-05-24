@@ -8,7 +8,7 @@ Outside Sources Used:
 
 This program creates a basic directed graph. User can add and delete nodes and edges. Nodes can be labeled and edges can be given a weight. There is also a function that will find the shortest path between two nodes.
 
- - Nathan's Quick Notes - 
+ - Nathan's Quick Notes 5/23/2023 - 
 We can implement this in the form of an array of linked lists, with the array storing vertices and the linked lists storing all the edges. Edges store the pointer to the connected vertex or its index in the array. A node stores 3 pieces of information: the vertex, a visit marker, and a head pointer to the connected edges.
 
 * Things to Find Out from Mr. Galbraith *
@@ -33,10 +33,10 @@ void addEdge(vector<vector<int>> &matrix, vector<char*> &nodeList, int weight, c
 int getVertexIndex(vector<char*> &nodeList, char* label);
 bool vertexExists(vector<char*> nodeList, char* label);
 //getConnectedEdges function   - What type of return is this?
-void deleteVertex();
-void deleteEdge();
+void deleteVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label);
+void deleteEdge(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label1, char* label2);
 void printAdj(vector<vector<int>> matrix, vector<char*> nodeList);
-void findShortestPath();//this must return something else but I don't know what yet
+void findShortestPath(vector<vector<int>> matrix, vector<char*> nodeList, char* origin, char* dest);
 bool isNumber(char*);
 void printNodeList(vector<char*> nodeList);
 
@@ -106,10 +106,10 @@ int main() {
     if (strcmp(command, "PATH") == 0) {
       cout << "Enter two vertices and I will find the shortest path between them, if it exists." << endl;
       cout << "Origin: ";
-      char origin[10];
+      char* origin = new char[10];
       cin >> origin;
       cout << endl << "Destination: ";
-      char dest[10];
+      char* dest = new char[10];
       cin >> dest;
       if (vertexExists(nodeList, origin) == true && vertexExists(nodeList, dest) == true) {
 	findShortestPath();
@@ -127,21 +127,22 @@ int main() {
       cin.ignore(1, '\n');
       if (typeInput == 'v') {//delete a node
         cout << endl << "Label: ";
-        char label[10];
+        char* label = new char[10];
         cin >> label;
 	if (vertexExists(nodeList, label) == true) {
-	  deleteVertex();
+	  deleteVertex(matrix, nodeList, label);
 	}
       }
       else if (typeInput == 'e') {//delete an edge
 	cout << "First Connected Vertex: ";
-        char* v1;
+        char* v1 = new char[10];
         cin >> v1;
         cout << endl << "Second Connected Vertex: ";
-        char* v2;
+        char* v2 = new char[10];
         cin >> v2;
         if (vertexExists(nodeList, v1) == true && vertexExists(nodeList, v2) == true) {//if both entered nodes exist and an edge exists between them, we can delete the edge.
 	  //check if there is an edge between the two nodes in the above if statement
+	  deleteEdge(matrix, nodeList, v1, v2);
 	}
       }
     }
@@ -165,7 +166,8 @@ void addVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label
   }
   for (int c = 0; c < matrix.size(); c++) {
     matrix[c].push_back(0);
-  }  
+  }
+  cout << endl << "Added Vertex " << label << endl;
 }
 
 void addEdge(vector<vector<int>>& matrix, vector<char*>& nodeList, int weight, char* label1, char* label2) {
@@ -173,10 +175,11 @@ void addEdge(vector<vector<int>>& matrix, vector<char*>& nodeList, int weight, c
   int secondIndex = getVertexIndex(nodeList, label2);
   if (firstIndex == secondIndex) return;
   matrix[firstIndex][secondIndex] = weight;
+  cout << endl << "Edge of weight " << weight << " was added between nodes " << label1 << " and " << label2 << endl;
 }
 
 int getVertexIndex(vector<char*>& nodeList, char* label) {//assumes that the vertex being passed in exists
-  cout << "Getting index of vertice " << label << endl;
+  //cout << "Getting index of vertice " << label << endl;
   for (int i = 0; i < nodeList.size(); i++) {
     if (strcmp(label, nodeList[i]) == 0) return i;
   }
@@ -193,12 +196,16 @@ bool vertexExists(vector<char*> nodeList, char* label) {
 
 //getConnectedEdges function
 
-void deleteVertex() {
+void deleteVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label) {
 
 }
 
-void deleteEdge() {
-
+void deleteEdge(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label1, char* label2) {
+  int firstIndex = getVertexIndex(nodeList, label1);
+  int secondIndex = getVertexIndex(nodeList, label2);
+  if (firstIndex == secondIndex) return;
+  matrix[firstIndex][secondIndex] = 0;
+  cout << endl << "Edge was removed from between nodes " << label1 << " and " << label2 << endl;
 }
 
 void printAdj(vector<vector<int>> matrix, vector<char*> nodeList) {
@@ -219,13 +226,14 @@ void printAdj(vector<vector<int>> matrix, vector<char*> nodeList) {
 }
 
 void printNodeList(vector<char*> nodeList) {
+  cout << "Here are all the existing nodes: ";
   for (int i = 0; i < nodeList.size(); i++) {
     cout << nodeList[i] << " ";
   }
   cout << endl;
 }
 
-void findShortestPath() {
+void findShortestPath(vector<vector<int>> matrix, vector<char*> nodeList, char* origin, char* dest) {
 
 }
 
