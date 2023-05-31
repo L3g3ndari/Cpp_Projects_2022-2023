@@ -3,22 +3,9 @@ Nathan Wu
 Graph Creator
 C++ Programming
 Mr. Galbraith
-Project Completed:
-Outside Sources Used:
- - https://www.programiz.com/dsa/dijkstra-algorithm
- - https://www.algotree.org/algorithms/single_source_shortest_path/dijkstras_shortest_path_c++/
+Project Completed: 5/31/2023
 
 This program creates a basic directed graph. User can add and delete nodes and edges. Nodes can be labeled and edges can be given a weight. There is also a function that will find the shortest path between two nodes.
-
- - Nathan's Quick Notes 5/23/2023 - 
-We can implement this in the form of an array of linked lists, with the array storing vertices and the linked lists storing all the edges. Edges store the pointer to the connected vertex or its index in the array. A node stores 3 pieces of information: the vertex, a visit marker, and a head pointer to the connected edges.
-
-* Things to Find Out from Mr. Galbraith *
- - What is the implementation? Do I need separate Node and Vertex classes or can I combine all the info into one Node class?
- - Do I need an Edge class?
- - Still very confused on implementation
- - Do the edges only have one direction, since it's a directed graph? Or is it more similar to our graphs in Java where direction doesn't matter?
- - Do I need nodeList and edgeList? Do I need the adjacency table as an object? If so, what type of implementation? Vectors?
 
 */
 
@@ -116,7 +103,12 @@ int main() {
       char dest[10];
       cin >> dest;
       if (vertexExists(nodeList, origin) == true && vertexExists(nodeList, dest) == true) {
-	findShortestPath(matrix, nodeList, origin, dest);
+	if (strcmp(origin, dest) != 0) {
+	  findShortestPath(matrix, nodeList, origin, dest);
+	}
+	else {
+	  cout << endl << "Please enter different vertices. Your vertex of origin and your destination vertex cannot be the same." << endl;
+	}
       }
       else {
 	cout << endl << "You entered a vertex that doesn't exist. Please try again." << endl;
@@ -260,33 +252,74 @@ void printNodeList(vector<char*> nodeList) {
 }
 
 void findShortestPath(vector<vector<int>> matrix, vector<char*> nodeList, char* origin, char* dest) {
-  vector<char*> unvisitedNodes;
-  vector<int> costs;
-  unordered_map<char*, char*> previous;
-  int originIndex = getVertexIndex(nodeList, origin);
-  int destIndex = getVertexIndex(nodeList, dest);
-  for (int i = 0; i < nodeList.size(); i++) {
-    unvisitedNodes.push_back(nodeList[i]);//populate vector of visited nodes with the nodes from nodeList
-    costs.push_back(INT_MAX);//initializing all the costs to "infinity"
-    previous[nodeList[i]] = NULL;//initializes the hash table
-  }
-  costs[originIndex] = 0;//set the cost of the origin to zero
-  
-  //Visit the unvisited vertex with the smallest known distance from the origin.
+  //LOGIC: Visit the unvisited vertex with the smallest known distance from the origin.
   //For the current vertex, examine its unvisted neighbors
   //For the current vertex, calculate the distance of each neighbor from the origin.
   //If the calculated distance of a vertex is less than the known distance (usually infinity), update the costs with the shorter distance
   //Add the neighbors to the hashtable, with each neighbor being a key and the value being the current vertex
   //Add the current vertex to the visitedNodes vector
-  
   //Repeat, visiting the unvisited vertex with the smallest known distance from the start vertex.
+  
+  int numVertices = nodeList.size();
+  vector<int> costs;
+  vector<bool> visited(numVertices, false);
+  unordered_map<char*, char*> previous;
+  int originIndex = getVertexIndex(nodeList, origin);
+  int destIndex = getVertexIndex(nodeList, dest);
+  vector<char*> shortestPath;
+  char* currentVertex = nodeList[destIndex];
 
-  int current = getVertexIndex(nodeList, origin);
-  while (visitedNodes.size() != nodeList.size()) {
-    //visit unvisited vertex with the smallest known distance from origin.
-    for (auto node : nodeList) {//traverses the vertices in the nodeList
-      if (node
+  for (int i = 0; i < nodeList.size(); i++) {
+    //unvisitedNodes.push_back(nodeList[i]);//populate vector of visited nodes with the nodes from nodeList
+    costs.push_back(INT_MAX);//initializing all the costs to "infinity"
+    previous[nodeList[i]] = NULL;//initializes the hash table
+  }
+  costs[originIndex] = 0;//set the cost of the origin to zero
+
+  for (int i = 0; i < numVertices; ++i) {
+    int minCost = INT_MAX;
+    int minIndex = -1;
+    for (int j = 0; j < numVertices; ++j) {
+      if (visited[j] != true && costs[j] < minCost) {//finds an unvisited vertex with the lowest cost
+	minCost = costs[j];
+	minIndex = j;
+      }
     }
+    visited[minIndex] = true;
+    if (minIndex == destIndex) {//if we've reached our destination
+      break;
+    }
+    for (int j = 0; j < numVertices; ++j) {
+      if (visited[j] != true && matrix[minIndex][j] != 0) {
+	int newCost = costs[minIndex] + matrix[minIndex][j];
+	if (newCost < costs[j]) {
+	  costs[j] = newCost;
+	  previous[nodeList[j]] = nodeList[minIndex];
+	}
+      }
+    }
+  }
+
+  //print the path
+  while (currentVertex != NULL) {//first, put all the nodes in the path into a vector
+    shortestPath.push_back(currentVertex);
+    currentVertex = previous[currentVertex];
+  }
+
+  if (shortestPath.empty() == true) {//if no path was derived
+    cout << "No path found from " << origin << " to " << dest << endl;
+  }
+  else {//print the path in order
+    //cout << "shortestPath.size() = " << shortestPath.size() << endl;
+    cout << endl << "Shortest path from " << origin << " to " << dest << ": ";
+    int pathLength = shortestPath.size();
+    for (int i = pathLength -1; i >= 0; i--) {
+      cout << shortestPath[i];
+      if (i != 0) {
+	cout << " -> ";
+      }
+    }
+    cout << endl;
   }
 }
 
