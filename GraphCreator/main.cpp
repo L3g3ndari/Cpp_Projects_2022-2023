@@ -317,7 +317,8 @@ void findShortestPath(vector<vector<int>> matrix, vector<char*> nodeList, char* 
 	cout << " -> ";
       }
     }
-    cout << endl;
+    int total = costs[destIndex];
+    cout << endl << "Lowest Cost: " << total << endl;
   }
 }
 
