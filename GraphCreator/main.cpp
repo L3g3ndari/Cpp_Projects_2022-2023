@@ -3,7 +3,7 @@ Nathan Wu
 Graph Creator
 C++ Programming
 Mr. Galbraith
-Project Completed: 5/31/2023
+Project Completed: 06/02/2023
 
 This program creates a basic directed graph. User can add and delete nodes and edges. Nodes can be labeled and edges can be given a weight. There is also a function that will find the shortest path between two nodes.
 
@@ -277,10 +277,14 @@ void findShortestPath(vector<vector<int>> matrix, vector<char*> nodeList, char* 
 	minIndex = j;
       }
     }
-    visited[minIndex] = true;
-    if (minIndex == destIndex) {//if we've reached our destination
-      break;
+    if (minIndex == -1) {
+      cout << endl << "No path found from " << origin << " to " << dest << endl;
+      return;
     }
+    visited[minIndex] = true;
+    //if (minIndex == destIndex) {//if we've reached our destination
+    //break;
+    // }
     for (int j = 0; j < numVertices; ++j) {
       if (visited[j] != true && matrix[minIndex][j] != 0) {
 	int newCost = costs[minIndex] + matrix[minIndex][j];
@@ -294,8 +298,10 @@ void findShortestPath(vector<vector<int>> matrix, vector<char*> nodeList, char* 
 
   //print the path
   while (currentVertex != NULL) {//first, put all the nodes in the path into a vector
+    //cout << "Before: " << currentVertex << endl;
     shortestPath.push_back(currentVertex);
     currentVertex = previous[currentVertex];
+    //cout << "After: " << currentVertex << endl;
   }
 
   if (shortestPath.empty() == true) {//if no path was derived
