@@ -14,8 +14,6 @@ This program creates a basic directed graph. User can add and delete nodes and e
 #include <vector>
 #include <limits.h>
 #include <unordered_map>
-//#include "Vertex.h"
-//#include "Edge.h"
 
 using namespace std;
 
@@ -23,7 +21,6 @@ void addVertex(vector<vector<int>> &matrix, vector<char*> &nodeList, char* input
 void addEdge(vector<vector<int>> &matrix, vector<char*> &nodeList, int weight, char* label1, char* label2);
 int getVertexIndex(vector<char*> &nodeList, char* label);
 bool vertexExists(vector<char*> nodeList, char* label);
-//getConnectedEdges function   - What type of return is this?
 void deleteVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label);
 void deleteEdge(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label1, char* label2);
 void printAdj(vector<vector<int>> matrix, vector<char*> nodeList);
@@ -35,7 +32,6 @@ int main() {
   cout << "Welcome to Graph Creator. Your available commands are ADD, DELETE, PRINT, PATH, and QUIT." << endl;
 
   vector<char*> nodeList;
-  //vector<Edge*> edgeList;
   vector<vector<int>> matrix;
   
   while (true) {
@@ -149,10 +145,8 @@ int main() {
     }
     
   }
-
   
 }
-
 
 void addVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* inputLabel) {
   char* label = new char[10];
@@ -201,8 +195,6 @@ bool edgeExists(vector<vector<int>> matrix, vector<char*> nodeList, char* v1, ch
   }
   return false;
 }
-
-//getConnectedEdges function
 
 void deleteVertex(vector<vector<int>>& matrix, vector<char*>& nodeList, char* label) {
   if (vertexExists(nodeList, label) == false) {
